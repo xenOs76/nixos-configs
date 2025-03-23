@@ -33,4 +33,9 @@
     kdePackages.kasts
     # kdePackages.plasmatube
   ];
+
+  services.gpg-agent = {
+    enable = true;
+    pinentryPackage = pkgs.pinentry-qt;
+  };
 }

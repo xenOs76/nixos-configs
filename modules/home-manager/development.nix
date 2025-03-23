@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
     # Editors
-    vscode
+    #vscode
     jetbrains.idea-community-bin
     thonny
 

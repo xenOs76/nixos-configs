@@ -3,8 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-    home-manager.url = "github:nix-community/home-manager/release-24.11";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-24.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixvim = {
       url = "github:nix-community/nixvim/nixos-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -17,7 +19,10 @@
     home-manager,
     nixvim,
     ...
-  } @ inputs: {
+  } @ inputs: let
+    system = "aarch64-linux";
+    pkgs = nixpkgs.legacyPackages.${system};
+  in {
     nixosConfigurations = {
       slim = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -38,6 +43,16 @@
         system = "aarch64-linux";
         modules = [
           ./hosts/xor/configuration.nix
+        ];
+      };
+    };
+
+    homeConfigurations = {
+      xeno-hm = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [
+          ./home-xeno-servers.nix
+          nixvim.homeManagerModules.nixvim
         ];
       };
     };
