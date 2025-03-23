@@ -7,9 +7,13 @@
   imports = [
     ./hardware-configuration.nix
     ../../modules/nixos/default.nix
+    ../../modules/nixos/slim
   ];
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
   nixpkgs.config.allowUnfree = true;
   security.sudo.wheelNeedsPassword = false;
 
@@ -25,7 +29,19 @@
         efiInstallAsRemovable = false;
       };
     };
-    binfmt.emulatedSystems = ["aarch64-linux" "armv6l-linux" "armv7l-linux"];
+    binfmt.emulatedSystems = [
+      "aarch64-linux"
+      "armv6l-linux"
+      "armv7l-linux"
+    ];
+  };
+
+  environment.etc.crypttab = {
+    mode = "0600";
+    text = ''
+      # <volume-name> <encrypted-device> [key-file] [options]
+      cryptDataPv UUID=bfadeb78-06fa-4ee3-9243-1abcb6f3ca84 /etc/slim_sda1_luks.key
+    '';
   };
 
   networking.hostName = "slim"; # Define your hostname.
@@ -63,13 +79,20 @@
     pulse.enable = true;
   };
 
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
+
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.xeno = {
     isNormalUser = true;
-    extraGroups = ["wheel" "dialout"]; # Enable ‘sudo’ for the user.
+    extraGroups = [
+      "wheel"
+      "dialout"
+    ];
     packages = with pkgs; [
       tree
     ];
