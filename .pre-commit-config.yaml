@@ -1,5 +1,19 @@
 repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: detect-aws-credentials
+      - id: detect-private-key
+      - id: check-shebang-scripts-are-executable
+      - id: check-executables-have-shebangs
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.23.1
+    rev: v8.24.2
     hooks:
       - id: gitleaks
+  - repo: https://github.com/yuvipanda/pre-commit-hook-ensure-sops
+    rev: v1.1
+    hooks:
+      - id: sops-encryption

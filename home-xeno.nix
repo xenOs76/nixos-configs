@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   home.username = "xeno";
   home.homeDirectory = "/home/xeno";
   home.stateVersion = "24.11";
@@ -29,14 +25,5 @@
     enable = true;
     userName = "Zeno Belli";
     userEmail = "xeno@os76.xyz";
-  };
-
-  programs.chromium = {
-    enable = true;
-    extensions = [
-      "gcbommkclmclpchllfjekcdonpmejbdp" # https everywhere
-      "cjpalhdlnbpafiamejdnhcphjbkeiagm" # ublock origin
-      "cmpdlhmnmjhihmcfnigoememnffkimlk" # catppuccin theme
-    ];
   };
 }

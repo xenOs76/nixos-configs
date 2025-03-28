@@ -11,6 +11,10 @@
       url = "github:nix-community/nixvim/nixos-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -18,16 +22,45 @@
     nixpkgs,
     home-manager,
     nixvim,
+    sops-nix,
     ...
   } @ inputs: let
     system = "aarch64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
   in {
     nixosConfigurations = {
+      zero = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./hosts/zero/configuration.nix
+          ./modules/nixos
+          ./modules/nixos/zero
+          nixvim.nixosModules.nixvim
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
+            home-manager.users.xeno = import ./home-xeno.nix;
+            home-manager.users.root = import ./home-root.nix;
+          }
+          sops-nix.nixosModules.sops
+          {
+            sops.age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
+            sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+            sops.age.generateKey = true;
+            sops.defaultSopsFile = ./secrets/hosts/zero/secrets.yaml;
+          }
+        ];
+      };
+
       slim = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           ./hosts/slim/configuration.nix
+          ./modules/nixos
+          ./modules/nixos/slim
+          nixvim.nixosModules.nixvim
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -35,15 +68,12 @@
             home-manager.backupFileExtension = "backup";
             home-manager.users.xeno = import ./home-xeno.nix;
           }
-          nixvim.nixosModules.nixvim
         ];
       };
 
       xor = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
-        modules = [
-          ./hosts/xor/configuration.nix
-        ];
+        modules = [./hosts/xor/configuration.nix];
       };
     };
 

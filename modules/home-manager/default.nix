@@ -7,5 +7,6 @@
     ./k8s.nix
     ./development.nix
     ./gui.nix
+    ./browser.nix
   ];
 }

@@ -6,8 +6,8 @@
 }: {
   imports = [
     ./hardware-configuration.nix
-    ../../modules/nixos/default.nix
-    ../../modules/nixos/slim
+    #    ../../modules/nixos/default.nix
+    #    ../../modules/nixos/slim
   ];
 
   nix.settings.experimental-features = [
@@ -44,12 +44,10 @@
     '';
   };
 
-  networking.hostName = "slim"; # Define your hostname.
-  # Pick only one of the below networking options.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
+  networking.hostName = "slim";
+  networking.wireless.enable = false;
+  networking.networkmanager.enable = true;
 
-  # Set your time zone.
   time.timeZone = "Europe/Berlin";
 
   # Configure network proxy if necessary
@@ -64,13 +62,13 @@
     useXkbConfig = true; # use xkb.options in tty.
   };
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.theme = "catppuccin-mocha";
-  services.displayManager.defaultSession = "plasma";
-  services.desktopManager.plasma6.enable = true;
-
+  # # Enable the X11 windowing system.
+  # services.xserver.enable = true;
+  # services.displayManager.sddm.enable = true;
+  # services.displayManager.sddm.theme = "catppuccin-mocha";
+  # services.displayManager.defaultSession = "plasma";
+  # services.desktopManager.plasma6.enable = true;
+  #
   # Enable sound.
   # hardware.pulseaudio.enable = true;
   # OR
@@ -107,8 +105,8 @@
     git
     wget
     alejandra
-    kdePackages.sddm-kcm
-    catppuccin-sddm
+    #    kdePackages.sddm-kcm
+    #    catppuccin-sddm
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -122,10 +120,9 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
-  # Open ports in the firewall.
+  networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [22];
   # networking.firewall.allowedUDPPorts = [ ... ];
-  networking.firewall.enable = true;
 
   system.stateVersion = "24.11";
 }
