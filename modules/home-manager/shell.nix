@@ -116,12 +116,20 @@
   programs.bat = {
     enable = true;
     config = {
-      map-syntax = ["*.jenkinsfile:Groovy" "*.props:Java Properties"];
+      map-syntax = [
+        "*.jenkinsfile:Groovy"
+        "*.props:Java Properties"
+      ];
       pager = "less -FR";
       theme = "Catppuccin Frappe";
       style = "plain";
     };
-    extraPackages = with pkgs.bat-extras; [batdiff batman batgrep batwatch];
+    extraPackages = with pkgs.bat-extras; [
+      batdiff
+      batman
+      batgrep
+      batwatch
+    ];
     themes = {
       "Catppuccin Frappe" = {
         src = pkgs.fetchFromGitHub {
@@ -141,10 +149,12 @@
   };
 
   home.file = {
-    ".kubectl_aliases".text = builtins.readFile (builtins.fetchurl {
-      url = "https://raw.githubusercontent.com/ahmetb/kubectl-aliases/refs/heads/master/.kubectl_aliases";
-      sha256 = "sha256:1acyhhhbfxz17ch77nf26x0cj4immsl6drcpwwbklrl49n9gm9ia";
-    });
+    ".kubectl_aliases".text = builtins.readFile (
+      builtins.fetchurl {
+        url = "https://raw.githubusercontent.com/ahmetb/kubectl-aliases/refs/heads/master/.kubectl_aliases";
+        sha256 = "sha256:1acyhhhbfxz17ch77nf26x0cj4immsl6drcpwwbklrl49n9gm9ia";
+      }
+    );
   };
 
   programs.bash = {
@@ -191,10 +201,6 @@
     '';
 
     shellAliases = {
-      k = "kubectl";
-      urldecode = "python3 -c 'import sys, urllib.parse as ul; print(ul.unquote_plus(sys.stdin.read()))'";
-      urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";
-
       ".." = "cd ..";
       cat = "bat -pp";
       man = "batman";
@@ -205,13 +211,11 @@
       lltree = "eza -lgha --git --git-repos -T --total-size --git-ignore";
       llsize = "ll --sort=size --reverse  --total-size";
       lltime = "ll --sort=time --reverse";
-      vi = "nvim";
       gst = "git status";
 
-      hugo-start = "cd /Users/gcivirella/Git/github/how-i-did-it && hugo server -D";
-      mqtt-home-sub-all = "mosquitto_sub -h mqtt.home.arpa -t '#'";
+      vi = "nvim";
 
-      kntime = "curl -s http://time.kn.os76.xyz | glow";
+      k = "kubectl";
       kubectl = "kubecolor";
       nokube = "kubectx -u";
       ktemp-shell = "kubectl netshoot run temp-shell";
@@ -219,6 +223,13 @@
       kdelete-f = "kubectl delete -f";
       kaf = "kubectl apply -f ";
       kdf = "kubectl delete -f ";
+      kntime = "curl -s http://time.kn.os76.xyz | glow";
+
+      urldecode = "python3 -c 'import sys, urllib.parse as ul; print(ul.unquote_plus(sys.stdin.read()))'";
+      urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";
+
+      hugo-start = "cd /Users/gcivirella/Git/github/how-i-did-it && hugo server -D";
+      mqtt-home-sub-all = "mosquitto_sub -h mqtt.home.arpa -t '#'";
 
       tfswitch = "tfswitch -b ~/bin/terraform";
 
@@ -226,6 +237,7 @@
       whatismyipv6 = "curl -6 https://ipv6.icanhazip.com";
       whatismyip-on-aws = "curl -4 https://checkip.amazonaws.com/";
 
+      alias-from-flake = "echo 'this is a flake managed bash alias'";
       #nixvim = "nix run git+https://git.priv.os76.xyz/xeno/nixvim";
     };
   };

@@ -1,8 +1,9 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
-    # Editors
+    ### Editors
     #vscode
     jetbrains.idea-community-bin
+    jetbrains.pycharm-community-bin
     thonny
 
     # Make / Iot
@@ -14,7 +15,7 @@
     mosquitto
     mqttx
 
-    # Languages
+    ### Languages
     go
 
     (python3.withPackages (
@@ -43,7 +44,7 @@
     opentofu
     tfswitch
 
-    # Format/Lint
+    ### Format/Lint
     lua-language-server
     black
     stylua

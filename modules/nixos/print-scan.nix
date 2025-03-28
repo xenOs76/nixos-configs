@@ -1,5 +1,14 @@
 {pkgs, ...}: {
-  # Enable CUPS to print documents.
+  environment.systemPackages = with pkgs; [
+    cups
+    airscan
+    sane-airscan
+    sane-backends
+    sane-frontends
+    xsane
+    # skanlite??
+  ];
+
   services.printing = {
     enable = true;
     drivers = [pkgs.hplipWithPlugin];
@@ -12,7 +21,9 @@
         location = "Home - AlfaBravoCharlie network, NixOS provisioned";
         deviceUri = "socket://printer.home.arpa:9100";
         model = "drv:///hp/hpcups.drv/hp-laserjet_mfp_m28-m31.ppd";
-        ppdOptions = {PageSize = "A4";};
+        ppdOptions = {
+          PageSize = "A4";
+        };
       }
     ];
     ensureDefaultPrinter = "HP_LaserJet_MFP_M28w_Nix";
@@ -24,10 +35,12 @@
     openFirewall = true;
   };
 
-  # enable scanner
+  services.saned.enable = false;
   hardware.sane = {
     enable = true;
-    extraBackends = [pkgs.hplipWithPlugin pkgs.sane-airscan];
+    extraBackends = with pkgs; [
+      hplipWithPlugin
+      sane-airscan
+    ];
   };
-  services.saned.enable = false;
 }
