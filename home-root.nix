@@ -1,6 +1,9 @@
 {pkgs, ...}: {
   home.stateVersion = "24.11";
-  home.packages = [pkgs.httpie];
+  home.packages = with pkgs; [
+    httpie
+    eza
+  ];
   programs.home-manager.enable = true;
   programs.bash = {
     enable = true;
@@ -59,6 +62,15 @@
 
       [directory]
       style = "bright-blue"
+
+      [hostname]
+      ssh_only = false
+      ssh_symbol = " "
+      trim_at = "."
+      detect_env_vars = []
+      format = "[{$ssh_symbol$hostname}]($style) "
+      style = "fg:#769ff0 bg:#394260"
+      disabled = false
 
       [character]
       success_symbol = "[>](green)"

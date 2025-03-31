@@ -48,8 +48,9 @@
       };
 
       hostname = {
-        ssh_only = true;
-        format = "@ [$hostname]($style) ";
+        ssh_only = false;
+        format = "[|](fg:#769ff0)[$hostname](fg:#769ff0 bg:#394260)[|](fg:#769ff0) ";
+        style = "fg:#769ff0 bg:#394260";
         disabled = false;
       };
 

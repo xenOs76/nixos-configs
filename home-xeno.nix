@@ -5,6 +5,25 @@
 
   programs.home-manager.enable = true;
 
+  sops = {
+    age.sshKeyPaths = ["/home/xeno/.ssh/id_ed25519"];
+    defaultSopsFile = ./secrets/users/xeno/secrets.yaml;
+    secrets = {
+      description = {
+        path = "/home/xeno/.sops_xeno_description";
+      };
+      aws_config = {
+        path = "/home/xeno/.aws/config";
+      };
+      aws_credentials = {
+        path = "/home/xeno/.aws/credentials";
+      };
+      ssh_config = {
+        path = "/home/xeno/.ssh/config";
+      };
+    };
+  };
+
   imports = [
     ./modules/home-manager
   ];

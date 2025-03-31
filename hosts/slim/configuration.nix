@@ -3,11 +3,11 @@
   lib,
   pkgs,
   ...
-}: {
+}: let
+  slim_sda1_luks_key_path = "/etc/slim_sda1_luks.key";
+in {
   imports = [
     ./hardware-configuration.nix
-    #    ../../modules/nixos/default.nix
-    #    ../../modules/nixos/slim
   ];
 
   nix.settings.experimental-features = [
@@ -15,9 +15,17 @@
     "flakes"
   ];
   nixpkgs.config.allowUnfree = true;
+  nix.settings.auto-optimise-store = true;
+
+  sops.secrets.description = {};
+  sops.secrets.xeno_pw_hash.neededForUsers = true;
+  sops.secrets.slim_sda1_luks_key = {
+    owner = "root";
+    path = slim_sda1_luks_key_path;
+  };
+
   security.sudo.wheelNeedsPassword = false;
 
-  ## Use the GRUB 2 boot loader.
   boot = {
     initrd.luks.devices.cryptroot.device = "/dev/disk/by-uuid/497734d2-3981-41bc-805d-5839cef1e85c";
     loader = {
@@ -40,7 +48,7 @@
     mode = "0600";
     text = ''
       # <volume-name> <encrypted-device> [key-file] [options]
-      cryptDataPv UUID=bfadeb78-06fa-4ee3-9243-1abcb6f3ca84 /etc/slim_sda1_luks.key
+      cryptDataPv UUID=bfadeb78-06fa-4ee3-9243-1abcb6f3ca84 ${slim_sda1_luks_key_path}
     '';
   };
 
@@ -62,31 +70,16 @@
     useXkbConfig = true; # use xkb.options in tty.
   };
 
-  # # Enable the X11 windowing system.
-  # services.xserver.enable = true;
-  # services.displayManager.sddm.enable = true;
-  # services.displayManager.sddm.theme = "catppuccin-mocha";
-  # services.displayManager.defaultSession = "plasma";
-  # services.desktopManager.plasma6.enable = true;
-  #
-  # Enable sound.
-  # hardware.pulseaudio.enable = true;
-  # OR
-  services.pipewire = {
-    enable = true;
-    pulse.enable = true;
-  };
-
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
-  services.blueman.enable = true;
-
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.xeno = {
     isNormalUser = true;
+    #
+    # use hashedPasswordFile with a secret when creating
+    # new users. It will not impact existing ones
+    #
+    #hashedPasswordFile = config.sops.secrets.xeno_pw_hash.path;
     extraGroups = [
       "wheel"
       "dialout"
@@ -96,17 +89,11 @@
     ];
   };
 
-  programs.firefox.enable = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim
     git
     wget
     alejandra
-    #    kdePackages.sddm-kcm
-    #    catppuccin-sddm
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

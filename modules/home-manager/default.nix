@@ -1,6 +1,7 @@
 {
   imports = [
     ./shell.nix
+    ./scripts.nix
     ./git.nix
     ./wezterm.nix
     ./starship.nix
