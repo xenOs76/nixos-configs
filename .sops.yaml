@@ -1,8 +1,19 @@
 keys:
-  # - &xeno_at_zero age1lsfvx7nwct987yezqud0tt9y05yhmcquckf0kalfqwrqfuygnvhsr09d5g
+  - &xeno_at_zero age1lsfvx7nwct987yezqud0tt9y05yhmcquckf0kalfqwrqfuygnvhsr09d5g
+  - &xeno_at_slim age1dcgemfs0w6huj0r7058xxjxfe746p2yzyehj9cj00amu54rhaehs7cca07
   - &server_zero age1qwdngwfh5adnacezn35lzgnm7jcp0e7j6ts346ufkj58wwpy7d4qr6rm2m
+  - &server_slim age1jv4mly2k8jere0jgfxewjgvhdgfc999zxgpqttxecjmc0qr9hs2sgls5my
 creation_rules:
   - path_regex: secrets/hosts/zero/[^/\s]+.yaml$
     key_groups:
       - age:
           - *server_zero
+  - path_regex: secrets/hosts/slim/[^/\s]+.yaml$
+    key_groups:
+      - age:
+          - *server_slim
+  - path_regex: secrets/users/xeno/[^/\s]+.yaml$
+    key_groups:
+      - age:
+          - *xeno_at_zero
+          - *xeno_at_slim

@@ -3,6 +3,7 @@
     pre-commit
     pre-commit-hook-ensure-sops
     gitleaks
+    git-secrets
   ];
 
   programs.git = {
@@ -14,8 +15,15 @@
       unstage = "reset HEAD --";
       last = "log -1 HEAD";
     };
-    extraConfig = {push = {autoSetupRemote = true;};};
-    ignores = ["*~" "*.swp"];
+    extraConfig = {
+      push = {
+        autoSetupRemote = true;
+      };
+    };
+    ignores = [
+      "*~"
+      "*.swp"
+    ];
   };
 
   programs.git.delta = {

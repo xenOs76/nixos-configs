@@ -14,6 +14,7 @@ Extract the public key:
 
 ```
 ❯ nix-shell -p ssh-to-age --run "ssh-to-age -i $HOME/.ssh/id_ed25519.pub -o ~/.config/sops/age/xeno_at_zero-pub-key.txt"
+❯ nix-shell -p ssh-to-age --run "sudo ssh-to-age -i /etc/ssh/ssh_host_ed25519_key.pub -o ~/.config/sops/age/slim_host_key_pub.txt"
 ```
 
 ## Test the key

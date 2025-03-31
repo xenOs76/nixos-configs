@@ -155,7 +155,7 @@ in {
       sslCertificate = ssl_certificate_bundle_path;
       sslCertificateKey = ssl_certificate_key_path;
       locations."/" = {
-        proxyPass = "http://127.0.0.1:5000";
+        proxyPass = "http://127.0.0.1:${toString config.services.dockerRegistry.port}";
       };
 
       extraConfig = ''

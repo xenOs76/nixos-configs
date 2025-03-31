@@ -1,5 +1,6 @@
 {
   imports = [
+    ./cli.nix
     ./fonts.nix
 
     # TODO enable when hplip bug fix merged

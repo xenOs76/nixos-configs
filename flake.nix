@@ -36,20 +36,23 @@
           ./modules/nixos
           ./modules/nixos/zero
           nixvim.nixosModules.nixvim
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "backup";
-            home-manager.users.xeno = import ./home-xeno.nix;
-            home-manager.users.root = import ./home-root.nix;
-          }
           sops-nix.nixosModules.sops
           {
             sops.age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
             sops.age.keyFile = "/var/lib/sops-nix/key.txt";
             sops.age.generateKey = true;
             sops.defaultSopsFile = ./secrets/hosts/zero/secrets.yaml;
+          }
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
+            home-manager.sharedModules = [
+              inputs.sops-nix.homeManagerModules.sops
+            ];
+            home-manager.users.xeno = import ./home-xeno.nix;
+            home-manager.users.root = import ./home-root.nix;
           }
         ];
       };
@@ -61,12 +64,23 @@
           ./modules/nixos
           ./modules/nixos/slim
           nixvim.nixosModules.nixvim
+          sops-nix.nixosModules.sops
+          {
+            sops.age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
+            sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+            sops.age.generateKey = true;
+            sops.defaultSopsFile = ./secrets/hosts/slim/secrets.yaml;
+          }
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
+            home-manager.sharedModules = [
+              inputs.sops-nix.homeManagerModules.sops
+            ];
             home-manager.users.xeno = import ./home-xeno.nix;
+            home-manager.users.root = import ./home-root.nix;
           }
         ];
       };

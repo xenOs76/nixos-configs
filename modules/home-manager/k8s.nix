@@ -13,7 +13,6 @@
     istioctl
     k9s
     kubecolor
-    #lens
     velero
     kubecolor
     (wrapHelm kubernetes-helm {

@@ -30,8 +30,6 @@
     awscli2
     ansible
     ansible-lint
-    #    slack
-    #    element-desktop
     pass
     gnupg
     pwgen
@@ -228,7 +226,6 @@
       urldecode = "python3 -c 'import sys, urllib.parse as ul; print(ul.unquote_plus(sys.stdin.read()))'";
       urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";
 
-      hugo-start = "cd /Users/gcivirella/Git/github/how-i-did-it && hugo server -D";
       mqtt-home-sub-all = "mosquitto_sub -h mqtt.home.arpa -t '#'";
 
       tfswitch = "tfswitch -b ~/bin/terraform";
