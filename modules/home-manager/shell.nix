@@ -28,6 +28,7 @@
     jq
     unzip
     awscli2
+    minio-client
     ansible
     ansible-lint
     pass

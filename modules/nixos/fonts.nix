@@ -2,9 +2,8 @@
   fonts.packages = with pkgs; [
     noto-fonts
     fira-code
-    fira-code-nerdfont
-    terminus_font
-    terminus-nerdfont
+    nerd-fonts.fira-code
+    nerd-fonts.terminess-ttf
     inter-nerdfont
   ];
 }

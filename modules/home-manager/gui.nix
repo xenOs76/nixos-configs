@@ -8,8 +8,8 @@
     # QT
     qtpass
     pinentry-qt
-    yubikey-manager-qt
     yubikey-personalization-gui
+    yubioath-flutter
 
     # kde6
     kdePackages.ark
@@ -36,6 +36,6 @@
 
   services.gpg-agent = {
     enable = true;
-    pinentryPackage = pkgs.pinentry-qt;
+    pinentry.package = pkgs.pinentry-qt;
   };
 }
