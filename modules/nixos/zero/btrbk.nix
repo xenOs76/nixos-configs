@@ -84,11 +84,11 @@ in {
     snapshot_move_settings = {
       snapshot_create = "no";
       snapshot_dir = "snaps";
-      target = "/data/store-btrfs/snaps/from_nvme_to_sda/";
+      target = "/backup/from_nvme_to_sda/";
     };
   in {
-    target_preserve_min = "7d";
-    target_preserve = "7d 4w";
+    target_preserve_min = "1d";
+    target_preserve = "3d 0w";
     volume = {
       "/home/" = {
         subvolume = {

@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-sudo nixos-rebuild switch --flake  ./#slim
+test "$(hostname)" == "slim" || exit 1
+sudo nixos-rebuild switch --flake ./#slim

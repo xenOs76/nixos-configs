@@ -8,9 +8,14 @@
   environment.systemPackages = with pkgs; [
     qemu_full
 
+    docker
+    docker-ls
     docker-buildx
     lazydocker
     regclient
     reg
   ];
+
+  virtualisation.docker.enable = true;
+  users.users.xeno.extraGroups = ["docker"];
 }
