@@ -6,5 +6,6 @@
     sops
     age
     ssh-to-age
+    inotify-tools
   ];
 }

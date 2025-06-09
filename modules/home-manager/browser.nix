@@ -6,7 +6,7 @@
     extensions = [
       "gcbommkclmclpchllfjekcdonpmejbdp" # https everywhere
       "cjpalhdlnbpafiamejdnhcphjbkeiagm" # ublock origin
-      "cmpdlhmnmjhihmcfnigoememnffkimlk" # catppuccin theme
+      "olhelnoplefjdmncknfphenjclimckaf" # catppuccin-frappe theme
     ];
   };
 }

@@ -1,7 +1,18 @@
 {pkgs, ...}: {
   environment.systemPackages = with pkgs; [
-    kdePackages.sddm-kcm
     catppuccin-sddm
+    kdePackages.sddm-kcm
+    kdePackages.discover
+    kdePackages.kcalc
+    kdePackages.kcharselect
+    kdePackages.kcolorchooser
+    kdePackages.kolourpaint
+    kdePackages.ksystemlog
+    kdiff3
+    kdePackages.partitionmanager
+    haruna
+    wayland-utils
+    wl-clipboard
   ];
 
   services.xserver.enable = true;

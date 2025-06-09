@@ -2,6 +2,14 @@
   programs.nixvim = {
     enableMan = false;
 
+    # https://neovim.io/doc/user/diagnostic.html#vim.diagnostic.Opts
+    # also check ui.nix > tiny-inline-diagnostic
+    diagnostic.settings = {
+      virtual_lines = false;
+      virtual_text = false;
+      underline = true;
+    };
+
     globals = {
       mapleader = " ";
       # Disable useless providers
@@ -57,7 +65,7 @@
 
     extraPlugins = with pkgs;
     with vimPlugins; [
-      # vim-splunk
+      vim-splunk
       vim-nftables
       vim-terraform
       vim-terraform-completion
@@ -102,6 +110,7 @@
       # pylint
       ruff
       shellcheck
+      golangci-lint
     ];
   };
 }
