@@ -12,6 +12,16 @@
     plugins.helm = {
       enable = true;
     };
+
+    plugins.schemastore = {
+      enable = true;
+      json.enable = false;
+      yaml = {
+        enable = true;
+      };
+    };
+
+    # plugins.lspconfig.enable = true;
     plugins.lsp = {
       enable = true;
 
@@ -26,14 +36,52 @@
         dockerls.enable = true;
         gopls.enable = true;
         golangci_lint_ls.enable = true;
+
         helm_ls = {
           enable = true;
-          filetypes = [
-            "helm"
-            "helmfile"
-          ];
-          rootMarkers = ["Chart.yaml"];
+          settings = {
+            filetypes = [
+              "helm"
+              "helmfile"
+            ];
+
+            rootMarkers = ["Chart.yaml"];
+
+            valuesFiles = {
+              mainValuesFile = "values.yaml";
+              lintOverlayValuesFile = "values.lint.yaml";
+              additionalValuesFilesGlobPattern = "values*.yaml";
+            };
+
+            helmLint = {
+              enabled = true;
+              ignoredMessages = {};
+            };
+
+            yamlls = {
+              enabled = true;
+              path = "${pkgs.yaml-language-server}/bin/yaml-language-server";
+              enabledForFilesGlob = "*.{yaml,yml}";
+              diagnosticsLimit = 50;
+              showDiagnosticsDirectly = false;
+              config = {
+                schemas = {
+                  kubernetes = "templates/**";
+                };
+                completion = true;
+                hover = true;
+              };
+            };
+          };
         };
+
+        yamlls = {
+          enable = true;
+          filetypes = [
+            "yaml"
+          ];
+        };
+
         jinja_lsp.enable = false;
         nginx_language_server.enable = true;
         nixd.enable = true;
@@ -42,12 +90,6 @@
         sqlls = {
           enable = true;
           package = pkgs.sqls;
-        };
-        yamlls = {
-          enable = true;
-          filetypes = [
-            "yaml"
-          ];
         };
         terraformls.enable = true;
         tflint.enable = false;

@@ -70,7 +70,7 @@
       vim-terraform
       vim-terraform-completion
       ansible-vim
-      vim-go
+      # vim-go
     ];
 
     extraPackages = with pkgs; [
@@ -98,6 +98,7 @@
 
       # linters
       yamllint
+      helm-ls
       vale
       # markdownlint-cli
       #eslint_d

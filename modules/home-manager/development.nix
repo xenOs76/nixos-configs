@@ -14,9 +14,11 @@
     fritzing
     mosquitto
     mqttx
+    bossa
 
     ### Languages
     go
+    tinygo
 
     (python3.withPackages (
       ps:
@@ -51,7 +53,7 @@
     prettierd
     nil
     nixd
-    yamlfix
+    yamlfmt
     shellcheck
     shfmt
     terraform-ls
@@ -59,4 +61,14 @@
     tflint
     gopls
   ];
+
+  home.file = {
+    # https://github.com/google/yamlfmt/blob/main/docs/config-file.md
+    ".config/yamlfmt/.yamlfmt.yaml".text = ''
+      formatter:
+        type: basic
+        include_document_start: true
+        retain_line_breaks_single: true
+    '';
+  };
 }

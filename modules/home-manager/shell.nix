@@ -236,6 +236,15 @@
       whatismyip-on-aws = "curl -4 https://checkip.amazonaws.com/";
 
       alias-from-flake = "echo 'this is a flake managed bash alias'";
+
+      docker-compose-up = "docker-compose up";
+      docker-compose-down = "docker-compose down";
+      docker-compose-up-build = "docker-compose up --build";
+
+      tailscale-up = "sudo tailscale up --accept-routes";
+      tailscale-down = "sudo tailscale down";
+      tailscale-status = "tailscale status";
+
       #nixvim = "nix run git+https://git.priv.os76.xyz/xeno/nixvim";
     };
   };

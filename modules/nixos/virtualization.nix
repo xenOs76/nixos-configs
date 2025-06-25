@@ -11,6 +11,7 @@
     docker
     docker-ls
     docker-buildx
+    docker-compose
     lazydocker
     regclient
     reg

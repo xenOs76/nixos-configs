@@ -1,13 +1,20 @@
 {pkgs, ...}: {
+  environment.systemPackages = with pkgs; [
+    vale
+    hadolint
+    yamllint
+    tflint
+    shellcheck
+  ];
+
   programs.nixvim = {
     plugins = {
       lint = {
         enable = true;
         lintersByFt = {
           dockerfile = ["hadolint"];
-          json = ["jsonlint"];
+          # json = ["jsonlint"];
           yaml = ["yamllint"];
-          markdown = ["vale"];
           terraform = ["tflint"];
           text = ["vale"];
           sh = ["shellcheck"];

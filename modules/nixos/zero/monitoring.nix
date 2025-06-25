@@ -8,8 +8,8 @@ in {
   networking.firewall.allowedTCPPorts = [
     9100 # node-exporter
     3200 # Grafana Tempo
+    4317 # Grafana Tempo
     4318 # Grafana Tempo
-    2181 # kafka zookeeper
     2181 # kafka zookeeper
     9092 # kafka listener
     9308 # kafka exporter
@@ -112,8 +112,10 @@ in {
     };
   };
 
-  services.grafana.declarativePlugins = with pkgs.grafanaPlugins; [grafana-piechart-panel];
-
+  # services.grafana.declarativePlugins = with pkgs.grafanaPlugins; [
+  #   grafana-piechart-panel
+  # ];
+  #
   #
   # Monitoring
   #
@@ -268,16 +270,40 @@ in {
   #
   # Tempo
   #
+  # TODO: add tls: https://grafana.com/docs/tempo/latest/configuration/network/tls/#configure-tls-communication
+  #
   sops.templates."tempo-config.yml".content = ''
+    usage_report:
+      reporting_enabled: false
+
     server:
       http_listen_port: 3200
+      http_listen_address: 0.0.0.0
+      grpc_listen_address: 0.0.0.0
+      grpc_listen_port: 9095
 
     distributor:
       receivers:
-          otlp:
-            protocols:
-              http:
-              grpc:
+        jaeger:
+          protocols:
+            thrift_http:
+              endpoint: "0.0.0.0:14268"
+            grpc:
+              endpoint: "0.0.0.0:14250"
+            thrift_binary:
+              endpoint: "0.0.0.0:6832"
+            thrift_compact:
+              endpoint: "0.0.0.0:6831"
+        zipkin:
+          endpoint: "0.0.0.0:9411"
+        otlp:
+          protocols:
+            grpc:
+              endpoint: "0.0.0.0:4317"
+            http:
+              endpoint: "0.0.0.0:4318"
+        opencensus:
+          endpoint: "0.0.0.0:55678"
 
     compactor:
       compaction:
@@ -290,8 +316,11 @@ in {
       storage:
         path: /var/lib/tempo/generator/wal
         remote_write:
-        - url: htts://prometheus.k3s.os76.xyz/api/v1/write
+        - url: https://prometheus.k3s.os76.xyz/api/v1/write
           send_exemplars: true
+      processor:
+        local_blocks:
+          filter_server_spans: false
 
     storage:
       trace:
@@ -307,18 +336,18 @@ in {
           path: /var/lib/tempo/wal
         local:
           path: /var/lib/tempo/blocks
+
     overrides:
       defaults:
         metrics_generator:
-          processors: [service-graphs, span-metrics];
+          #processors: [service-graphs, span-metrics]
+          processors: [local-blocks]
   '';
 
-  sops.templates."tempo-config.yml".owner =
-    if (config.services.tempo.enable == true)
-    then "tempo"
-    else "root";
+  sops.templates."tempo-config.yml".owner = "root";
+  sops.templates."tempo-config.yml".mode = "0444";
 
-  services.tempo.enable = false;
+  services.tempo.enable = true;
   services.tempo.configFile = "${config.sops.templates."tempo-config.yml".path}";
   systemd.services.tempo.after = ["nginx.service"];
 }
