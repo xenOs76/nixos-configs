@@ -24,6 +24,63 @@
   ];
 
   home.file = {
+    # https://kubecolor.github.io/reference/config/
+    # https://github.com/vkhitrin/kubecolor-catppuccin
+    # https://github.com/vkhitrin/kubecolor-catppuccin/blob/main/catppuccin-frappe.yaml
+    ".kube/color.yaml".text = ''
+      preset: "dark"
+      theme:
+        base:
+          info: fg=#c6d0f5
+          primary: fg=#ca9ee6
+          secondary: fg=#99d1db
+          success: fg=#a6d189:bold
+          warning: fg=#e5c890:bold
+          danger: fg=#e78284:bold
+          muted: fg=#838ba7
+          key: fg=#babbf1:bold
+        default: fg=#c6d0f5
+        data:
+          key: fg=#babbf1:bold
+          string: fg=#c6d0f5
+          "true": fg=#a6d189:bold
+          "false": fg=#e78284:bold
+          number: fg=#ca9ee6
+          "null": fg=#838ba7
+          quantity: fg=#ca9ee6
+          duration: fg=#ef9f76
+          durationfresh: fg=#a6d189
+          ratio:
+            zero: fg=#838ba7
+            equal: fg=#a6d189
+            unequal: fg=#e5c890
+        status:
+          success: fg=#a6d189:bold
+          warning: fg=#e5c890:bold
+          error: fg=#e78284:bold
+        table:
+          header: fg=#c6d0f5:bold
+          columns: fg=#c6d0f5
+        stderr:
+          default: fg=#c6d0f5
+          error: fg=#e78284:bold
+        describe:
+          key: fg=#babbf1:bold
+        apply:
+          created: fg=#a6d189
+          configured: fg=#e5c890
+          unchanged: fg=#c6d0f5
+          dryrun: fg=#99d1db
+          fallback: fg=#c6d0f5
+        explain:
+          key: fg=#babbf1:bold
+          required: fg=#303446:bold
+        options:
+          flag: fg=#babbf1:bold
+        version:
+          key: fg=#babbf1:bold
+    '';
+
     # Fetch k9s skin from https://github.com/catppuccin/k9s
     ".config/k9s/skins/catppuccin-frappe-transparent.yaml".text = builtins.readFile (
       builtins.fetchurl {
@@ -31,6 +88,7 @@
         sha256 = "sha256:0jl7ny00s2db4h3zlimayyaivrnwy06rn348s5hhkkypkzjcm2kp";
       }
     );
+
     # Create a list of plugins. Ref. https://github.com/derailed/k9s/tree/master/plugins
     ".config/k9s/plugins.yaml".text = ''
       plugins:

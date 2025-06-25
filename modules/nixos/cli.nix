@@ -7,5 +7,6 @@
     age
     ssh-to-age
     inotify-tools
+    dig
   ];
 }

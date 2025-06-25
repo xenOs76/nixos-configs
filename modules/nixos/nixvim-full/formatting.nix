@@ -3,26 +3,58 @@
     plugins.conform-nvim.enable = true;
     plugins.conform-nvim.settings = {
       formatters_by_ft = {
-        json = ["jq"];
         lua = ["stylua"];
         nix = ["alejandra"];
-        python = ["isort" "black"];
-        sh = ["shfmt" "shellcheck"];
+        python = [
+          "isort"
+          "black"
+        ];
+        sh = [
+          "shfmt"
+          "shellcheck"
+        ];
+        json = ["jq"];
         yaml = ["yamlfmt"];
+        markdown = [
+          "markdownlint-cli2"
+        ];
         nginx = ["nginxfmt"];
       };
 
       formatters = with pkgs; {
-        black = {command = "${lib.getExe black}";};
-        isort = {command = "${lib.getExe isort}";};
-        alejandra = {command = "${lib.getExe alejandra}";};
-        jq = {command = "${lib.getExe jq}";};
-        prettierd = {command = "${lib.getExe prettierd}";};
-        # stylua = {command = "${lib.getExe stylua}";};
-        shellcheck = {command = "${lib.getExe shellcheck}";};
-        shfmt = {command = "${lib.getExe shfmt}";};
-        yamlfmt = {command = "${lib.getExe yamlfmt}";};
-        nginxfmt = {command = "${lib.getExe nginx-config-formatter}";};
+        black = {
+          command = "${lib.getExe black}";
+        };
+        markdownlint-cli2 = {
+          command = "${lib.getExe markdownlint-cli2}";
+        };
+        isort = {
+          command = "${lib.getExe isort}";
+        };
+        alejandra = {
+          command = "${lib.getExe alejandra}";
+        };
+        jq = {
+          command = "${lib.getExe jq}";
+        };
+        prettierd = {
+          command = "${lib.getExe prettierd}";
+        };
+        stylua = {
+          command = "${lib.getExe stylua}";
+        };
+        shellcheck = {
+          command = "${lib.getExe shellcheck}";
+        };
+        shfmt = {
+          command = "${lib.getExe shfmt}";
+        };
+        yamlfmt = {
+          command = "${lib.getExe yamlfmt}";
+        };
+        nginxfmt = {
+          command = "${lib.getExe nginx-config-formatter}";
+        };
       };
 
       format_on_save =
