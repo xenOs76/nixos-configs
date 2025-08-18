@@ -12,6 +12,7 @@
     p7zip
 
     # utils
+    #neovim # will override nixvim conf from nixOs
     ripgrep
     yq-go
     lazygit
@@ -82,6 +83,9 @@
     ethtool
     pciutils
     usbutils
+
+    # development
+    go
   ];
 
   programs.direnv = {
@@ -245,7 +249,11 @@
       tailscale-down = "sudo tailscale down";
       tailscale-status = "tailscale status";
 
+      # https://github.com/caddy-dns/powerdns/issues/4
+      xcaddy-build-with-pdns = "xcaddy build v2.9.1 --with github.com/caddy-dns/powerdns@v1.0.1";
+
       #nixvim = "nix run git+https://git.priv.os76.xyz/xeno/nixvim";
+      https-wrench-docker = "docker run --rm registry.0.os76.xyz/xeno/https-wrench:latest";
     };
   };
 

@@ -2,9 +2,11 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   minio_root_credentials_file = "/etc/minio-root-credentials";
-in {
+in
+{
   networking.firewall.allowedTCPPorts = [
     9100 # node-exporter
     3200 # Grafana Tempo
@@ -32,16 +34,16 @@ in {
       owner = "minio";
       path = minio_root_credentials_file;
     };
-    "tempo_minio_bucket_name" = {};
-    "tempo_minio_access_key" = {};
-    "tempo_minio_secret_key" = {};
+    "tempo_minio_bucket_name" = { };
+    "tempo_minio_access_key" = { };
+    "tempo_minio_secret_key" = { };
   };
 
   #
   # Grafana
   #
-  systemd.services.grafana.wants = ["network-online.target"];
-  systemd.services.grafana.after = ["network-online.target"];
+  systemd.services.grafana.wants = [ "network-online.target" ];
+  systemd.services.grafana.after = [ "network-online.target" ];
 
   # Grafana file provider:
   # https://grafana.com/docs/grafana/latest/setup-grafana/configure-grafana/#file-provider
@@ -122,7 +124,7 @@ in {
   services.prometheus.exporters = {
     node = {
       enable = true;
-      enabledCollectors = ["systemd"];
+      enabledCollectors = [ "systemd" ];
     };
   };
 
@@ -133,7 +135,7 @@ in {
     enable = true;
     region = "zero";
     rootCredentialsFile = minio_root_credentials_file;
-    dataDir = ["/data/store-btrfs/minio/data"];
+    dataDir = [ "/data/store-btrfs/minio/data" ];
     listenAddress = "127.0.0.1:9000";
     consoleAddress = "127.0.0.1:9001";
   };
@@ -244,7 +246,7 @@ in {
       positions = {
         filename = "/tmp/positions.yaml";
       };
-      clients = [{url = "http://127.0.0.1:3100/loki/api/v1/push";}];
+      clients = [ { url = "http://127.0.0.1:3100/loki/api/v1/push"; } ];
       scrape_configs = [
         {
           job_name = "journal";
@@ -257,7 +259,7 @@ in {
           };
           relabel_configs = [
             {
-              source_labels = ["__journal__systemd_unit"];
+              source_labels = [ "__journal__systemd_unit" ];
               target_label = "unit";
             }
           ];
@@ -269,6 +271,8 @@ in {
 
   #
   # Tempo
+  #
+  # Ref: https://github.com/grafana/tempo/blob/main/example/docker-compose/scalable-single-binary/tempo-scalable-single-binary.yaml
   #
   # TODO: add tls: https://grafana.com/docs/tempo/latest/configuration/network/tls/#configure-tls-communication
   #
@@ -305,9 +309,12 @@ in {
         opencensus:
           endpoint: "0.0.0.0:55678"
 
+    ingester:
+      max_block_duration: 5m
+
     compactor:
       compaction:
-        block_retention: 24h
+        block_retention: 1h
 
     metrics_generator:
       registry:
@@ -347,7 +354,7 @@ in {
   sops.templates."tempo-config.yml".owner = "root";
   sops.templates."tempo-config.yml".mode = "0444";
 
-  services.tempo.enable = true;
+  services.tempo.enable = false;
   services.tempo.configFile = "${config.sops.templates."tempo-config.yml".path}";
-  systemd.services.tempo.after = ["nginx.service"];
+  systemd.services.tempo.after = [ "nginx.service" ];
 }

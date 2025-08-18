@@ -1,14 +1,19 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
 
   #
   # Docker
   #
   virtualisation.docker = {
     enable = true;
-    daemon = { settings = { data-root = "/data/docker"; }; };
+    daemon = {
+      settings = {
+        data-root = "/data/docker";
+      };
+    };
     autoPrune = {
       enable = true;
-      dates = "weekly";
+      dates = "daily";
     };
   };
   #virtualisation.docker.extraOptions = "--iptables=false --ip-masq=false --bridge=none";
@@ -16,8 +21,10 @@
   #
   # OCI-containers
   #
-  systemd.services.docker.after =
-    [ "br0-netdev.service" "apache-kafka.service" ];
+  systemd.services.docker.after = [
+    "br0-netdev.service"
+    "apache-kafka.service"
+  ];
   virtualisation.oci-containers = {
     backend = "docker";
     containers = {
@@ -28,11 +35,14 @@
         cmd = [ "--kafka.server=192.168.1.49:9092" ];
         #extraOptions = [ "--network=host" ];
       };
-      sflow-prometheus = {
-        autoStart = true;
-        image = "sflow/prometheus";
-        ports = [ "8008:8008" "6343:6343/udp" ];
-      };
+      # sflow-prometheus = {
+      #   autoStart = false;
+      #   image = "sflow/prometheus";
+      #   ports = [
+      #     "8008:8008"
+      #     "6343:6343/udp"
+      #   ];
+      # };
     };
   };
 

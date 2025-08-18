@@ -4,6 +4,7 @@
     pre-commit-hook-ensure-sops
     gitleaks
     git-secrets
+    gh
   ];
 
   programs.git = {

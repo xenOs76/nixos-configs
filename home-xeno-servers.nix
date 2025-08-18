@@ -11,7 +11,7 @@
 
   imports = [
     ./modules/home-manager/xeno-home-servers.nix
-    ./modules/nixos/nixvim-full
+    # ./modules/nixos/nixvim-full
   ];
 
   home.packages = with pkgs; [

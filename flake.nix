@@ -15,11 +15,24 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nurOs76Priv = {
+      url = "git+https://git.priv.os76.xyz/xeno/nur.git";
+    };
+    nurOs76 = {
+      url = "github:xenos76/nur-packages";
+    };
   };
 
   outputs = {
-    self,
+    # self,
     nixpkgs,
+    nur,
+    # nurOs76Priv,
+    nurOs76,
     home-manager,
     nixvim,
     sops-nix,
@@ -27,15 +40,31 @@
   } @ inputs: let
     system = "aarch64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
+    # os76PrivPkgs = import nurOs76Priv {pkgs = pkgs;};
+    os76Pkgs = import nurOs76 {pkgs = pkgs;};
   in {
     nixosConfigurations = {
       zero = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
+          {
+            environment.systemPackages = [
+              os76Pkgs.https-wrench
+            ];
+          }
           ./hosts/zero/configuration.nix
           ./modules/nixos
           ./modules/nixos/zero
           nixvim.nixosModules.nixvim
+          nur.modules.nixos.default
+          (
+            {pkgs, ...}: {
+              environment.systemPackages = with pkgs.nur.repos; [
+                charmbracelet.gum
+                charmbracelet.vhs
+              ];
+            }
+          )
           sops-nix.nixosModules.sops
           {
             sops.age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];

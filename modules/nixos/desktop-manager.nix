@@ -16,10 +16,20 @@
   ];
 
   services.xserver.enable = true;
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.theme = "catppuccin-mocha";
-  services.displayManager.defaultSession = "plasma";
   services.desktopManager.plasma6.enable = true;
+  services.displayManager = {
+    defaultSession = "plasma";
+    sddm = {
+      enable = true;
+      theme = "catppuccin-mocha";
+      settings = {
+        Autologin = {
+          Session = "plasma.desktop";
+          User = "xeno";
+        };
+      };
+    };
+  };
 
   programs.dconf.enable = true;
   xdg.portal.enable = true;
