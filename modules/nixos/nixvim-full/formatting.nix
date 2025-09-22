@@ -13,7 +13,7 @@
           "shfmt"
           "shellcheck"
         ];
-        json = ["jq"];
+        json = ["fixjson"];
         yaml = ["yamlfmt"];
         markdown = [
           "markdownlint-cli2"
@@ -36,6 +36,9 @@
         };
         jq = {
           command = "${lib.getExe jq}";
+        };
+        fixjson = {
+          command = "${lib.getExe fixjson}";
         };
         prettierd = {
           command = "${lib.getExe prettierd}";

@@ -1,6 +1,9 @@
-{pkgs, ...}: {
+{
   programs.nixvim = {
     plugins = {
+      # copilot-vim.enable = true;
+      copilot-chat.enable = true;
+      copilot-cmp.enable = true;
       barbar.enable = true;
       indent-blankline.enable = true;
       illuminate.enable = true;
@@ -16,8 +19,14 @@
       cmp = {
         autoEnableSources = true;
         settings = {
-          completion = {completeopt = "menu,menuone,noinsert";};
-          sources = [{name = "nvim_lsp";} {name = "path";} {name = "buffer";}];
+          completion = {
+            completeopt = "menu,menuone,noinsert";
+          };
+          sources = [
+            {name = "nvim_lsp";}
+            {name = "path";}
+            {name = "buffer";}
+          ];
           mapping = {
             "<C-Space>" = "cmp.mapping.complete()";
             "<C-d>" = "cmp.mapping.scroll_docs(-4)";
@@ -55,7 +64,9 @@
               "^data/"
               "%.ipynb"
             ];
-            layout_config = {prompt_position = "top";};
+            layout_config = {
+              prompt_position = "top";
+            };
             mappings = {
               i = {
                 "<A-j>" = {
@@ -67,7 +78,9 @@
               };
             };
             selection_caret = "> ";
-            set_env = {COLORTERM = "truecolor";};
+            set_env = {
+              COLORTERM = "truecolor";
+            };
             sorting_strategy = "ascending";
           };
         };

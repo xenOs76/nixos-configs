@@ -1,5 +1,13 @@
 {pkgs, ...}: {
   programs.nixvim = {
+    enable = true;
+
+    nixpkgs = {
+      config = {
+        allowUnfree = true;
+      };
+    };
+
     enableMan = false;
 
     # https://neovim.io/doc/user/diagnostic.html#vim.diagnostic.Opts
