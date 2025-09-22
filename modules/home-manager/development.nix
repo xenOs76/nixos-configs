@@ -1,9 +1,11 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
+    devenv
+    commitizen
+
     ### Editors
-    #vscode
     jetbrains.idea-community-bin
-    jetbrains.pycharm-community-bin
+    # jetbrains.pycharm-community-bin
     thonny
 
     # Make / Iot

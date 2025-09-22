@@ -88,12 +88,21 @@
     go
   ];
 
+  catppuccin.lazygit.enable = true;
+
   programs.direnv = {
     enable = true;
     enableBashIntegration = true;
     nix-direnv.enable = true;
   };
 
+  catppuccin.zellij.enable = true;
+  programs.zellij = {
+    enable = true;
+    enableBashIntegration = false;
+  };
+
+  catppuccin.fzf.enable = true;
   programs.fzf = {
     enable = true;
     enableBashIntegration = true;
@@ -108,14 +117,9 @@
       "--preview '(highlight -O ansi {} || cat {}) 2> /dev/null | head -500'"
     ];
     historyWidgetOptions = ["--height 20%"];
-    colors = {
-      "bg+" = "#414559,bg:#303446,spinner:#f2d5cf,hl:#e78284";
-      fg = "#c6d0f5,header:#e78284,info:#ca9ee6,pointer:#f2d5cf";
-      marker = "#babbf1,fg+:#c6d0f5,prompt:#ca9ee6,hl+:#e78284";
-      selected-bg = "#51576d";
-    };
   };
 
+  catppuccin.bat.enable = true;
   programs.bat = {
     enable = true;
     config = {
@@ -124,7 +128,6 @@
         "*.props:Java Properties"
       ];
       pager = "less -FR";
-      theme = "Catppuccin Frappe";
       style = "plain";
     };
     extraPackages = with pkgs.bat-extras; [
@@ -133,17 +136,6 @@
       batgrep
       batwatch
     ];
-    themes = {
-      "Catppuccin Frappe" = {
-        src = pkgs.fetchFromGitHub {
-          owner = "catppuccin";
-          repo = "bat";
-          rev = "d3feec47b16a8e99eabb34cdfbaa115541d374fc";
-          hash = "sha256-s0CHTihXlBMCKmbBBb8dUhfgOOQu9PBCQ+uviy7o47w=";
-        };
-        file = "themes/Catppuccin Frappe.tmTheme";
-      };
-    };
   };
 
   programs.zoxide = {
@@ -194,6 +186,7 @@
       test -d ~/.krew/bin || mkdir -p ~/.krew/bin
       test -f ~/.krew/bin/kubectl-netshoot && eval "$(kubectl netshoot completion bash)"
 
+      which https-wrench &>/dev/null && eval "$(https-wrench completion bash)"
       complete -C 'aws_completer' aws
       eval "$(glow completion bash)"
       eval "$(helm completion bash)"
@@ -254,29 +247,6 @@
 
       #nixvim = "nix run git+https://git.priv.os76.xyz/xeno/nixvim";
       https-wrench-docker = "docker run --rm registry.0.os76.xyz/xeno/https-wrench:latest";
-    };
-  };
-
-  programs.zellij = {
-    enable = true;
-    enableBashIntegration = false;
-    settings = {
-      theme = "catppuccin-macchiato";
-      themes = {
-        catppuccin-macchiato = {
-          bg = "#5b6078";
-          fg = "#cad3f5";
-          red = "#ed8796";
-          green = "#a6da95";
-          blue = "#8aadf4";
-          yellow = "#eed49f";
-          magenta = "#f5bde6";
-          orange = "#f5a97f";
-          cyan = "#91d7e3";
-          black = "#1e2030";
-          white = "#cad3f5";
-        };
-      };
     };
   };
 }

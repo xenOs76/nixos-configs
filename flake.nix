@@ -15,6 +15,9 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    catppuccin = {
+      url = "github:catppuccin/nix/release-25.05";
+    };
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -33,6 +36,7 @@
     nur,
     # nurOs76Priv,
     nurOs76,
+    catppuccin,
     home-manager,
     nixvim,
     sops-nix,
@@ -72,6 +76,7 @@
             sops.age.generateKey = true;
             sops.defaultSopsFile = ./secrets/hosts/zero/secrets.yaml;
           }
+          catppuccin.nixosModules.catppuccin
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -79,6 +84,7 @@
             home-manager.backupFileExtension = "backup";
             home-manager.sharedModules = [
               inputs.sops-nix.homeManagerModules.sops
+              inputs.catppuccin.homeModules.catppuccin
             ];
             home-manager.users.xeno = import ./home-xeno.nix;
             home-manager.users.root = import ./home-root.nix;
@@ -100,6 +106,7 @@
             sops.age.generateKey = true;
             sops.defaultSopsFile = ./secrets/hosts/slim/secrets.yaml;
           }
+          catppuccin.nixosModules.catppuccin
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -107,6 +114,7 @@
             home-manager.backupFileExtension = "backup";
             home-manager.sharedModules = [
               inputs.sops-nix.homeManagerModules.sops
+              inputs.catppuccin.homeModules.catppuccin
             ];
             home-manager.users.xeno = import ./home-xeno.nix;
             home-manager.users.root = import ./home-root.nix;

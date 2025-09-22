@@ -23,6 +23,9 @@
     })
   ];
 
+  programs.k9s.enable = true;
+  catppuccin.k9s.enable = true;
+
   home.file = {
     # https://kubecolor.github.io/reference/config/
     # https://github.com/vkhitrin/kubecolor-catppuccin
@@ -82,13 +85,13 @@
     '';
 
     # Fetch k9s skin from https://github.com/catppuccin/k9s
-    ".config/k9s/skins/catppuccin-frappe-transparent.yaml".text = builtins.readFile (
-      builtins.fetchurl {
-        url = "https://raw.githubusercontent.com/catppuccin/k9s/refs/heads/main/dist/catppuccin-frappe-transparent.yaml";
-        sha256 = "sha256:0jl7ny00s2db4h3zlimayyaivrnwy06rn348s5hhkkypkzjcm2kp";
-      }
-    );
-
+    # ".config/k9s/skins/catppuccin-frappe-transparent.yaml".text = builtins.readFile (
+    #   builtins.fetchurl {
+    #     url = "https://raw.githubusercontent.com/catppuccin/k9s/refs/heads/main/dist/catppuccin-frappe-transparent.yaml";
+    #     sha256 = "sha256:0jl7ny00s2db4h3zlimayyaivrnwy06rn348s5hhkkypkzjcm2kp";
+    #   }
+    # );
+    #
     # Create a list of plugins. Ref. https://github.com/derailed/k9s/tree/master/plugins
     ".config/k9s/plugins.yaml".text = ''
       plugins:
@@ -163,16 +166,5 @@
             - >-
               revision=$(helm history -n $NAMESPACE --kube-context $CONTEXT $COL-NAME | grep deployed | cut -d$'\t' -f1 | tr -d ' \t'); kubectl get secrets --context $CONTEXT -n $NAMESPACE sh.helm.release.v1.$COL-NAME.v$revision -o yaml | yq e '.data.release' - | base64 -d | base64 -d | gunzip | jq -r '.chart.values' | yq -P | less -K
     '';
-  };
-
-  programs.k9s = {
-    enable = true;
-    settings = {
-      k9s = {
-        ui = {
-          skin = "catppuccin-frappe-transparent";
-        };
-      };
-    };
   };
 }

@@ -40,6 +40,19 @@
     nixfmt-rfc-style
   ];
 
+  catppuccin = {
+    enable = true;
+    flavor = "frappe";
+    accent = "mauve";
+    cursors.enable = false;
+    chromium.enable = true;
+    element-desktop.enable = true;
+    firefox.enable = true;
+    starship.enable = true;
+    thunderbird.enable = true;
+    yazi.enable = true;
+  };
+
   programs.git = {
     enable = true;
     userName = "Zeno Belli";

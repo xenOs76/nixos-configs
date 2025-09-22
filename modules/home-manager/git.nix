@@ -5,6 +5,7 @@
     gitleaks
     git-secrets
     gh
+    commitizen
   ];
 
   programs.git = {
@@ -27,18 +28,31 @@
     ];
   };
 
+  catppuccin.delta.enable = true;
   programs.git.delta = {
     enable = true;
     options = {
-      decorations = {
-        commit-decoration-style = "bold yellow box ul";
-        file-decoration-style = "none";
-        file-style = "bold yellow ul";
-        side-by-side = "true";
-        syntax-theme = "Catppuccin Frappe";
-      };
-      features = "decorations";
+      side-by-side = true;
       whitespace-error-style = "22 reverse";
+    };
+  };
+
+  catppuccin.lazygit.enable = true;
+  programs.lazygit = {
+    enable = true;
+    settings = {
+      # https://github.com/jesseduffield/lazygit/wiki/Custom-Commands-Compendium
+      customCommands = [
+        {
+          key = "C";
+          command = "git cz c";
+          description = "Commit with commitizen";
+          context = "files";
+          loadingText = "Opening commitizen...";
+          # subprocess = true;
+          output = "terminal";
+        }
+      ];
     };
   };
 }
