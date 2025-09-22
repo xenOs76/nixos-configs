@@ -1,4 +1,8 @@
 {pkgs, ...}: {
+  nix.settings.trusted-users = [
+    "root"
+    "xeno"
+  ];
   environment.systemPackages = with pkgs; [
     vim
     git
