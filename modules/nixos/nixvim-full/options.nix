@@ -78,7 +78,7 @@
       vim-terraform
       vim-terraform-completion
       ansible-vim
-      # vim-go
+      # vim-go # depends on packages not managed by nixvim
     ];
 
     extraPackages = with pkgs; [

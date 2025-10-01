@@ -21,14 +21,15 @@
       };
     };
 
-    # plugins.lspconfig.enable = true;
     plugins.lsp = {
       enable = true;
 
       # https://www.lazyvim.org/plugins/lsp#nvim-lspconfig
       # https://github.com/nix-community/nixvim/blob/main/plugins/lsp/default.nix
-      inlayHints = true;
-
+      # inlayHints = {
+      #   enable = true;
+      # };
+      #
       servers = {
         ansiblels.enable = true;
         bashls.enable = true;
@@ -36,11 +37,9 @@
         dockerls.enable = true;
 
         gopls.enable = true;
-
         # https://www.lazyvim.org/extras/lang/go#nvim-lspconfig
         gopls.settings = {
           gopls = {
-            gofumpt = true;
             codelenses = {
               gc_details = false;
               generate = true;
@@ -51,6 +50,7 @@
               upgrade_dependency = true;
               vendor = true;
             };
+
             hints = {
               assignVariableTypes = true;
               compositeLiteralFields = true;
@@ -60,15 +60,42 @@
               parameterNames = true;
               rangeVariableTypes = true;
             };
+
             analyses = {
+              assign = true;
+              bools = true;
+              composites = true;
+              erroras = true;
+              httpresponse = true;
+              ifaceassert = true;
+              loopclosure = true;
+              lostcancel = true;
+              nilfunc = true;
               nilness = true;
+              printf = true;
+              shadow = true;
+              simplifycomposites = true;
+              simplifyrange = true;
+              simplifyslice = true;
+              stdmethods = true;
+              stringintconv = true;
+              structtag = true;
+              unmarshal = true;
+              unreachable = true;
               unusedparams = true;
+              unusedvariable = true;
               unusedwrite = true;
               useany = true;
             };
+
+            gofumpt = true;
+            matcher = "Fuzzy";
+            semanticTokens = true;
+            staticcheck = true;
             usePlaceholders = true;
             completeUnimported = true;
-            staticcheck = true;
+            completionDocumentation = true;
+
             directoryFilters = [
               "-.git"
               "-.vscode"
@@ -76,11 +103,33 @@
               "-.vscode-test"
               "-node_modules"
             ];
-            semanticTokens = true;
           };
         };
 
         golangci_lint_ls.enable = true;
+        # https://github.com/nametake/golangci-lint-langserver?tab=readme-ov-file#configuration-for-nvim-lspconfig
+        golangci_lint_ls = {
+          rootMarkers = [
+            "go.mod"
+            ".git"
+          ];
+          settings = {
+            cmd = [
+              "${pkgs.golangci-lint-langserver}/bin/golangci-lint-langserver"
+            ];
+            root_dir = "lspconfig.util.root_pattern('.git', 'go.mod')";
+            init_options = {
+              command = [
+                "${pkgs.golangci-lint}/bin/golangci-lint"
+                "run"
+                "--output.json.path"
+                "stdout"
+                "--show-stats=false"
+                "--issues-exit-code=1"
+              ];
+            };
+          };
+        };
 
         helm_ls = {
           enable = true;

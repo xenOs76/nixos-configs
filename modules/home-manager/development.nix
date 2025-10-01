@@ -67,6 +67,8 @@
     golangci-lint
     gofumpt
     gomodifytags
+    golines
+    gci
     impl
     delve
   ];

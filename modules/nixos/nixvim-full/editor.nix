@@ -2,15 +2,13 @@
   programs.nixvim = {
     plugins = {
       copilot-vim.enable = true;
-      copilot-lua.enable = false;
       copilot-chat.enable = true;
-      # copilot-cmp.enable = true;
 
       barbar.enable = true;
       indent-blankline.enable = true;
       illuminate.enable = true;
       lastplace.enable = true;
-      # autoclose.enable = true;
+      autoclose.enable = true;
       which-key.enable = true;
       toggleterm.enable = true;
       todo-comments.enable = true;
