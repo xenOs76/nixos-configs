@@ -7,8 +7,26 @@
       snacks.enable = true;
       notify.enable = true;
       noice.enable = true;
-      mini.enable = false;
-      vim-surround.enable = true;
+      vim-surround.enable = false;
+
+      mini = {
+        enable = true;
+        modules = {
+          # https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-surround.md
+          surround = {
+            mappings = {
+              add = "sa";
+              delete = "sd";
+              find = "sf";
+              find_left = "sF";
+              highlight = "sh";
+              replace = "sr";
+              update_n_lines = "sn";
+            };
+          };
+        };
+      };
+
       tiny-inline-diagnostic = {
         enable = true;
         settings = {

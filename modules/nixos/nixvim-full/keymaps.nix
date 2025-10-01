@@ -102,24 +102,34 @@
           desc = "LazyGit";
         };
       }
+      # {
+      #   key = "<leader>tg";
+      #   mode = "n";
+      #   action = "<cmd>Telescope live_grep<CR>";
+      #   options = {
+      #     silent = true;
+      #     noremap = true;
+      #     desc = "Telescope live_grep";
+      #   };
+      # }
+      # {
+      #   key = "<leader>tb";
+      #   mode = "n";
+      #   action = "<cmd>Telescope buffers<CR>";
+      #   options = {
+      #     silent = true;
+      #     noremap = true;
+      #     desc = "Telescope live_grep";
+      #   };
+      # }
       {
-        key = "<leader>tg";
+        key = "<leader>fg";
         mode = "n";
-        action = "<cmd>Telescope live_grep<CR>";
+        action = "<cmd>FzfLua grep<CR>";
         options = {
           silent = true;
           noremap = true;
-          desc = "Telescope live_grep";
-        };
-      }
-      {
-        key = "<leader>tb";
-        mode = "n";
-        action = "<cmd>Telescope buffers<CR>";
-        options = {
-          silent = true;
-          noremap = true;
-          desc = "Telescope live_grep";
+          desc = "FzfLua grep";
         };
       }
       {
@@ -134,7 +144,10 @@
       }
       {
         key = "<leader>y";
-        mode = ["n" "v"];
+        mode = [
+          "n"
+          "v"
+        ];
         action = ''"+y'';
         options = {
           silent = true;
@@ -164,7 +177,10 @@
       }
       {
         key = "<leader>mp";
-        mode = ["n" "v"];
+        mode = [
+          "n"
+          "v"
+        ];
         action = ":lua _G.format_with_conform()<CR>";
         options = {
           silent = true;

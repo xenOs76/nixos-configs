@@ -19,9 +19,19 @@
           "markdownlint-cli2"
         ];
         nginx = ["nginxfmt"];
+        go = [
+          "goimports"
+          "gofumpt"
+        ];
       };
 
       formatters = with pkgs; {
+        goimports = {
+          command = "${pkgs.gotools}/bin/goimports";
+        };
+        gofumpt = {
+          command = "${lib.getExe gofumpt}";
+        };
         black = {
           command = "${lib.getExe black}";
         };

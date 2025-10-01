@@ -5,6 +5,7 @@
     yamllint
     tflint
     shellcheck
+    golangci-lint
   ];
 
   programs.nixvim = {
@@ -18,6 +19,7 @@
           terraform = ["tflint"];
           text = ["vale"];
           sh = ["shellcheck"];
+          # go = ["${pkgs.golangci-lint}/bin/golangci-lint"];
         };
       };
       treesitter = {

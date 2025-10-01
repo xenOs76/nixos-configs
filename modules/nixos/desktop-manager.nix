@@ -21,7 +21,6 @@
     defaultSession = "plasma";
     sddm = {
       enable = true;
-      theme = "catppuccin-mocha";
       settings = {
         Autologin = {
           Session = "plasma.desktop";

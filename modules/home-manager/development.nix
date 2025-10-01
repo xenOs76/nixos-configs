@@ -61,7 +61,14 @@
     terraform-ls
     terraform-docs
     tflint
+
     gopls
+    gotools
+    golangci-lint
+    gofumpt
+    gomodifytags
+    impl
+    delve
   ];
 
   home.file = {
