@@ -21,6 +21,10 @@
       };
     };
 
+    plugins.trouble = {
+      enable = true;
+    };
+
     plugins.lsp = {
       enable = true;
 
@@ -106,9 +110,9 @@
           };
         };
 
-        golangci_lint_ls.enable = true;
         # https://github.com/nametake/golangci-lint-langserver?tab=readme-ov-file#configuration-for-nvim-lspconfig
         golangci_lint_ls = {
+          enable = true;
           rootMarkers = [
             "go.mod"
             ".git"

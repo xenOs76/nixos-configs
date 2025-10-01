@@ -1,8 +1,9 @@
 {
   programs.nixvim = {
     plugins = {
-      copilot-vim.enable = true;
-      copilot-chat.enable = true;
+      copilot-vim.enable = false;
+      copilot-lua.enable = false;
+      copilot-chat.enable = false;
 
       barbar.enable = true;
       indent-blankline.enable = true;
@@ -104,7 +105,7 @@
               "lsp"
               "path"
               "buffer"
-              "copilot"
+              # "copilot"
               # "snippets"
               "ripgrep"
               "dictionary"
@@ -203,13 +204,13 @@
       };
 
       blink-cmp-git.enable = true;
-      blink-copilot.enable = true;
+      blink-copilot.enable = false;
       blink-cmp-dictionary.enable = true;
       blink-cmp-spell.enable = true;
       blink-ripgrep.enable = true;
       blink-compat.enable = true;
 
-      friendly-snippets.package = true;
+      friendly-snippets.enable = true;
 
       neo-tree = {
         enable = true;

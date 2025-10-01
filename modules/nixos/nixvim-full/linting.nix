@@ -10,6 +10,9 @@
 
   programs.nixvim = {
     plugins = {
+      #
+      # https://github.com/mfussenegger/nvim-lint?tab=readme-ov-file#available-linters
+      #
       lint = {
         enable = true;
         lintersByFt = {
@@ -17,11 +20,11 @@
           # json = ["jsonlint"];
           yaml = ["yamllint"];
           terraform = ["tflint"];
-          text = ["vale"];
           sh = ["shellcheck"];
-          # go = ["${pkgs.golangci-lint}/bin/golangci-lint"];
+          go = ["golangcilint"];
         };
       };
+
       treesitter = {
         enable = true;
         folding = true;
