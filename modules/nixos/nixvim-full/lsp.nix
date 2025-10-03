@@ -15,9 +15,21 @@
 
     plugins.schemastore = {
       enable = true;
-      json.enable = false;
+      json = {
+        enable = true;
+      };
       yaml = {
         enable = true;
+        settings = {
+          extra = [
+            {
+              description = "HTTPS-Wrench JSON schema";
+              fileMatch = "https-wrench*.yaml";
+              name = "https-wrench.schema.json";
+              url = "https://raw.githubusercontent.com/xenOs76/https-wrench/refs/heads/main/https-wrench.schema.json";
+            }
+          ];
+        };
       };
     };
 
@@ -30,15 +42,14 @@
 
       # https://www.lazyvim.org/plugins/lsp#nvim-lspconfig
       # https://github.com/nix-community/nixvim/blob/main/plugins/lsp/default.nix
-      # inlayHints = {
-      #   enable = true;
-      # };
-      #
+      inlayHints = true;
+
       servers = {
         ansiblels.enable = true;
         bashls.enable = true;
         docker_compose_language_service.enable = true;
         dockerls.enable = true;
+        jsonls.enable = true;
 
         gopls.enable = true;
         # https://www.lazyvim.org/extras/lang/go#nvim-lspconfig
@@ -116,12 +127,13 @@
           rootMarkers = [
             "go.mod"
             ".git"
+            ".go"
           ];
           settings = {
             cmd = [
               "${pkgs.golangci-lint-langserver}/bin/golangci-lint-langserver"
             ];
-            root_dir = "lspconfig.util.root_pattern('.git', 'go.mod')";
+            root_dir = "lspconfig.util.root_pattern('.git', 'go.mod', '.go')";
             init_options = {
               command = [
                 "${pkgs.golangci-lint}/bin/golangci-lint"

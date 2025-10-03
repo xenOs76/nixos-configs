@@ -6,6 +6,7 @@
     tflint
     shellcheck
     golangci-lint
+    nodePackages.jsonlint
   ];
 
   programs.nixvim = {
@@ -17,7 +18,7 @@
         enable = true;
         lintersByFt = {
           dockerfile = ["hadolint"];
-          # json = ["jsonlint"];
+          json = ["jsonlint"];
           yaml = ["yamllint"];
           terraform = ["tflint"];
           sh = ["shellcheck"];
