@@ -12,6 +12,8 @@
 
   catppuccin = {
     enable = true;
+    flavor = "frappe";
+    accent = "mauve";
     grub.enable = true;
     tty.enable = true;
     sddm.enable = true;

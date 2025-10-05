@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  pkgsUnstable,
+  ...
+}: {
   programs.nixvim = {
     autoCmd = [
       # https://nix-community.github.io/nixvim/25.05/plugins/helm.html#helm
@@ -15,13 +19,28 @@
 
     plugins.schemastore = {
       enable = true;
-      json.enable = false;
+      json = {
+        enable = true;
+      };
       yaml = {
         enable = true;
+        settings = {
+          extra = [
+            {
+              description = "HTTPS-Wrench JSON schema";
+              fileMatch = "https-wrench*.yaml";
+              name = "https-wrench.schema.json";
+              url = "https://raw.githubusercontent.com/xenOs76/https-wrench/refs/heads/main/https-wrench.schema.json";
+            }
+          ];
+        };
       };
     };
 
-    # plugins.lspconfig.enable = true;
+    plugins.trouble = {
+      enable = true;
+    };
+
     plugins.lsp = {
       enable = true;
 
@@ -30,17 +49,16 @@
       inlayHints = true;
 
       servers = {
-        ansiblels.enable = true;
+        ansiblels.enable = false; # requires manual install on nixvim unstable
         bashls.enable = true;
         docker_compose_language_service.enable = true;
         dockerls.enable = true;
+        jsonls.enable = true;
 
         gopls.enable = true;
-
         # https://www.lazyvim.org/extras/lang/go#nvim-lspconfig
         gopls.settings = {
           gopls = {
-            gofumpt = true;
             codelenses = {
               gc_details = false;
               generate = true;
@@ -51,6 +69,7 @@
               upgrade_dependency = true;
               vendor = true;
             };
+
             hints = {
               assignVariableTypes = true;
               compositeLiteralFields = true;
@@ -60,15 +79,42 @@
               parameterNames = true;
               rangeVariableTypes = true;
             };
+
             analyses = {
+              assign = true;
+              bools = true;
+              composites = true;
+              erroras = true;
+              httpresponse = true;
+              ifaceassert = true;
+              loopclosure = true;
+              lostcancel = true;
+              nilfunc = true;
               nilness = true;
+              printf = true;
+              shadow = true;
+              simplifycomposites = true;
+              simplifyrange = true;
+              simplifyslice = true;
+              stdmethods = true;
+              stringintconv = true;
+              structtag = true;
+              unmarshal = true;
+              unreachable = true;
               unusedparams = true;
+              unusedvariable = true;
               unusedwrite = true;
               useany = true;
             };
+
+            gofumpt = true;
+            matcher = "Fuzzy";
+            semanticTokens = true;
+            staticcheck = true;
             usePlaceholders = true;
             completeUnimported = true;
-            staticcheck = true;
+            completionDocumentation = true;
+
             directoryFilters = [
               "-.git"
               "-.vscode"
@@ -76,11 +122,34 @@
               "-.vscode-test"
               "-node_modules"
             ];
-            semanticTokens = true;
           };
         };
 
-        golangci_lint_ls.enable = true;
+        # https://github.com/nametake/golangci-lint-langserver?tab=readme-ov-file#configuration-for-nvim-lspconfig
+        golangci_lint_ls = {
+          enable = true;
+          rootMarkers = [
+            "go.mod"
+            ".git"
+            ".go"
+          ];
+          settings = {
+            cmd = [
+              "${pkgs.golangci-lint-langserver}/bin/golangci-lint-langserver"
+            ];
+            root_dir = "lspconfig.util.root_pattern('.git', 'go.mod', '.go')";
+            init_options = {
+              command = [
+                "${pkgsUnstable.golangci-lint}/bin/golangci-lint"
+                "run"
+                "--output.json.path"
+                "stdout"
+                "--show-stats=false"
+                "--issues-exit-code=1"
+              ];
+            };
+          };
+        };
 
         helm_ls = {
           enable = true;

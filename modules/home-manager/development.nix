@@ -64,9 +64,11 @@
 
     gopls
     gotools
-    golangci-lint
+    #golangci-lint # installed from unstable for nixvim
     gofumpt
     gomodifytags
+    golines
+    gci
     impl
     delve
   ];
