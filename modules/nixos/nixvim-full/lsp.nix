@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  pkgsUnstable,
+  ...
+}: {
   programs.nixvim = {
     autoCmd = [
       # https://nix-community.github.io/nixvim/25.05/plugins/helm.html#helm
@@ -45,7 +49,7 @@
       inlayHints = true;
 
       servers = {
-        ansiblels.enable = true;
+        ansiblels.enable = false; # requires manual install on nixvim unstable
         bashls.enable = true;
         docker_compose_language_service.enable = true;
         dockerls.enable = true;
@@ -136,7 +140,7 @@
             root_dir = "lspconfig.util.root_pattern('.git', 'go.mod', '.go')";
             init_options = {
               command = [
-                "${pkgs.golangci-lint}/bin/golangci-lint"
+                "${pkgsUnstable.golangci-lint}/bin/golangci-lint"
                 "run"
                 "--output.json.path"
                 "stdout"

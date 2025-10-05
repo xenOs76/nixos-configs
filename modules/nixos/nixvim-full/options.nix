@@ -119,7 +119,7 @@
       # pylint
       ruff
       shellcheck
-      golangci-lint
+      # golangci-lint # installed from unstable for nixvim
     ];
   };
 }

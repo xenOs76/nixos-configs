@@ -3,13 +3,15 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim = {
-      url = "github:nix-community/nixvim/nixos-25.05";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/nixvim";
+      # url = "github:nix-community/nixvim/nixos-25.05";
+      inputs.nixpkgs.follows = "nixpkgsUnstable";
     };
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -33,6 +35,7 @@
   outputs = {
     # self,
     nixpkgs,
+    nixpkgsUnstable,
     nur,
     # nurOs76Priv,
     nurOs76,
@@ -44,12 +47,16 @@
   } @ inputs: let
     system = "aarch64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
+    pkgsUnstable = nixpkgsUnstable.legacyPackages.${system};
     # os76PrivPkgs = import nurOs76Priv {pkgs = pkgs;};
     os76Pkgs = import nurOs76 {pkgs = pkgs;};
   in {
     nixosConfigurations = {
       zero = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = {
+          inherit inputs pkgsUnstable;
+        };
         modules = [
           {
             environment.systemPackages = [

@@ -1,11 +1,15 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  pkgsUnstable,
+  ...
+}: {
   environment.systemPackages = with pkgs; [
     vale
     hadolint
     yamllint
     tflint
     shellcheck
-    golangci-lint
+    pkgsUnstable.golangci-lint
     nodePackages.jsonlint
   ];
 
