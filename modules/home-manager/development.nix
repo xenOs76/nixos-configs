@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  pkgsUnstable,
+  ...
+}: {
   home.packages = with pkgs; [
     devenv
     commitizen
@@ -41,7 +45,7 @@
     ))
 
     ansible
-    ansible-lint
+    # ansible-lint  # https://github.com/nixos/nixpkgs/issues/460422
     poetry
 
     #terraform
@@ -64,7 +68,7 @@
 
     gopls
     gotools
-    #golangci-lint # installed from unstable for nixvim
+    pkgsUnstable.golangci-lint
     gofumpt
     gomodifytags
     golines

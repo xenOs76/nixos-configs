@@ -5,8 +5,8 @@
       lualine.enable = true;
       web-devicons.enable = true;
       snacks.enable = true;
-      notify.enable = true;
-      noice.enable = true;
+      notify.enable = false;
+      noice.enable = false;
       vim-surround.enable = false;
 
       mini = {

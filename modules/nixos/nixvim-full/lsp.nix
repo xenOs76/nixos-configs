@@ -199,10 +199,10 @@
         jinja_lsp.enable = false;
         nginx_language_server.enable = true;
         nixd.enable = true;
-        pylsp.enable = true;
+        pylsp.enable = false;
         ruff.enable = true;
         sqlls = {
-          enable = true;
+          enable = false;
           package = pkgs.sqls;
         };
         terraformls.enable = true;
@@ -211,7 +211,7 @@
     };
 
     plugins.lsp-format = {
-      enable = true;
+      enable = false;
       settings = {
         yaml = {
           tab_width = 2;

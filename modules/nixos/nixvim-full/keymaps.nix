@@ -53,6 +53,46 @@
         };
       }
       {
+        key = "<leader>fg";
+        mode = "n";
+        action = "<cmd>FzfLua grep<CR>";
+        options = {
+          silent = true;
+          noremap = true;
+          desc = "FzfLua grep";
+        };
+      }
+      {
+        key = "<leader>fv";
+        mode = "n";
+        action = "<cmd>FzfLua grep_visual<CR>";
+        options = {
+          silent = true;
+          noremap = true;
+          desc = "FzfLua visual";
+        };
+      }
+      {
+        key = "<leader>fw";
+        mode = "n";
+        action = "<cmd>FzfLua grep_cword<CR>";
+        options = {
+          silent = true;
+          noremap = true;
+          desc = "FzfLua grep_cword";
+        };
+      }
+      {
+        key = "<leader>fr";
+        mode = "n";
+        action = "<cmd>FzfLua resume<CR>";
+        options = {
+          silent = true;
+          noremap = true;
+          desc = "FzfLua resume";
+        };
+      }
+      {
         key = "<leader>ff";
         mode = "n";
         action = "<cmd>Fzf files<CR>";
@@ -100,36 +140,6 @@
           silent = true;
           noremap = true;
           desc = "LazyGit";
-        };
-      }
-      # {
-      #   key = "<leader>tg";
-      #   mode = "n";
-      #   action = "<cmd>Telescope live_grep<CR>";
-      #   options = {
-      #     silent = true;
-      #     noremap = true;
-      #     desc = "Telescope live_grep";
-      #   };
-      # }
-      # {
-      #   key = "<leader>tb";
-      #   mode = "n";
-      #   action = "<cmd>Telescope buffers<CR>";
-      #   options = {
-      #     silent = true;
-      #     noremap = true;
-      #     desc = "Telescope live_grep";
-      #   };
-      # }
-      {
-        key = "<leader>fg";
-        mode = "n";
-        action = "<cmd>FzfLua grep<CR>";
-        options = {
-          silent = true;
-          noremap = true;
-          desc = "FzfLua grep";
         };
       }
       {

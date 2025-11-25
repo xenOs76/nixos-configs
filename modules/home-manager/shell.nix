@@ -31,7 +31,6 @@
     awscli2
     minio-client
     ansible
-    ansible-lint
     pass
     gnupg
     pwgen
@@ -186,7 +185,7 @@
       test -d ~/.krew/bin || mkdir -p ~/.krew/bin
       test -f ~/.krew/bin/kubectl-netshoot && eval "$(kubectl netshoot completion bash)"
 
-      which https-wrench &>/dev/null && eval "$(https-wrench completion bash)"
+      # which https-wrench &>/dev/null && eval "$(https-wrench completion bash)"
       complete -C 'aws_completer' aws
       eval "$(glow completion bash)"
       eval "$(helm completion bash)"
@@ -207,7 +206,12 @@
       lltree = "eza -lgha --git --git-repos -T --total-size --git-ignore";
       llsize = "ll --sort=size --reverse  --total-size";
       lltime = "ll --sort=time --reverse";
+
       gst = "git status";
+      gwt = "git worktree";
+      gwt-list = "git worktree list";
+      gwt-add = "git worktree add";
+      gwt-remove = "git worktree remove";
 
       vi = "nvim";
 
@@ -231,8 +235,6 @@
       whatismyip = "curl -4 ipinfo.io/ip";
       whatismyipv6 = "curl -6 https://ipv6.icanhazip.com";
       whatismyip-on-aws = "curl -4 https://checkip.amazonaws.com/";
-
-      alias-from-flake = "echo 'this is a flake managed bash alias'";
 
       docker-compose-up = "docker-compose up";
       docker-compose-down = "docker-compose down";
