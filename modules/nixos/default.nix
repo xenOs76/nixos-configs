@@ -10,6 +10,10 @@
     ./desktop-manager.nix
   ];
 
+  nixpkgs.config.permittedInsecurePackages = [
+    "python3.12-ecdsa-0.19.1"
+  ];
+
   catppuccin = {
     enable = true;
     flavor = "frappe";

@@ -137,7 +137,11 @@
       default_config = {};
       http = {
         use_x_forwarded_for = true;
-        trusted_proxies = ["127.0.0.1" "::1" "192.168.1.0/24"];
+        trusted_proxies = [
+          "127.0.0.1"
+          "::1"
+          "192.168.1.0/24"
+        ];
       };
 
       mqtt = {
@@ -211,7 +215,9 @@
               {
                 service = "notify.os76";
                 metadata = {};
-                data = {message = "Test notification script";};
+                data = {
+                  message = "Test notification script";
+                };
               }
             ];
             mode = "single";
@@ -235,6 +241,7 @@
   };
 
   systemd.services."minio-backup" = {
+    enable = false;
     script = ''
       #!/usr/bin/env bash
       #
@@ -262,7 +269,10 @@
   services.prometheus.exporters.node = {
     enable = true;
     port = 9100;
-    enabledCollectors = ["logind" "systemd"];
+    enabledCollectors = [
+      "logind"
+      "systemd"
+    ];
     disabledCollectors = ["textfile"];
   };
 

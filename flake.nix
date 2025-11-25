@@ -9,9 +9,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim = {
-      url = "github:nix-community/nixvim";
-      # url = "github:nix-community/nixvim/nixos-25.05";
-      inputs.nixpkgs.follows = "nixpkgsUnstable";
+      # url = "github:nix-community/nixvim";
+      url = "github:nix-community/nixvim/nixos-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -45,15 +45,16 @@
     sops-nix,
     ...
   } @ inputs: let
-    system = "aarch64-linux";
+    # TODO: need generic system to manage multi-arch pkgs
+    system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
-    pkgsUnstable = nixpkgsUnstable.legacyPackages.${system};
+    pkgsUnstable = import nixpkgsUnstable {inherit system;};
     # os76PrivPkgs = import nurOs76Priv {pkgs = pkgs;};
     os76Pkgs = import nurOs76 {pkgs = pkgs;};
   in {
     nixosConfigurations = {
       zero = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+        # system = "x86_64-linux";
         specialArgs = {
           inherit inputs pkgsUnstable;
         };
@@ -70,9 +71,11 @@
           nur.modules.nixos.default
           (
             {pkgs, ...}: {
-              environment.systemPackages = with pkgs.nur.repos; [
-                charmbracelet.gum
-                charmbracelet.vhs
+              environment.systemPackages = with pkgs.nur.repos.charmbracelet; [
+                gum
+                vhs
+                freeze
+                crush
               ];
             }
           )
@@ -89,6 +92,9 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
+            home-manager.extraSpecialArgs = {
+              inherit pkgsUnstable;
+            };
             home-manager.sharedModules = [
               inputs.sops-nix.homeManagerModules.sops
               inputs.catppuccin.homeModules.catppuccin
@@ -100,7 +106,10 @@
       };
 
       slim = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+        # system = "x86_64-linux";
+        specialArgs = {
+          inherit inputs pkgsUnstable;
+        };
         modules = [
           ./hosts/slim/configuration.nix
           ./modules/nixos
@@ -119,6 +128,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
+            home-manager.extraSpecialArgs = {inherit pkgsUnstable;};
             home-manager.sharedModules = [
               inputs.sops-nix.homeManagerModules.sops
               inputs.catppuccin.homeModules.catppuccin

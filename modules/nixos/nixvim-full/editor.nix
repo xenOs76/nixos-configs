@@ -107,7 +107,7 @@
               "buffer"
               # "copilot"
               # "snippets"
-              "ripgrep"
+              # "ripgrep"
               "dictionary"
               "git"
               "spell"
@@ -139,44 +139,44 @@
               #   };
               # };
               #
-              ripgrep = {
-                async = true;
-                module = "blink-ripgrep";
-                name = "Ripgrep";
-                score_offset = 100;
-                opts = {
-                  prefix_min_len = 3;
-                  context_size = 5;
-                  max_filesize = "1M";
-                  project_root_marker = ".git";
-                  project_root_fallback = true;
-                  search_casing = "--ignore-case";
-                  additional_rg_options = {};
-                  fallback_to_regex_highlighting = true;
-                  ignore_paths = {};
-                  additional_paths = {};
-                  debug = false;
-                };
-              };
-
-              copilot = {
-                async = true;
-                module = "blink-copilot";
-                name = "copilot";
-                score_offset = 100;
-                # Optional configurations
-                opts = {
-                  max_completions = 3;
-                  max_attempts = 4;
-                  kind = "Copilot";
-                  debounce = 750;
-                  auto_refresh = {
-                    backward = true;
-                    forward = true;
-                  };
-                };
-              };
-
+              # ripgrep = {
+              #   async = true;
+              #   module = "blink-ripgrep";
+              #   name = "Ripgrep";
+              #   score_offset = 100;
+              #   opts = {
+              #     prefix_min_len = 3;
+              #     context_size = 5;
+              #     max_filesize = "1M";
+              #     project_root_marker = ".git";
+              #     project_root_fallback = true;
+              #     search_casing = "--ignore-case";
+              #     additional_rg_options = {};
+              #     fallback_to_regex_highlighting = true;
+              #     ignore_paths = {};
+              #     additional_paths = {};
+              #     debug = false;
+              #   };
+              # };
+              #
+              # copilot = {
+              #   async = true;
+              #   module = "blink-copilot";
+              #   name = "copilot";
+              #   score_offset = 100;
+              #   # Optional configurations
+              #   opts = {
+              #     max_completions = 3;
+              #     max_attempts = 4;
+              #     kind = "Copilot";
+              #     debounce = 750;
+              #     auto_refresh = {
+              #       backward = true;
+              #       forward = true;
+              #     };
+              #   };
+              # };
+              #
               git = {
                 module = "blink-cmp-git";
                 name = "git";
