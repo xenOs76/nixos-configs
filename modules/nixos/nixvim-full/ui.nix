@@ -3,10 +3,24 @@
     plugins = {
       bufferline.enable = true;
       lualine.enable = true;
-      web-devicons.enable = true;
+      web-devicons = {
+        enable = true;
+        # customIcons = {
+        #   override_by_extension = {
+        #     "go" = {
+        #       icon = " ";
+        #       color = "#81e043";
+        #       name = "Go file";
+        #     };
+        #   };
+        # };
+      };
       snacks.enable = true;
       notify.enable = false;
-      noice.enable = false;
+
+      # https://github.com/folke/noice.nvim
+      noice.enable = true;
+
       vim-surround.enable = false;
 
       mini = {
@@ -26,6 +40,29 @@
           };
         };
       };
+
+      # From 25.11
+      # mini-icons.enable = true; # disable web-devicons
+      # mini-animate = {
+      #   enable = true;
+      #   settings = {
+      #     close = {
+      #       enable = true;
+      #     };
+      #     cursor = {
+      #       enable = true;
+      #     };
+      #     open = {
+      #       enable = true;
+      #     };
+      #     resize = {
+      #       enable = true;
+      #     };
+      #     scroll = {
+      #       enable = true;
+      #     };
+      #   };
+      # };
 
       tiny-inline-diagnostic = {
         enable = true;

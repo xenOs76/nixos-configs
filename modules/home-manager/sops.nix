@@ -15,5 +15,8 @@
     os76_ansible_vault_password = {
       path = "/home/xeno/.config/os76_ansible_vault_password";
     };
+    gemini_api_key_cli_testing = {
+      path = "/home/xeno/.config/gemini_api_key_cli_testing";
+    };
   };
 }

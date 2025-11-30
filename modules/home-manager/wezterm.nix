@@ -18,9 +18,10 @@
       --   gui.enumerate_gpus()
       -- end
       --
-      font_size_by_host = 13.5
+      font_size_by_host = 15
       -- font_fallback_by_host = wezterm.font_with_fallback({ "Fira Code", "Symbols Nerd Font" })
-      font_fallback_by_host = wezterm.font_with_fallback({ "Hack", "Symbols Nerd Font" })
+      font_fallback_by_host = wezterm.font_with_fallback({ "JetBrains Mono", "Symbols Nerd Font" })
+      -- font_fallback_by_host = wezterm.font_with_fallback({ "Hack", "Symbols Nerd Font" })
       -- font_fallback_by_host = wezterm.font_with_fallback({ "Noto Sans Mono", "Symbols Nerd Font" })
       init_rows = 55
       init_cols = 240
