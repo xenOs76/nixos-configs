@@ -185,6 +185,10 @@
       test -d ~/.krew/bin || mkdir -p ~/.krew/bin
       test -f ~/.krew/bin/kubectl-netshoot && eval "$(kubectl netshoot completion bash)"
 
+      export GEMINI_API_KEY_FILE="/home/xeno/.config/gemini_api_key_cli_testing"
+      test -f $GEMINI_API_KEY_FILE && export GEMINI_API_KEY=$(cat $GEMINI_API_KEY_FILE)
+      export AVANTE_GEMINI_API_KEY=$GEMINI_API_KEY
+
       # which https-wrench &>/dev/null && eval "$(https-wrench completion bash)"
       complete -C 'aws_completer' aws
       eval "$(glow completion bash)"
@@ -212,6 +216,8 @@
       gwt-list = "git worktree list";
       gwt-add = "git worktree add";
       gwt-remove = "git worktree remove";
+      gdiff = "git diff";
+      lgit = "lazygit";
 
       vi = "nvim";
 
