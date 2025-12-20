@@ -93,7 +93,7 @@
     file
     lsof
     netcat
-    du-dust
+    dust
     dig
     wget
     ripgrep
@@ -121,5 +121,5 @@
   services.pcscd.enable = true;
 
   system.copySystemConfiguration = false;
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 }

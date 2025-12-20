@@ -1,24 +1,25 @@
 {
-  description = "A simple NixOS flake";
+  description = "Homelab NixOS flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim = {
-      # url = "github:nix-community/nixvim";
+      #url = "github:nix-community/nixvim";
       url = "github:nix-community/nixvim/nixos-25.05";
-      inputs.nixpkgs.follows = "nixpkgs";
+      #inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin = {
-      url = "github:catppuccin/nix/release-25.05";
+      # url = "github:catppuccin/nix/release-25.11";
+      url = "github:catppuccin/nix";
     };
     nur = {
       url = "github:nix-community/NUR";
@@ -54,7 +55,7 @@
   in {
     nixosConfigurations = {
       zero = nixpkgs.lib.nixosSystem {
-        # system = "x86_64-linux";
+        system = "x86_64-linux";
         specialArgs = {
           inherit inputs pkgsUnstable;
         };

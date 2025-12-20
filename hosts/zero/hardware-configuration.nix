@@ -31,8 +31,8 @@
   hardware.amdgpu = {
     initrd.enable = true;
     opencl.enable = true;
-    amdvlk.enable = true;
-    amdvlk.package = pkgs.amdvlk;
+    # amdvlk.enable = true;
+    # amdvlk.package = pkgs.amdvlk;
   };
 
   fileSystems."/" = {
@@ -122,6 +122,6 @@
   hardware.graphics = {
     enable = true;
     # driSupport32Bit = true;
-    extraPackages = with pkgs; [amdvlk];
+    # extraPackages = with pkgs; [amdvlk];
   };
 }
