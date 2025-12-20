@@ -1,0 +1,129 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/xenOs76/https-wrench/refs/heads/main/https-wrench.schema.json
+# vim: set ts=2 sw=2 tw=0 fo=cnqoj
+---
+debug: false
+verbose: true
+requests:
+
+  - name: CaddyCertificates
+    printResponseCertificates: true
+    hosts:
+      - name: httpbingo.k3s.os76.xyz
+      - name: httpbingo.priv.os76.xyz
+
+  - name: K3sCertificate
+    # add transportOverrideUrl so it mimics a reverse proxy
+    # and pass the ServerName/SNI to Istio Gateway
+    transportOverrideUrl: https://192.168.1.114:30443
+    printResponseCertificates: true
+    hosts:
+      - name: httpbingo.k3s.os76.xyz
+
+  - name: ArgoCertificates
+    printResponseCertificates: true
+    hosts:
+      - name: git.priv.os76.xyz
+
+  - name: W74Certificates
+    printResponseCertificates: true
+    hosts:
+      - name: www.os76.xyz
+
+  - name: k3sVirtualServices
+    printResponseHeaders: true
+    responseHeadersFilter:
+      - Server
+
+    hosts:
+      - name: httpbingo.k3s.os76.xyz
+        uriList:
+          - /headers
+      - name: alertmanager.k3s.os76.xyz
+        uriList:
+          - /#/status
+      - name: blackbox.k3s.os76.xyz
+        uriList:
+          - /metrics
+      - name: how-i-did-it.k3s.os76.xyz
+        uriList:
+          - /docs/cheatsheets/git/
+      - name: how-i-did-it.priv.os76.xyz
+        uriList:
+          - /docs/cheatsheets/git/
+      - name: keycloak.k3s.os76.xyz
+        uriList:
+          - /realms/master/
+      - name: keycloak.priv.os76.xyz
+        uriList:
+          - /realms/master/
+      - name: prometheus.k3s.os76.xyz
+        uriList:
+          - /alerts?search=
+
+  - name: k3sViaIstioFlux
+    transportOverrideUrl: https://192.168.1.114:30443
+    printResponseHeaders: true
+    responseHeadersFilter:
+      - Server
+    hosts:
+      - name: httpbingo.k3s.os76.xyz
+
+  - name: k3sViaIstioRPI501
+    transportOverrideUrl: https://192.168.1.151:30443
+    printResponseHeaders: true
+    responseHeadersFilter:
+      - Server
+    hosts:
+      - name: httpbingo.k3s.os76.xyz
+
+  - name: k3sViaIstioRPI502
+    transportOverrideUrl: https://192.168.1.152:30443
+    printResponseHeaders: true
+    responseHeadersFilter:
+      - Server
+    hosts:
+      - name: httpbingo.k3s.os76.xyz
+
+  - name: k3sViaNginxArgo
+    transportOverrideUrl: https://argo.home.arpa
+    printResponseHeaders: true
+    responseHeadersFilter:
+      - Server
+    hosts:
+      - name: httpbingo.k3s.os76.xyz
+
+  - name: W74PublicViaWAN
+    printResponseHeaders: true
+    responseHeadersFilter:
+      - Server
+
+    hosts:
+      - name: www.os76.xyz
+      - name: repo.os76.xyz
+        uriList:
+          - /apt
+
+  - name: ArgoVirualHosts
+    printResponseHeaders: true
+    responseHeadersFilter:
+      - Server
+
+    hosts:
+      - name: git.priv.os76.xyz
+        uriList:
+          - /xeno/nix-configs
+      - name: hassio.priv.os76.xyz
+        uriList:
+          - /static/icons/favicon-192x192.png
+
+  - name: W74PublicViaVPN
+    transportOverrideUrl: https://w74.home.arpa
+    printResponseHeaders: true
+    responseHeadersFilter:
+      - Server
+
+    hosts:
+      - name: www.os76.xyz
+      - name: repo.os76.xyz
+        uriList:
+          - /apt

@@ -65,9 +65,9 @@ in {
         name = "grafana";
         user = "$__file{${config.sops.secrets."grafana_db_user".path}}";
         password = "$__file{${config.sops.secrets."grafana_db_pass".path}}";
-        host = "192.168.1.8";
+        host = "127.0.0.1";
         type = "mysql";
-        ssl_mode = "true";
+        ssl_mode = "false";
         server_cert_name = "argo.priv.os76.xyz";
         ca_cert_path = "/data/store-btrfs/certs/star_priv_os76_xyz_crt_chain.pem";
       };
