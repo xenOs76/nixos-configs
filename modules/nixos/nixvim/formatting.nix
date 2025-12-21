@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   programs.nixvim = {
     plugins.conform-nvim.enable = true;
     plugins.conform-nvim.settings = {
@@ -9,10 +13,7 @@
           "isort"
           "black"
         ];
-        sh = [
-          "shfmt"
-          "shellcheck"
-        ];
+        sh = ["shfmt"];
         json = ["fixjson"];
         yaml = ["yamlfmt"];
         markdown = [
