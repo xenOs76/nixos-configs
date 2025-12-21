@@ -1,16 +1,11 @@
-{
-  pkgs,
-  ...
-}:
-{
+{pkgs, ...}: {
   home.packages = with pkgs; [
     devenv
     commitizen
 
     ### Editors
     #zed-editor # see below
-    jetbrains.idea-community-bin
-    # jetbrains.pycharm-community-bin
+    jetbrains.idea-oss
     thonny
 
     # Make / Iot
@@ -37,20 +32,21 @@
     delve
 
     (python3.withPackages (
-      ps: with ps; [
-        rsa
-        boto3
-        boto3-stubs
-        botocore
-        packaging
-        pip
-        pylint
-        urllib3
-        types-urllib3
-        pipx
-        twine
-        distutils
-      ]
+      ps:
+        with ps; [
+          rsa
+          boto3
+          boto3-stubs
+          botocore
+          packaging
+          pip
+          pylint
+          urllib3
+          types-urllib3
+          pipx
+          twine
+          distutils
+        ]
     ))
 
     ansible
@@ -118,16 +114,15 @@
     ];
 
     userSettings = {
-
       ui_font_size = 21.0;
       buffer_font_size = 19;
       buffer_line_height = "comfortable";
       agent_ui_font_size = 21.0;
-      ui_font_family = "Ubuntu";
-      buffer_font_family = "FiraCode Nerd Font Mono";
+      ui_font_family = "JetBrains Mono";
+      buffer_font_family = "JetBrains Mono";
 
       terminal = {
-        font_family = ".ZedMono";
+        font_family = "JetBrainsMono Nerd Font";
         font_size = 19;
         copy_on_select = true;
       };
@@ -185,7 +180,6 @@
       };
 
       languages = {
-
         "Shell Script" = {
           format_on_save = "on";
           formatter = {
@@ -212,7 +206,6 @@
           format_on_save = "on";
           remove_trailing_whitespace_on_save = false;
         };
-
       };
 
       inlay_hints = {
@@ -233,7 +226,6 @@
       };
 
       lsp = {
-
         ansible-language-server = {
           settings = {
             ansible = {
@@ -261,16 +253,14 @@
               keyOrdering = false;
               schemas = {
                 # Ansible
-                "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/inventory.json" =
-                  [
-                    "./inventory/*.yaml"
-                    "hosts.yml"
-                  ];
+                "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/inventory.json" = [
+                  "./inventory/*.yaml"
+                  "hosts.yml"
+                ];
                 # https-wrench
-                "https://raw.githubusercontent.com/xenOs76/https-wrench/refs/heads/main/https-wrench.schema.json" =
-                  [
-                    "https-wrench*.yaml"
-                  ];
+                "https://raw.githubusercontent.com/xenOs76/https-wrench/refs/heads/main/https-wrench.schema.json" = [
+                  "https-wrench*.yaml"
+                ];
               };
             };
           };
@@ -290,7 +280,6 @@
           };
         };
       };
-
     };
   };
 

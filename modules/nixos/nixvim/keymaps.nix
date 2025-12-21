@@ -185,19 +185,19 @@
           desc = "Don't";
         };
       }
-      {
-        key = "<leader>mp";
-        mode = [
-          "n"
-          "v"
-        ];
-        action = ":lua _G.format_with_conform()<CR>";
-        options = {
-          silent = true;
-          noremap = true;
-          desc = "[m]ake [p]retty by formatting";
-        };
-      }
+      # {
+      #   key = "<leader>mp";
+      #   mode = [
+      #     "n"
+      #     "v"
+      #   ];
+      #   action = ":lua _G.format_with_conform()<CR>";
+      #   options = {
+      #     silent = true;
+      #     noremap = true;
+      #     desc = "[m]ake [p]retty by formatting";
+      #   };
+      # }
     ];
   };
 }

@@ -2,6 +2,7 @@
   description = "Homelab NixOS flake";
 
   inputs = {
+    nixpkgsOld.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     home-manager = {
@@ -9,8 +10,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim = {
-      #url = "github:nix-community/nixvim";
       url = "github:nix-community/nixvim/nixos-25.05";
+      inputs.nixpkgs.follows = "nixpkgsOld";
+      #url = "github:nix-community/nixvim/nixos-25.11";
       #inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix = {
