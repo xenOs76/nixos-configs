@@ -111,5 +111,5 @@ in {
   networking.firewall.allowedTCPPorts = [22];
   # networking.firewall.allowedUDPPorts = [ ... ];
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 }

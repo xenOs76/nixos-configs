@@ -6,5 +6,6 @@
     ./virtualization.nix
     ./monitoring.nix
     ./nginx.nix
+    ./databases.nix
   ];
 }

@@ -8,7 +8,6 @@
     # QT
     qtpass
     pinentry-qt
-    yubikey-personalization-gui
     yubioath-flutter
 
     # kde6

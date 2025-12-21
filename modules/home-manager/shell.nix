@@ -1,6 +1,11 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: let
+  https-wrench-os76-file-path = "${config.home.homeDirectory}/.config/https-wrench/https-wrench-os76.yaml";
+in {
   home.packages = with pkgs; [
-    # nix related
     alejandra
     nurl
     nix-output-monitor
@@ -34,7 +39,7 @@
     pass
     gnupg
     pwgen
-    poppler_utils
+    poppler-utils
     ghostscript_headless
     gum
     hey
@@ -84,7 +89,7 @@
     usbutils
 
     # development
-    go
+    #go
   ];
 
   catppuccin.lazygit.enable = true;
@@ -149,8 +154,8 @@
         sha256 = "sha256:1acyhhhbfxz17ch77nf26x0cj4immsl6drcpwwbklrl49n9gm9ia";
       }
     );
+    "${https-wrench-os76-file-path}".text = builtins.readFile ./files/https-wrench-os76.yaml;
   };
-
   programs.bash = {
     enable = true;
     enableCompletion = true;
@@ -161,7 +166,7 @@
     sessionVariables = {
       PATH = "$HOME/bin:$HOME/.krew/bin:$HOME/go/bin:$HOME/bin/go/bin:$PATH";
       LC_ALL = "C.UTF-8";
-      EDITOR = "nvim";
+      EDITOR = "vi";
       #NIXPKGS_ALLOW_UNFREE = 1;
       ANSIBLE_NOCOWS = "1";
 
@@ -196,7 +201,6 @@
       eval "$(velero completion bash)"
 
       source ~/.kubectl_aliases
-
     '';
 
     shellAliases = {
@@ -219,7 +223,7 @@
       gdiff = "git diff";
       lgit = "lazygit";
 
-      vi = "nvim";
+      #vi = "nvim"; # let nixvim manage this
 
       k = "kubectl";
       kubectl = "kubecolor";
@@ -255,6 +259,7 @@
 
       #nixvim = "nix run git+https://git.priv.os76.xyz/xeno/nixvim";
       https-wrench-docker = "docker run --rm registry.0.os76.xyz/xeno/https-wrench:latest";
+      requests-os76 = "https-wrench requests --config ${https-wrench-os76-file-path}";
     };
   };
 }

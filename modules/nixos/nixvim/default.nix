@@ -1,4 +1,4 @@
-{
+{pkgs, ...}: {
   imports = [
     ./options.nix
     ./keymaps.nix
@@ -13,7 +13,7 @@
 
   programs.nixvim = {
     enable = true;
-    defaultEditor = true;
+    defaultEditor = false;
     viAlias = true;
   };
 }

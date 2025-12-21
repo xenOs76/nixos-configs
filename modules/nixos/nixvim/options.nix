@@ -99,7 +99,6 @@
       black
 
       # lsp
-      ansible-language-server
       # nginx-language-server
       # nixd
       ruff
@@ -114,8 +113,6 @@
       # golangci-lint
       hadolint
       # html-tidy
-      # luajitPackages.luacheck
-      nodePackages.jsonlint
       # pylint
       ruff
       shellcheck

@@ -2,7 +2,14 @@
   programs.nixvim = {
     plugins = {
       bufferline.enable = true;
-      lualine.enable = true;
+      lualine = {
+        enable = true;
+        # settings = {
+        #   options = {
+        #     theme = "auto";
+        #   };
+        # };
+      };
       web-devicons = {
         enable = true;
         # customIcons = {

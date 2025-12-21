@@ -6,7 +6,7 @@
     ./sound.nix
     ./bluetooth.nix
     ./virtualization.nix
-    ./nixvim-full
+    ./nixvim
     ./desktop-manager.nix
   ];
 

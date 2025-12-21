@@ -9,8 +9,9 @@
     yamllint
     tflint
     shellcheck
+    tree-sitter
+    nodejs_24
     pkgsUnstable.golangci-lint
-    nodePackages.jsonlint
   ];
 
   programs.nixvim = {
@@ -22,7 +23,7 @@
         enable = true;
         lintersByFt = {
           dockerfile = ["hadolint"];
-          json = ["jsonlint"];
+          # json = ["jsonlint"]; # jsonlint unmantained
           yaml = ["yamllint"];
           terraform = ["tflint"];
           sh = ["shellcheck"];

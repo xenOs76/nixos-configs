@@ -1,5 +1,19 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   programs.nixvim = {
+    # extraConfigLua = ''
+    #   _G.format_with_conform = function()
+    #     local conform = require("conform")
+    #     conform.format({
+    #       timeout_ms = 3000,
+    #       lsp_fallback = true,
+    #     })
+    #   end
+    # '';
+
     plugins.conform-nvim.enable = true;
     plugins.conform-nvim.settings = {
       formatters_by_ft = {
@@ -9,10 +23,7 @@
           "isort"
           "black"
         ];
-        sh = [
-          "shfmt"
-          "shellcheck"
-        ];
+        sh = ["shfmt"];
         json = ["fixjson"];
         yaml = ["yamlfmt"];
         markdown = [
@@ -28,6 +39,8 @@
       formatters = with pkgs; {
         goimports = {
           command = "${pkgs.gotools}/bin/goimports";
+          #command = "goimports";
+          # command = "${lib.getExe' pkgs.gotools "goimports"}";
         };
         gofumpt = {
           command = "${lib.getExe gofumpt}";
