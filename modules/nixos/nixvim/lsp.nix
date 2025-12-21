@@ -138,7 +138,7 @@
             cmd = [
               "${pkgs.golangci-lint-langserver}/bin/golangci-lint-langserver"
             ];
-            root_dir = "lspconfig.util.root_pattern('.git', 'go.mod', '.go')";
+            root_dir = {__raw = "require('lspconfig.util').root_pattern('.git', 'go.mod', '.go')";};
             init_options = {
               command = [
                 "${pkgsUnstable.golangci-lint}/bin/golangci-lint"
