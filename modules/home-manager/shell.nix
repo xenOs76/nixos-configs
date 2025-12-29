@@ -8,6 +8,7 @@ in {
   home.packages = with pkgs; [
     alejandra
     nurl
+    statix
     nix-output-monitor
 
     # archives

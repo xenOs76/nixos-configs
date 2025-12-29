@@ -3,15 +3,14 @@
   pkgs,
   ...
 }: {
-  home.username = "xeno";
-  home.homeDirectory = "/home/xeno";
-  home.stateVersion = "25.11";
+  # home.username = "xeno";
+  # home.homeDirectory = "/home/xeno";
+  # home.stateVersion = "25.11";
 
   programs.home-manager.enable = true;
 
   imports = [
     ./modules/home-manager/xeno-home-servers.nix
-    # ./modules/nixos/nixvim-full
   ];
 
   home.packages = with pkgs; [
