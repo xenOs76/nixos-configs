@@ -7,6 +7,7 @@
     vim
     git
     alejandra
+    cachix
     sops
     age
     ssh-to-age
