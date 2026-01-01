@@ -3,9 +3,11 @@
   config,
   ...
 }: {
-  home.username = "xeno";
-  home.homeDirectory = "/home/xeno";
-  home.stateVersion = "25.11";
+  home = {
+    username = "xeno";
+    homeDirectory = "/home/xeno";
+    stateVersion = "25.11";
+  };
 
   programs.home-manager.enable = true;
   xdg.enable = true;
@@ -61,7 +63,11 @@
 
   programs.git = {
     enable = true;
-    userName = "Zeno Belli";
-    userEmail = "xeno@os76.xyz";
+    settings = {
+      user = {
+        name = "Zeno Belli";
+        email = "xeno@os76.xyz";
+      };
+    };
   };
 }
