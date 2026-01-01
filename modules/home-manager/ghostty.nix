@@ -24,6 +24,9 @@
       # theme = "TokyoNight Storm";
       theme = "Catppuccin Frappe";
 
+      # https://ghostty.org/docs/config/reference#split-divider-color
+      split-divider-color = "green";
+
       # custom-shader = ["ripple_cursor.glsl"]; # WARN: cpu intensive
       cursor-style = "block";
       cursor-style-blink = false;

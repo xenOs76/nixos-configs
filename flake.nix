@@ -17,7 +17,8 @@
     };
 
     nvfOs76 = {
-      url = "github:xenos76/os76-nvf/0.0.1";
+      url = "github:xenos76/os76-nvf/0.0.3";
+      # url = "git+https://git.priv.os76.xyz/xeno/os76-nvf.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -56,12 +57,10 @@
     nvfOs76,
     catppuccin,
     home-manager,
-    # nixvim,
     sops-nix,
     ...
   } @ inputs: let
     system = "x86_64-linux";
-
     pkgs = nixpkgs.legacyPackages.${system};
     pkgsUnstable = import nixpkgsUnstable {inherit system;};
 
@@ -76,6 +75,7 @@
       ];
     };
   in {
+    exportedInputs = inputs;
     nixosConfigurations = {
       zero = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -142,7 +142,6 @@
           ./hosts/slim/configuration.nix
           ./modules/nixos
           ./modules/nixos/slim
-          # nixvim.nixosModules.nixvim
           sops-nix.nixosModules.sops
           {
             sops = {

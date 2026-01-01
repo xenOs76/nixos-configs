@@ -4,5 +4,6 @@
     ./git.nix
     ./starship.nix
     ./k8s.nix
+    ./theme.nix
   ];
 }

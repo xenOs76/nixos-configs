@@ -11,5 +11,6 @@
     ./development.nix
     ./gui.nix
     ./browser.nix
+    ./theme.nix
   ];
 }
