@@ -17,7 +17,7 @@
     };
 
     nvfOs76 = {
-      url = "github:xenos76/os76-nvf/0.0.3";
+      url = "github:xenos76/os76-nvf/0.0.4";
       # url = "git+https://git.priv.os76.xyz/xeno/os76-nvf.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
