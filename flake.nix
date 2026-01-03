@@ -17,8 +17,7 @@
     };
 
     nvfOs76 = {
-      url = "github:xenos76/os76-nvf/0.0.3";
-      # url = "git+https://git.priv.os76.xyz/xeno/os76-nvf.git";
+      url = "github:xenos76/os76-nvf/0.0.4";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -44,6 +43,12 @@
     nurOs76 = {
       url = "github:xenos76/nur-packages";
     };
+    nixpkgs-terraform.url = "github:stackbuilders/nixpkgs-terraform";
+  };
+
+  nixConfig = {
+    extra-substituters = "https://nixpkgs-terraform.cachix.org";
+    extra-trusted-public-keys = "nixpkgs-terraform.cachix.org-1:8Sit092rIdAVENA3ZVeH9hzSiqI/jng6JiCrQ1Dmusw=";
   };
 
   outputs = {
@@ -57,6 +62,7 @@
     nvfOs76,
     catppuccin,
     home-manager,
+    nixpkgs-terraform,
     sops-nix,
     ...
   } @ inputs: let
@@ -67,12 +73,16 @@
     # os76PrivPkgs = import nurOs76Priv {pkgs = pkgs;};
     os76Pkgs = import nurOs76 {inherit pkgs;};
 
+    ### NVF/Neovim config ###
+    terraformVersion = "1.14";
+    terraformAutoformat = true;
     nvfOs76Ide = nvf.lib.neovimConfiguration {
       inherit pkgs;
       modules = [
         "${nvfOs76}/modules/nvim/default.nix"
         "${nvfOs76}/modules/nvim/ide/default.nix"
       ];
+      extraSpecialArgs = {inherit nixpkgs-terraform terraformVersion terraformAutoformat;};
     };
   in {
     exportedInputs = inputs;

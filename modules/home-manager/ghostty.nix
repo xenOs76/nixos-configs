@@ -25,7 +25,7 @@
       theme = "Catppuccin Frappe";
 
       # https://ghostty.org/docs/config/reference#split-divider-color
-      split-divider-color = "green";
+      split-divider-color = "#a6d189";
 
       # custom-shader = ["ripple_cursor.glsl"]; # WARN: cpu intensive
       cursor-style = "block";
