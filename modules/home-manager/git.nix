@@ -11,6 +11,7 @@
   programs = {
     git = {
       settings = {
+        init.defaultBranch = "main";
         alias = {
           ci = "commit";
           co = "checkout";
