@@ -21,7 +21,11 @@
 
   programs.git = {
     enable = true;
-    userName = "Zeno Belli";
-    userEmail = "xeno@os76.xyz";
+    settings = {
+      user = {
+        name = "Zeno Belli";
+        email = "xeno@os76.xyz";
+      };
+    };
   };
 }

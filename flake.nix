@@ -17,8 +17,9 @@
     };
 
     nvfOs76 = {
-      url = "github:xenos76/os76-nvf/0.0.4";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:xenos76/os76-nvf/0.0.7";
+      # url = "git+https://git.priv.os76.xyz/xeno/os76-nvf.git";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
 
     sops-nix = {
@@ -27,8 +28,7 @@
     };
 
     catppuccin = {
-      # url = "github:catppuccin/nix/release-25.11";
-      url = "github:catppuccin/nix";
+      url = "github:catppuccin/nix/release-25.11";
     };
 
     nur = {
@@ -47,8 +47,18 @@
   };
 
   nixConfig = {
-    extra-substituters = "https://nixpkgs-terraform.cachix.org";
-    extra-trusted-public-keys = "nixpkgs-terraform.cachix.org-1:8Sit092rIdAVENA3ZVeH9hzSiqI/jng6JiCrQ1Dmusw=";
+    extra-substituters = [
+      "https://cache.nixos.org"
+      "https://nix-community.cachix.org"
+      "https://nixpkgs-terraform.cachix.org"
+      "https://nvf.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "nixpkgs-terraform.cachix.org-1:8Sit092rIdAVENA3ZVeH9hzSiqI/jng6JiCrQ1Dmusw="
+      "nvf.cachix.org-1:GMQWiUhZ6ux9D5CvFFMwnc2nFrUHTeGaXRlVBXo+naI="
+    ];
   };
 
   outputs = {
@@ -74,15 +84,21 @@
     os76Pkgs = import nurOs76 {inherit pkgs;};
 
     ### NVF/Neovim config ###
-    terraformVersion = "1.14";
-    terraformAutoformat = true;
+    os76NvfCfg = {
+      terraformVersion = "1.14";
+      terraformAutoformat = true;
+      yamlAutoformat = true;
+    };
+
     nvfOs76Ide = nvf.lib.neovimConfiguration {
       inherit pkgs;
       modules = [
         "${nvfOs76}/modules/nvim/default.nix"
+        {inherit os76NvfCfg;}
+
         "${nvfOs76}/modules/nvim/ide/default.nix"
       ];
-      extraSpecialArgs = {inherit nixpkgs-terraform terraformVersion terraformAutoformat;};
+      extraSpecialArgs = {inherit nixpkgs-terraform;};
     };
   in {
     exportedInputs = inputs;

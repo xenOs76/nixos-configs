@@ -9,9 +9,20 @@
     stateVersion = "25.11";
   };
 
-  programs.home-manager.enable = true;
   xdg.enable = true;
-  programs.bash.enable = true;
+  programs = {
+    home-manager.enable = true;
+    bash.enable = true;
+    git = {
+      enable = true;
+      settings = {
+        user = {
+          name = "Zeno Belli";
+          email = "xeno@os76.xyz";
+        };
+      };
+    };
+  };
 
   sops = {
     age.sshKeyPaths = ["${config.home.homeDirectory}/.ssh/id_ed25519"];
@@ -47,27 +58,4 @@
     nurl
     nixfmt-rfc-style
   ];
-
-  catppuccin = {
-    enable = true;
-    flavor = "frappe";
-    accent = "mauve";
-    cursors.enable = false;
-    chromium.enable = true;
-    element-desktop.enable = true;
-    firefox.enable = true;
-    starship.enable = true;
-    thunderbird.enable = true;
-    yazi.enable = true;
-  };
-
-  programs.git = {
-    enable = true;
-    settings = {
-      user = {
-        name = "Zeno Belli";
-        email = "xeno@os76.xyz";
-      };
-    };
-  };
 }
