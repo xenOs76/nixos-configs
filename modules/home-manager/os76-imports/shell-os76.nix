@@ -3,7 +3,7 @@
   config,
   ...
 }: let
-  https-wrench-os76-file-path = "${config.home.homeDirectory}/.config/https-wrench/https-wrench-os76.yaml";
+  https-wrench-os76-file-path = ".config/https-wrench/https-wrench-os76.yaml";
 in {
   home.packages = with pkgs; [
     ansible

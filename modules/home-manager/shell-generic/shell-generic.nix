@@ -15,7 +15,6 @@
     btop
     coreutils-full
     curl
-    curl
     dnsutils
     eza
     fd
@@ -29,7 +28,6 @@
     gnutar
     gum
     htop
-    httpie
     httpie
     ipcalc
     jq

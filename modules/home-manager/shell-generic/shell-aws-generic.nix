@@ -88,7 +88,7 @@ in {
       aws-select-region = "select-aws-region && source ~/.aws_selected_region";
       noaws = "aws sso logout && unset AWS_PROFILE";
       aws-unset-profile = "unset AWS_PROFILE";
-      aws-switch-region = "select-aws-region && source ~/.aws_switch_region";
+      aws-switch-region = "select-aws-region && source ~/.aws_selected_region";
     };
   };
 }

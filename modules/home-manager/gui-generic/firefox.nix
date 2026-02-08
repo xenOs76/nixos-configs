@@ -89,10 +89,10 @@
           "extensions.update.enabled" = false;
 
           # https://hidde.blog/use-firefox-with-a-dark-theme-without-triggering-dark-themes-on-websites/
-          "layout.css.prefers-color-scheme.content-override" = 0; # Website appearance: 0 - Dark, 1 - network.trr.modeLight, 2 - System
+          "layout.css.prefers-color-scheme.content-override" = 0; # Website appearance: 0 - Dark, 1 - Light, 2 - System
 
           # https://cleanbrowsing.org/help/docs/configure-dns-over-https-doh-firefox/
-          "network.trr.mode" = 3; # DNS over HTTPS: 3 Max Protection, 2 Increased Protection, 0 Increased Protection, 5 Off
+          "network.trr.mode" = 2; # DNS over HTTPS: 3 Max Protection, 2 Increased Protection, 0 Increased Protection, 5 Off
           # "network.trr.custom_uri" = ""; # default value
           # "network.trr.default_provider_uri" = "https://mozilla.cloudflare-dns.com/dns-query"; # default value
 

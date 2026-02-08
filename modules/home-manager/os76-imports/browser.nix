@@ -4,10 +4,10 @@
   #   package = pkgs.firefox-bin;
   # };
 
+  # TODO enable HTTPS everywere
   programs.chromium = {
     enable = true;
     extensions = [
-      "gcbommkclmclpchllfjekcdonpmejbdp" # https everywhere
       "cjpalhdlnbpafiamejdnhcphjbkeiagm" # ublock origin
       "olhelnoplefjdmncknfphenjclimckaf" # catppuccin-frappe theme
     ];
