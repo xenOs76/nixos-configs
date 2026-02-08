@@ -7,7 +7,15 @@
   # home.homeDirectory = "/home/xeno";
   # home.stateVersion = "25.11";
 
-  programs.home-manager.enable = true;
+  programs = {
+    home-manager.enable = true;
+    bash.enable = true;
+  };
+
+  catppuccin = {
+    enable = true;
+    accent = "maroon";
+  };
 
   imports = [
     ./modules/home-manager/xeno-home-servers.nix
@@ -18,14 +26,4 @@
     nurl
     nixfmt-rfc-style
   ];
-
-  programs.git = {
-    enable = true;
-    settings = {
-      user = {
-        name = "Zeno Belli";
-        email = "xeno@os76.xyz";
-      };
-    };
-  };
 }

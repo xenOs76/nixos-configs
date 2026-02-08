@@ -13,15 +13,6 @@
   programs = {
     home-manager.enable = true;
     bash.enable = true;
-    git = {
-      enable = true;
-      settings = {
-        user = {
-          name = "Zeno Belli";
-          email = "xeno@os76.xyz";
-        };
-      };
-    };
   };
 
   sops = {

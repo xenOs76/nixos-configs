@@ -1,20 +1,31 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
+  #
+  # TODO install netshoot
+  # https://github.com/nilic/kubectl-netshoot
+  #
   home.packages = with pkgs; [
-    kubectl
-    kubectl-node-shell
-    kubectl-images
-    kubectl-ktop
-    kubectl-view-secret
-    kubectl-explore
-    kubectl-example
-    kubectl-doctor
-    krew
-    kubectx
+    docker-credential-helpers
+    helm-ls
     istioctl
     k9s
+    krew
     kubecolor
+    kubectl
+    kubectl-doctor
+    kubectl-example
+    kubectl-explore
+    kubectl-images
+    kubectl-images
+    kubectl-ktop
+    kubectl-node-shell
+    kubectl-view-secret
+    kubectx
     velero
-    kubecolor
+
     (wrapHelm kubernetes-helm {
       plugins = [
         kubernetes-helmPlugins.helm-diff
@@ -23,66 +34,88 @@
     })
   ];
 
-  programs.k9s.enable = true;
-  catppuccin.k9s.enable = true;
+  programs = {
+    k9s.enable = true;
+    bash = {
+      initExtra = ''
+        source ~/.kubectl_aliases
+        test -d ~/.krew/bin || mkdir -p ~/.krew/bin
+        eval "$(helm completion bash)"
+        eval "$(velero completion bash)"
+      '';
+      shellAliases = {
+        k = "kubectl";
+        kaf = "kubectl apply -f ";
+        kapply-f = "kubectl apply -f";
+        kdelete-f = "kubectl delete -f";
+        kdf = "kubectl delete -f ";
+        ktemp-shell = "kubectl netshoot run temp-shell";
+        kubectl = "kubecolor";
+        nokube = "kubectx -u";
+      };
+    };
+  };
 
   home.file = {
     # https://kubecolor.github.io/reference/config/
     # https://github.com/vkhitrin/kubecolor-catppuccin
     # https://github.com/vkhitrin/kubecolor-catppuccin/blob/main/catppuccin-frappe.yaml
-    ".kube/color.yaml".text = ''
-      preset: "dark"
-      theme:
-        base:
-          info: fg=#c6d0f5
-          primary: fg=#ca9ee6
-          secondary: fg=#99d1db
-          success: fg=#a6d189:bold
-          warning: fg=#e5c890:bold
-          danger: fg=#e78284:bold
-          muted: fg=#838ba7
-          key: fg=#babbf1:bold
-        default: fg=#c6d0f5
-        data:
-          key: fg=#babbf1:bold
-          string: fg=#c6d0f5
-          "true": fg=#a6d189:bold
-          "false": fg=#e78284:bold
-          number: fg=#ca9ee6
-          "null": fg=#838ba7
-          quantity: fg=#ca9ee6
-          duration: fg=#ef9f76
-          durationfresh: fg=#a6d189
-          ratio:
-            zero: fg=#838ba7
-            equal: fg=#a6d189
-            unequal: fg=#e5c890
-        status:
-          success: fg=#a6d189:bold
-          warning: fg=#e5c890:bold
-          error: fg=#e78284:bold
-        table:
-          header: fg=#c6d0f5:bold
-          columns: fg=#c6d0f5
-        stderr:
+    ".kube/color.yaml" = {
+      enable = config.os76Cfg.enableKubecolor;
+      text = ''
+        preset: "dark"
+        theme:
+          base:
+            info: fg=#c6d0f5
+            primary: fg=#ca9ee6
+            secondary: fg=#99d1db
+            success: fg=#a6d189:bold
+            warning: fg=#e5c890:bold
+            danger: fg=#e78284:bold
+            muted: fg=#838ba7
+            key: fg=#babbf1:bold
           default: fg=#c6d0f5
-          error: fg=#e78284:bold
-        describe:
-          key: fg=#babbf1:bold
-        apply:
-          created: fg=#a6d189
-          configured: fg=#e5c890
-          unchanged: fg=#c6d0f5
-          dryrun: fg=#99d1db
-          fallback: fg=#c6d0f5
-        explain:
-          key: fg=#babbf1:bold
-          required: fg=#303446:bold
-        options:
-          flag: fg=#babbf1:bold
-        version:
-          key: fg=#babbf1:bold
-    '';
+          data:
+            key: fg=#babbf1:bold
+            string: fg=#c6d0f5
+            "true": fg=#a6d189:bold
+            "false": fg=#e78284:bold
+            number: fg=#ca9ee6
+            "null": fg=#838ba7
+            quantity: fg=#ca9ee6
+            duration: fg=#ef9f76
+            durationfresh: fg=#a6d189
+            ratio:
+              zero: fg=#838ba7
+              equal: fg=#a6d189
+              unequal: fg=#e5c890
+          status:
+            success: fg=#a6d189:bold
+            warning: fg=#e5c890:bold
+            error: fg=#e78284:bold
+          table:
+            header: fg=#c6d0f5:bold
+            columns: fg=#c6d0f5
+          stderr:
+            default: fg=#c6d0f5
+            error: fg=#e78284:bold
+          describe:
+            key: fg=#babbf1:bold
+          apply:
+            created: fg=#a6d189
+            configured: fg=#e5c890
+            unchanged: fg=#c6d0f5
+            dryrun: fg=#99d1db
+            fallback: fg=#c6d0f5
+          explain:
+            key: fg=#babbf1:bold
+            required: fg=#303446:bold
+          options:
+            flag: fg=#babbf1:bold
+          version:
+            key: fg=#babbf1:bold
+      '';
+    };
 
     # Fetch k9s skin from https://github.com/catppuccin/k9s
     # ".config/k9s/skins/catppuccin-frappe-transparent.yaml".text = builtins.readFile (

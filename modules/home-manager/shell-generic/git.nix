@@ -1,16 +1,27 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   home.packages = with pkgs; [
+    commitizen
+    gh
+    git-secrets
+    git-worktree-switcher
+    gitleaks
+    glab
     pre-commit
     pre-commit-hook-ensure-sops
-    gitleaks
-    git-secrets
-    gh
-    commitizen
   ];
 
   programs = {
     git = {
+      enable = true;
       settings = {
+        user = {
+          name = config.os76Cfg.gitUserName;
+          email = config.os76Cfg.gitUserEmail;
+        };
         init.defaultBranch = "main";
         alias = {
           ci = "commit";
@@ -54,6 +65,26 @@
             output = "terminal";
           }
         ];
+      };
+    };
+
+    bash = {
+      shellAliases = {
+        gdiff = "git diff";
+        gst = "git status";
+        lgit = "lazygit";
+
+        glab-mr-delta = "glab mr diff --raw | delta";
+        glab-mr-list = "glab mr list";
+        glab-mr-view = "glab mr view";
+        glab-pipeline-view = "glab pipeline view";
+        glab-repo-list = "glab repo list --member";
+        glab-repo-list-mine = "glab repo list --mine";
+
+        gwt = "git worktree";
+        gwt-add = "git worktree add";
+        gwt-list = "git worktree list";
+        gwt-remove = "git worktree remove";
       };
     };
   };

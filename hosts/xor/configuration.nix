@@ -71,11 +71,7 @@
     home-assistant-custom-lovelace-modules.weather-card
   ];
 
-  # List services that you want to enable:
-
   services.openssh.enable = true;
-  services.tailscale.enable = false;
-  services.tailscale.authKeyFile = "/etc/tailscale_homeassistant_auth_key";
 
   systemd.tmpfiles.rules = [
     "f ${config.services.home-assistant.configDir}/automations.yaml 0755 hass hass"

@@ -17,8 +17,8 @@
     };
 
     nvfOs76 = {
-      url = "github:xenos76/os76-nvf/0.0.7";
-      # url = "git+https://git.priv.os76.xyz/xeno/os76-nvf.git";
+      # url = "github:xenos76/os76-nvf/0.0.7";
+      url = "git+https://git.priv.os76.xyz/xeno/os76-nvf.git";
       # inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -79,7 +79,7 @@
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
     pkgsUnstable = import nixpkgsUnstable {inherit system;};
-
+    nurpkgs = nur.legacyPackages.${system};
     # os76PrivPkgs = import nurOs76Priv {pkgs = pkgs;};
     os76Pkgs = import nurOs76 {inherit pkgs;};
 
@@ -146,7 +146,10 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               backupFileExtension = "backup";
-              extraSpecialArgs = {inherit pkgsUnstable;};
+              extraSpecialArgs = {
+                inherit pkgsUnstable;
+                inherit nurpkgs;
+              };
             };
             home-manager.sharedModules = [
               inputs.sops-nix.homeManagerModules.sops
@@ -186,7 +189,10 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               backupFileExtension = "backup";
-              extraSpecialArgs = {inherit pkgsUnstable;};
+              extraSpecialArgs = {
+                inherit pkgsUnstable;
+                inherit nurpkgs;
+              };
             };
             home-manager.sharedModules = [
               inputs.sops-nix.homeManagerModules.sops

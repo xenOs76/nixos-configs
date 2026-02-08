@@ -10,9 +10,22 @@
     ./desktop-manager.nix
   ];
 
-  nixpkgs.config.permittedInsecurePackages = [
-    "python3.12-ecdsa-0.19.1"
-  ];
+  # nixpkgs.config.permittedInsecurePackages = [
+  #   "python3.12-ecdsa-0.19.1"
+  # ];
+
+  nix = {
+    settings = {
+      auto-optimise-store = true;
+      keep-outputs = false;
+      keep-derivations = false;
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+  };
 
   catppuccin = {
     enable = true;
