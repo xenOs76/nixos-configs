@@ -77,18 +77,18 @@ in {
       test -d ~/.krew/bin || mkdir -p ~/.krew/bin
       test -f ~/.krew/bin/kubectl-netshoot && eval "$(kubectl netshoot completion bash)"
 
+      test -f ~/.kubectl_aliases && source ~/.kubectl_aliases
+
+      command -v glow &>/dev/null && eval "$(glow completion bash)"
+      command -v helm &>/dev/null && eval "$(helm completion bash)"
+      command -v velero &>/dev/null && eval "$(velero completion bash)"
+      command -v aws_completer &>/dev/null && complete -C 'aws_completer' aws
+
       export GEMINI_API_KEY_FILE="/home/xeno/.config/gemini_api_key_cli_testing"
       test -f $GEMINI_API_KEY_FILE && export GEMINI_API_KEY=$(cat $GEMINI_API_KEY_FILE)
       export AVANTE_GEMINI_API_KEY=$GEMINI_API_KEY
 
       # which https-wrench &>/dev/null && eval "$(https-wrench completion bash)"
-      complete -C 'aws_completer' aws
-      eval "$(glow completion bash)"
-
-      eval "$(helm completion bash)"
-      eval "$(velero completion bash)"
-
-      source ~/.kubectl_aliases
     '';
 
     shellAliases = {

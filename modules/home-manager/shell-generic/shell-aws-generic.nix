@@ -24,7 +24,7 @@
     $GUM format -- "Choose AWS region:"
     REGION=$($GUM choose $DEFAULT_AWS_REGION_LIST)
 
-    $AWS ec2 describe-instances --region $REGION --query $AWS_QUERY --filters $AWS_FILTERS --output table | $FZF $FZF_OPTIONS
+    $AWS ec2 describe-instances --region "$REGION" --query "$AWS_QUERY" --filters "$AWS_FILTERS" --output table | $FZF $FZF_OPTIONS
   '';
 
   aws-eks-switch-cluster = pkgs.writeShellScriptBin "aws-eks-switch-cluster" ''
@@ -39,15 +39,14 @@
 
     $GUM format -- "Choose AWS region:"
     REGION=$($GUM choose $DEFAULT_AWS_REGION_LIST)
-    CLUSTERS=$($AWS eks list-clusters --region $REGION | $JQ -r '.clusters[]')
+    CLUSTERS=$($AWS eks list-clusters --region "$REGION" | $JQ -r '.clusters[]')
 
     if [ -z "$CLUSTERS" ]; then echo "No EKS cluster found" && exit 0; fi
 
     CLUSTER=$($GUM choose $CLUSTERS)
 
     $GUM format -- "Switching k8s context to cluster: **$CLUSTER** ($REGION)"
-    $AWS eks update-kubeconfig --name $CLUSTER --region $REGION
-    if [ $? -ne 0 ]; then exit 1; fi
+    if ! $AWS eks update-kubeconfig --name "$CLUSTER" --region "$REGION"; then exit 1; fi
 
     $GUM format -- "Setting default namespace to **$DEFAULT_K8S_NS**"
     $KUBENS $DEFAULT_K8S_NS
@@ -88,7 +87,7 @@ in {
       aws-select-region = "select-aws-region && source ~/.aws_selected_region";
       noaws = "aws sso logout && unset AWS_PROFILE";
       aws-unset-profile = "unset AWS_PROFILE";
-      aws-switch-region = "select-aws-region && source ~/.aws_selected_region";
+      aws-switch-region = "aws-select-region";
     };
   };
 }
