@@ -2,29 +2,62 @@
   environment.systemPackages = with pkgs; [
     catppuccin-sddm
     kdePackages.sddm-kcm
-    kdePackages.discover
-    kdePackages.kcalc
+    # kdePackages.kcalc
     kdePackages.kcharselect
     kdePackages.kcolorchooser
     kdePackages.kolourpaint
-    kdePackages.ksystemlog
     kdiff3
     kdePackages.partitionmanager
     haruna
     wayland-utils
     wl-clipboard
+
+    xdg-desktop-portal
+    kdePackages.xdg-desktop-portal-kde
+
+    cosmic-reader
+    cosmic-ext-applet-minimon
+    cosmic-ext-calculator
+    cosmic-ext-applet-privacy-indicator
+    cosmic-ext-tweaks
   ];
 
-  services.xserver.enable = true;
-  services.desktopManager.plasma6.enable = true;
-  services.displayManager = {
-    defaultSession = "plasma";
-    sddm = {
-      enable = true;
-      settings = {
-        Autologin = {
-          Session = "plasma.desktop";
-          User = "xeno";
+  environment.cosmic.excludePackages = with pkgs; [
+    cosmic-store
+    cosmic-term
+    cosmic-wallpapers
+  ];
+
+  services = {
+    xserver.enable = true;
+
+    # COSMIC
+    system76-scheduler.enable = true;
+    desktopManager = {
+      cosmic.enable = true;
+    };
+    displayManager = {
+      cosmic-greeter.enable = true;
+      autoLogin = {
+        enable = true;
+        user = "xeno";
+      };
+    };
+
+    # KDE6
+    desktopManager = {
+      plasma6.enable = false;
+    };
+    displayManager = {
+      defaultSession = "plasma";
+      sddm = {
+        enable = false;
+        wayland.enable = true;
+        settings = {
+          Autologin = {
+            Session = "plasma.desktop";
+            User = "xeno";
+          };
         };
       };
     };
@@ -32,7 +65,11 @@
 
   programs.dconf.enable = true;
   xdg.portal.enable = true;
-  xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
+  xdg.portal.extraPortals = with pkgs; [
+    xdg-desktop-portal-gtk
+    xdg-desktop-portal-gnome
+    xdg-desktop-portal-cosmic
+  ];
 
   ## Configure keymap in X11
   # services.xserver.xkb.layout = "us";

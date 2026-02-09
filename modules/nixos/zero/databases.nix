@@ -21,7 +21,7 @@
   };
 
   services.mysqlBackup = {
-    enable = true;
+    enable = false;
     user = "backup";
     location = "/data/store-btrfs/mysql-backup/";
     databases = ["grafana"];

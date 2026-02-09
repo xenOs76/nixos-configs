@@ -1,0 +1,54 @@
+{lib, ...}: {
+  options = {
+    os76Cfg = {
+      gitUserName = lib.mkOption {
+        type = lib.types.str;
+        default = "Zeno Belli";
+        description = "Name of the Git user";
+        example = "John Doe";
+      };
+
+      gitUserEmail = lib.mkOption {
+        type = lib.types.str;
+        default = "xeno@os76.xyz";
+        description = "Email of the Git user";
+        example = "john.doe@example.com";
+      };
+
+      bashPath = lib.mkOption {
+        type = lib.types.str;
+        default = "$HOME/bin:$HOME/.krew/bin:$HOME/go/bin:$HOME/bin/go/bin:$PATH";
+        description = "Value of $PATH for the bash shell";
+        example = "~/bin:$PATH";
+      };
+
+      defKubeNamespace = lib.mkOption {
+        type = lib.types.str;
+        default = "default";
+        description = "Default Kubernetes namespace to switch to on first login";
+        example = "istio-system";
+      };
+
+      defAwsRegionList = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = ["eu-central-1" "eu-west-1" "us-east-1"];
+        description = "Default list of AWS regions to choose from in scripts";
+        example = ["eu-central-1"];
+      };
+
+      enableFirefox = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Enable Firefox with custom settings and Nur extensions";
+        example = false;
+      };
+
+      enableKubecolor = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Enable Kubecolor theme file creation";
+        example = false;
+      };
+    };
+  };
+}

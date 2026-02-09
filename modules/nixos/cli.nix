@@ -8,6 +8,7 @@
     git
     alejandra
     cachix
+    nix-tree
     sops
     age
     ssh-to-age

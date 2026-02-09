@@ -1,16 +1,10 @@
 {
   imports = [
-    ./sops.nix
-    ./shell.nix
-    ./scripts.nix
-    ./git.nix
-    ./wezterm.nix
-    ./ghostty.nix
-    ./starship.nix
-    ./k8s.nix
-    ./development.nix
-    ./gui.nix
-    ./browser.nix
+    ./os76-cfg.nix
     ./theme.nix
+
+    ./shell-generic
+    ./gui-generic
+    ./os76-imports
   ];
 }

@@ -6,16 +6,19 @@
 
     bat.enable = true;
     btop.enable = true;
-    cursors.enable = false;
+    cache.enable = true;
     chromium.enable = true;
+    cursors.enable = false;
     delta.enable = true;
-    eza.enable = true;
     element-desktop.enable = true;
+    eza.enable = true;
     firefox.enable = true;
+    fzf.enable = true;
     lazygit.enable = true;
+    starship.enable = true;
     thunderbird.enable = true;
     yazi.enable = true;
-    starship.enable = true;
     zed.enable = true;
+    zellij.enable = true;
   };
 }

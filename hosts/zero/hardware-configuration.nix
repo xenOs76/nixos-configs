@@ -121,6 +121,15 @@
 
   hardware.graphics = {
     enable = true;
+    enable32Bit = true;
+    extraPackages = with pkgs; [
+      #intel-media-driver # For Intel
+      # vaapiIntel       # For older Intel
+      # vaapiVdpau # For AMD/Nvidia
+      libva-vdpau-driver
+      # nvidia-vaapi-driver # For Nvidia
+    ];
+
     # driSupport32Bit = true;
     # extraPackages = with pkgs; [amdvlk];
   };

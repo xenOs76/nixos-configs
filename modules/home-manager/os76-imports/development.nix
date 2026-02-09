@@ -6,8 +6,8 @@
 
     ### Editors
     #zed-editor # see below
-    jetbrains.idea-oss
-    thonny
+    # jetbrains.idea-oss
+    # thonny
 
     # Make / Iot
     circup
@@ -21,60 +21,59 @@
 
     ### Languages
     go
-    tinygo
-    gopls
-    gotools
+    # tinygo
+    # gopls
+    # gotools
     golangci-lint
-    gofumpt
-    gomodifytags
-    golines
-    gci
-    impl
-    delve
-
-    (python3.withPackages (
-      ps:
-        with ps; [
-          rsa
-          boto3
-          boto3-stubs
-          botocore
-          packaging
-          pip
-          pylint
-          urllib3
-          types-urllib3
-          pipx
-          twine
-          distutils
-        ]
-    ))
-
+    # gofumpt
+    # gomodifytags
+    # golines
+    # gci
+    # impl
+    # delve
+    #
+    # (python3.withPackages (
+    #   ps:
+    #     with ps; [
+    #       rsa
+    #       boto3
+    #       boto3-stubs
+    #       botocore
+    #       packaging
+    #       pip
+    #       pylint
+    #       urllib3
+    #       types-urllib3
+    #       pipx
+    #       twine
+    #       distutils
+    #     ]
+    # ))
+    #
     ansible
     # ansible-lint  # https://github.com/nixos/nixpkgs/issues/460422
     poetry
 
     #terraform
     opentofu
-    tfswitch
 
     ### Format/Lint
-    lua-language-server
-    black
-    stylua
-    prettierd
-    nil
-    nixd
-    yamlfmt
-    shellcheck
-    shfmt
-    terraform-ls
-    terraform-docs
-    tflint
+    # lua-language-server
+    # black
+    # stylua
+    # prettierd
+    # nil
+    # nixd
+    # yamlfmt
+    # shellcheck
+    # shfmt
+    # terraform-ls
+    # terraform-docs
+    # tflint
   ];
 
   programs.zed-editor = {
-    enable = true;
+    enable = false;
     installRemoteServer = true;
 
     extraPackages = with pkgs; [
