@@ -23,6 +23,7 @@
 
     $GUM format -- "Choose AWS region:"
     REGION=$($GUM choose $DEFAULT_AWS_REGION_LIST)
+    if [ -z "$REGION" ]; then echo "No region selected" && exit 0; fi
 
     $AWS ec2 describe-instances --region "$REGION" --query "$AWS_QUERY" --filters "$AWS_FILTERS" --output table | $FZF $FZF_OPTIONS
   '';
@@ -39,11 +40,13 @@
 
     $GUM format -- "Choose AWS region:"
     REGION=$($GUM choose $DEFAULT_AWS_REGION_LIST)
+    if [ -z "$REGION" ]; then echo "No region selected" && exit 0; fi
     CLUSTERS=$($AWS eks list-clusters --region "$REGION" | $JQ -r '.clusters[]')
 
     if [ -z "$CLUSTERS" ]; then echo "No EKS cluster found" && exit 0; fi
 
     CLUSTER=$($GUM choose $CLUSTERS)
+    if [ -z "$CLUSTER" ]; then echo "No cluster selected" && exit 0; fi
 
     $GUM format -- "Switching k8s context to cluster: **$CLUSTER** ($REGION)"
     if ! $AWS eks update-kubeconfig --name "$CLUSTER" --region "$REGION"; then exit 1; fi
@@ -58,7 +61,8 @@
     RG="${lib.getExe pkgs.ripgrep}";
     SED="${pkgs.gnused}/bin/sed";
 
-    PROFILE=$($RG profile ~/.aws/config | $SED -E 's/\[profile\s(\S+)\]/\1/g' | $FZF $FZF_OPTIONS)
+    PROFILE=$($RG '^\[profile ' ~/.aws/config | $SED -E 's/\[profile\s(\S+)\]/\1/g' | $FZF $FZF_OPTIONS)
+    if [ -z "$PROFILE" ]; then echo "No profile selected" && exit 0; fi
     echo "export AWS_PROFILE=$PROFILE" > ~/.aws_selected_profile
   '';
 
@@ -68,6 +72,7 @@
 
     $GUM format -- "Choose AWS region:"
     REGION=$($GUM choose $DEFAULT_AWS_REGION_LIST)
+    if [ -z "$REGION" ]; then echo "No region selected" && exit 0; fi
     echo "export AWS_REGION=$REGION" > ~/.aws_selected_region
   '';
 in {
