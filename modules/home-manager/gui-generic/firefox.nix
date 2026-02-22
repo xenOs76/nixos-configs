@@ -22,6 +22,7 @@
       "en-GB"
     ];
 
+    # https://mozilla.github.io/policy-templates/
     # https://github.com/llakala/nixos/blob/3ae839c3b3d5fd4db2b78fa2dbb5ea1080a903cd/apps/programs/firefox/policies.nix
     policies = {
       DontCheckDefaultBrowser = true;
@@ -37,7 +38,7 @@
       PictureInPicture.Enabled = false;
       PromptForDownloadLocation = false;
 
-      HardwareAcceleration = true;
+      HardwareAcceleration = config.os76Cfg.firefoxUseGpu;
       TranslateEnabled = true;
 
       Homepage.StartPage = "previous-session";
@@ -70,6 +71,21 @@
           SponsoredPocket = false;
           Snippets = false;
         };
+
+      # https://mozilla.github.io/policy-templates/#enterprisepoliciesenabled
+      # Disables the 'Allow Firefox to automatically trust third-party
+      # root certificates you install' checkbox in Settings.
+      # macOS only
+      EnterprisePoliciesEnabled = config.os76Cfg.firefoxTrustEnterpriseRoots;
+
+      Certificates = {
+        # https://mozilla.github.io/policy-templates/#certificates--importenterpriseroots
+        # Explicitly forbids the browser from using the OS root certificate store
+        ImportEnterpriseRoots = config.os76Cfg.firefoxTrustEnterpriseRoots;
+
+        # https://mozilla.github.io/policy-templates/#certificates--install
+        Install = config.os76Cfg.firefoxAdditionalCertificates;
+      };
     };
 
     profiles = {
@@ -81,8 +97,8 @@
 
         # https://nix-community.github.io/home-manager/options.xhtml#opt-programs.firefox.profiles._name_.settings
         settings = {
-          # "browser.bookmarks.file" = ./firefox-bookmarks.html;
-          # "browser.places.importBookmarksHTML" = true;
+          "security.enterprise_roots.enabled" = config.os76Cfg.firefoxTrustEnterpriseRoots;
+          "security.certerrors.mitm.auto_enable_enterprise_roots" = config.os76Cfg.firefoxTrustEnterpriseRoots;
 
           "extensions.autoDisableScopes" = 0;
           "extensions.update.autoUpdateDefault" = false;
@@ -92,9 +108,14 @@
           "layout.css.prefers-color-scheme.content-override" = 0; # Website appearance: 0 - Dark, 1 - Light, 2 - System
 
           # https://cleanbrowsing.org/help/docs/configure-dns-over-https-doh-firefox/
-          "network.trr.mode" = 2; # DNS over HTTPS: 0 Off (default), 2 Increased Protection, 3 Max Protection, 5 Off (explicit)
+          "network.trr.mode" = 3; # DNS over HTTPS: 0 Off (default), 2 Increased Protection, 3 Max Protection, 5 Off (explicit)
           # "network.trr.custom_uri" = ""; # default value
           # "network.trr.default_provider_uri" = "https://mozilla.cloudflare-dns.com/dns-query"; # default value
+
+          # https://wiki.mozilla.org/Trusted_Recursive_Resolver#DNS-over-HTTPS_Prefs_in_Firefox > network.trr.allow-rfc1918
+          # (default: false) set this to true to allow RFC 1918 private addresses in TRR responses.
+          # When set to false, any such response will be considered invalid and won't be used.
+          "network.trr.allow-rfc1918" = true;
 
           "browser.search.region" = "GB";
           "browser.search.isUS" = false;
@@ -124,6 +145,7 @@
 
         search.force = true;
         search.engines = {
+          ebay.metaData.hidden = true;
           bing.metaData.hidden = true;
           google.metaData.alias = "@g";
           "Nix Packages" = {
@@ -143,6 +165,7 @@
           };
           "Nix Options" = {
             definedAliases = ["@no"];
+            icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
             urls = [
               {
                 template = "https://search.nixos.org/options";
@@ -154,6 +177,13 @@
                 ];
               }
             ];
+          };
+
+          nixos-wiki = {
+            name = "NixOS Wiki";
+            urls = [{template = "https://wiki.nixos.org/w/index.php?search={searchTerms}";}];
+            iconMapObj."16" = "https://wiki.nixos.org/favicon.ico";
+            definedAliases = ["@nw"];
           };
         };
       };

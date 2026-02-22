@@ -83,6 +83,12 @@
     # os76PrivPkgs = import nurOs76Priv {pkgs = pkgs;};
     os76Pkgs = import nurOs76 {inherit pkgs;};
 
+    os76Cfg = {
+      checkValue = "from flake";
+      firefoxUseGpu = false; # Firefox freeze after unlock in COSMIC
+      firefoxAdditionalCertificates = ["/home/xeno/.config/mkcert/star.home.arpa-RootCA-cert.pem"];
+    };
+
     ### NVF/Neovim config ###
     os76NvfCfg = {
       terraformVersion = "1.14";
@@ -149,6 +155,7 @@
               extraSpecialArgs = {
                 inherit pkgsUnstable;
                 inherit nurpkgs;
+                inherit os76Cfg;
               };
             };
             home-manager.sharedModules = [
@@ -192,6 +199,7 @@
               extraSpecialArgs = {
                 inherit pkgsUnstable;
                 inherit nurpkgs;
+                inherit os76Cfg;
               };
             };
             home-manager.sharedModules = [
