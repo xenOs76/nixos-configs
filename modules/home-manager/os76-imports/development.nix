@@ -5,7 +5,7 @@
     commitizen
 
     ### Editors
-    #zed-editor # see below
+    #zed-editor # hm managed
     # jetbrains.idea-oss
     # thonny
 
@@ -20,56 +20,27 @@
     bossa
 
     ### Languages
+    gcc15
+    gnumake42
+
     go
-    # tinygo
+    golangci-lint
+    gore
+    # delve
+    # gci
+    # gofumpt
+    # golines
+    # gomodifytags
     # gopls
     # gotools
-    golangci-lint
-    # gofumpt
-    # gomodifytags
-    # golines
-    # gci
     # impl
-    # delve
-    #
-    # (python3.withPackages (
-    #   ps:
-    #     with ps; [
-    #       rsa
-    #       boto3
-    #       boto3-stubs
-    #       botocore
-    #       packaging
-    #       pip
-    #       pylint
-    #       urllib3
-    #       types-urllib3
-    #       pipx
-    #       twine
-    #       distutils
-    #     ]
-    # ))
-    #
+    # tinygo
+
     ansible
     # ansible-lint  # https://github.com/nixos/nixpkgs/issues/460422
-    poetry
 
     #terraform
     opentofu
-
-    ### Format/Lint
-    # lua-language-server
-    # black
-    # stylua
-    # prettierd
-    # nil
-    # nixd
-    # yamlfmt
-    # shellcheck
-    # shfmt
-    # terraform-ls
-    # terraform-docs
-    # tflint
   ];
 
   programs.zed-editor = {

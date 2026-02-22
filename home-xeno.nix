@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  os76Cfg,
   ...
 }: {
   home = {
@@ -36,6 +37,7 @@
 
   imports = [
     ./modules/home-manager
+    {inherit os76Cfg;}
   ];
 
   # set cursor size and dpi for 4k monitor

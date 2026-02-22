@@ -1,4 +1,18 @@
-{pkgs, ...}: let
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}: let
+  shell-generic-os76cfg-values = pkgs.writeShellScriptBin "shell-generic-os76cfg-values" ''
+    echo "config.os76Cfg values in shell-generic.nix import:"
+    echo "checkValue = ${config.os76Cfg.checkValue}"
+    echo "gitUserName = ${config.os76Cfg.gitUserName}"
+    echo "defKubeNamespace = ${config.os76Cfg.defKubeNamespace}"
+    echo "defAwsRegionList = ${lib.strings.concatStringsSep " " config.os76Cfg.defAwsRegionList}"
+    echo "firefoxAdditionalCertificates = ${lib.strings.concatStringsSep " " config.os76Cfg.firefoxAdditionalCertificates}"
+  '';
+
   k3s_config_ro_path = "/home/xeno/.kube/config-ro";
 
   k3s-sync-config-from-secret = pkgs.writeShellScriptBin "k3s-sync-config-from-secret" ''
@@ -29,6 +43,7 @@ in {
   };
 
   home.packages = [
+    shell-generic-os76cfg-values
     k3s-sync-config-from-secret
     plasmashell-replace
     docker-login-xeno-registry-0-os76-priv

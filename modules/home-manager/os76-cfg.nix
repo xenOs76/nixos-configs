@@ -43,11 +43,32 @@
         example = false;
       };
 
-      enableKubecolor = lib.mkOption {
+      firefoxUseGpu = lib.mkOption {
         type = lib.types.bool;
         default = true;
-        description = "Enable Kubecolor theme file creation";
+        description = "Whether to enable hardware acceleraition in Firefox";
         example = false;
+      };
+
+      firefoxTrustEnterpriseRoots = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "Whether Firefox trusts OS/Enterprise Root Certificates";
+        example = true;
+      };
+
+      firefoxAdditionalCertificates = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [""];
+        description = "List of paths to additional Root Certificates for Firefox";
+        example = ["./sample-cert.pem"];
+      };
+
+      checkValue = lib.mkOption {
+        type = lib.types.str;
+        default = "default value";
+        description = "Dummy value to test config propagation";
+        example = "imported value";
       };
     };
   };

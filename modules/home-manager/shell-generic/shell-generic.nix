@@ -16,6 +16,7 @@
     coreutils-full
     curl
     dnsutils
+    doggo
     eza
     fd
     file
@@ -109,6 +110,10 @@
         tailscale-up = "sudo tailscale up --accept-routes";
         tailscale-down = "sudo tailscale down";
         tailscale-status = "tailscale status";
+
+        doggo-doh-repo-os76-xyz = "doggo repo.os76.xyz @https://cloudflare-dns.com/dns-query";
+        doggo-doh-git-priv-os76-xyz = "doggo git.priv.os76.xyz @https://cloudflare-dns.com/dns-query";
+        doggo-doh-dnssec-git-priv-os76-xyz = "doggo --do git.priv.os76.xyz @https://cloudflare-dns.com/dns-query";
       };
     };
     zoxide = {

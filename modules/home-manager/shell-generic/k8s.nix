@@ -61,7 +61,7 @@
     # https://github.com/vkhitrin/kubecolor-catppuccin
     # https://github.com/vkhitrin/kubecolor-catppuccin/blob/main/catppuccin-frappe.yaml
     ".kube/color.yaml" = {
-      enable = config.os76Cfg.enableKubecolor;
+      enable = true;
       text = ''
         preset: "dark"
         theme:

@@ -18,5 +18,17 @@
     gemini_api_key_cli_testing = {
       path = "/home/xeno/.config/gemini_api_key_cli_testing";
     };
+    mkcert_default_root_ca_cert = {
+      path = "/home/xeno/.config/mkcert/star.home.arpa-RootCA-cert.pem";
+    };
+    mkcert_default_root_ca_key = {
+      path = "/home/xeno/.config/mkcert/star.home.arpa-RootCA-key.pem";
+    };
+    mkcert_star_home_arpa_cert = {
+      path = "/home/xeno/.config/mkcert/star.home.arpa-cert.pem";
+    };
+    mkcert_star_home_arpa_key = {
+      path = "/home/xeno/.config/mkcert/star.home.arpa-key.pem";
+    };
   };
 }
