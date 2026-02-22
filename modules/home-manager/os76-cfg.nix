@@ -46,7 +46,7 @@
       firefoxUseGpu = lib.mkOption {
         type = lib.types.bool;
         default = true;
-        description = "Whether to enable hardware acceleraition in Firefox";
+        description = "Whether to enable hardware acceleration in Firefox";
         example = false;
       };
 
@@ -59,7 +59,7 @@
 
       firefoxAdditionalCertificates = lib.mkOption {
         type = lib.types.listOf lib.types.str;
-        default = [""];
+        default = [];
         description = "List of paths to additional Root Certificates for Firefox";
         example = ["./sample-cert.pem"];
       };

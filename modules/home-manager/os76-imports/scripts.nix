@@ -5,7 +5,7 @@
   ...
 }: let
   shell-generic-os76cfg-values = pkgs.writeShellScriptBin "shell-generic-os76cfg-values" ''
-    echo "config.os76Cfg values in shell-generic.nix import:"
+    echo "config.os76Cfg values in os76-imports/scripts.nix import:"
     echo "checkValue = ${config.os76Cfg.checkValue}"
     echo "gitUserName = ${config.os76Cfg.gitUserName}"
     echo "defKubeNamespace = ${config.os76Cfg.defKubeNamespace}"

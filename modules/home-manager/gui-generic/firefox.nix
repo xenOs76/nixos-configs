@@ -72,18 +72,18 @@
           Snippets = false;
         };
 
-      # https://mozilla.github.io/policy-templates/#certificates--importenterpriseroots
-      # Explicitly forbids the browser from using the OS root certificate store
-      ImportEnterpriseRoots = config.os76Cfg.firefoxTrustEnterpriseRoots;
-
       # https://mozilla.github.io/policy-templates/#enterprisepoliciesenabled
       # Disables the 'Allow Firefox to automatically trust third-party
-      # root certificates you install' checkbox in Settings
+      # root certificates you install' checkbox in Settings.
+      # macOS only
       EnterprisePoliciesEnabled = config.os76Cfg.firefoxTrustEnterpriseRoots;
 
-      # https://mozilla.github.io/policy-templates/#certificates--install
-      # Install certificates into the Firefox certificate store
       Certificates = {
+        # https://mozilla.github.io/policy-templates/#certificates--importenterpriseroots
+        # Explicitly forbids the browser from using the OS root certificate store
+        ImportEnterpriseRoots = config.os76Cfg.firefoxTrustEnterpriseRoots;
+
+        # https://mozilla.github.io/policy-templates/#certificates--install
         Install = config.os76Cfg.firefoxAdditionalCertificates;
       };
     };
