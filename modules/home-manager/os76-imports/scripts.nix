@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  shell-generic-os76cfg-values = pkgs.writeShellScriptBin "shell-generic-os76cfg-values" ''
+  shell-os76-os76cfg-values = pkgs.writeShellScriptBin "shell-os76-os76cfg-values" ''
     echo "config.os76Cfg values in os76-imports/scripts.nix import:"
     echo "checkValue = ${config.os76Cfg.checkValue}"
     echo "gitUserName = ${config.os76Cfg.gitUserName}"
@@ -43,7 +43,7 @@ in {
   };
 
   home.packages = [
-    shell-generic-os76cfg-values
+    shell-os76-os76cfg-values
     k3s-sync-config-from-secret
     plasmashell-replace
     docker-login-xeno-registry-0-os76-priv

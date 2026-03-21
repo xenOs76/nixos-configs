@@ -17,9 +17,14 @@
     };
 
     nvfOs76 = {
-      # url = "github:xenos76/os76-nvf/0.0.7";
-      url = "git+https://git.priv.os76.xyz/xeno/os76-nvf.git";
+      url = "git+https://git.priv.os76.xyz/xeno/os76-nvf?ref=refs/tags/0.0.19";
       # inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    gitlineage-nvim = {
+      # url = "github:LionyxML/gitlineage.nvim";
+      url = "github:zenangst/gitlineage.nvim?ref=fix/file-not-tracked-by-git";
+      flake = false;
     };
 
     sops-nix = {
@@ -44,6 +49,7 @@
       url = "github:xenos76/nur-packages";
     };
     nixpkgs-terraform.url = "github:stackbuilders/nixpkgs-terraform";
+    antigravity.url = "github:jacopone/antigravity-nix";
   };
 
   nixConfig = {
@@ -74,6 +80,7 @@
     home-manager,
     nixpkgs-terraform,
     sops-nix,
+    antigravity,
     ...
   } @ inputs: let
     system = "x86_64-linux";
@@ -83,9 +90,10 @@
     # os76PrivPkgs = import nurOs76Priv {pkgs = pkgs;};
     os76Pkgs = import nurOs76 {inherit pkgs;};
 
+    gitlineage-repo = inputs.gitlineage-nvim;
+
     os76Cfg = {
       checkValue = "from flake";
-      firefoxUseGpu = false; # Firefox freeze after unlock in COSMIC
       firefoxAdditionalCertificates = ["/home/xeno/.config/mkcert/star.home.arpa-RootCA-cert.pem"];
     };
 
@@ -104,7 +112,10 @@
 
         "${nvfOs76}/modules/nvim/ide/default.nix"
       ];
-      extraSpecialArgs = {inherit nixpkgs-terraform;};
+      extraSpecialArgs = {
+        inherit nixpkgs-terraform;
+        inherit gitlineage-repo;
+      };
     };
   in {
     exportedInputs = inputs;
@@ -156,6 +167,7 @@
                 inherit pkgsUnstable;
                 inherit nurpkgs;
                 inherit os76Cfg;
+                inherit antigravity;
               };
             };
             home-manager.sharedModules = [

@@ -12,6 +12,7 @@
     glab
     pre-commit
     pre-commit-hook-ensure-sops
+    prek
   ];
 
   programs = {

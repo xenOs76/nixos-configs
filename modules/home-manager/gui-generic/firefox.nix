@@ -19,7 +19,6 @@
     enable = config.os76Cfg.enableFirefox;
     languagePacks = [
       "en-US"
-      "en-GB"
     ];
 
     # https://mozilla.github.io/policy-templates/
@@ -30,17 +29,13 @@
       DisableFirefoxStudies = true;
       DisablePocket = true;
       DisableFirefoxScreenshots = true;
-
       DisplayBookmarksToolbar = "never";
       DisplayMenuBar = "never"; # Previously appeared when pressing alt
-
       OverrideFirstRunPage = "";
       PictureInPicture.Enabled = false;
       PromptForDownloadLocation = false;
-
       HardwareAcceleration = config.os76Cfg.firefoxUseGpu;
       TranslateEnabled = true;
-
       Homepage.StartPage = "previous-session";
 
       UserMessaging = {
@@ -60,17 +55,15 @@
         Fingerprinting = true;
       };
 
-      FirefoxHome =
-        # Make new tab only show search
-        {
-          Search = true;
-          TopSites = false;
-          SponsoredTopSites = false;
-          Highlights = false;
-          Pocket = false;
-          SponsoredPocket = false;
-          Snippets = false;
-        };
+      FirefoxHome = {
+        Search = true;
+        TopSites = false;
+        SponsoredTopSites = false;
+        Highlights = false;
+        Pocket = false;
+        SponsoredPocket = false;
+        Snippets = false;
+      };
 
       # https://mozilla.github.io/policy-templates/#enterprisepoliciesenabled
       # Disables the 'Allow Firefox to automatically trust third-party
@@ -139,51 +132,54 @@
             # okta-browser-plugin # non free
             # session-sync
             darkreader
-            # catppuccin-mocha-mauve
           ];
         };
 
-        search.force = true;
-        search.engines = {
-          ebay.metaData.hidden = true;
-          bing.metaData.hidden = true;
-          google.metaData.alias = "@g";
-          "Nix Packages" = {
-            urls = [
-              {
-                template = "https://search.nixos.org/packages";
-                params = [
-                  {
-                    name = "query";
-                    value = "{searchTerms}";
-                  }
-                ];
-              }
-            ];
-            icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-            definedAliases = ["@np"];
-          };
-          "Nix Options" = {
-            definedAliases = ["@no"];
-            icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-            urls = [
-              {
-                template = "https://search.nixos.org/options";
-                params = [
-                  {
-                    name = "query";
-                    value = "{searchTerms}";
-                  }
-                ];
-              }
-            ];
-          };
+        search = {
+          force = true;
+          default = "ddg"; # DuckDuckGo
+          privateDefault = "ddg"; # DuckDuckGo
+          engines = {
+            bing.metaData.hidden = true;
+            google.metaData.alias = "@g";
+            "Nix Packages" = {
+              urls = [
+                {
+                  template = "https://search.nixos.org/packages";
+                  params = [
+                    {
+                      name = "query";
+                      value = "{searchTerms}";
+                    }
+                  ];
+                }
+              ];
+              icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+              definedAliases = ["@np"];
+            };
 
-          nixos-wiki = {
-            name = "NixOS Wiki";
-            urls = [{template = "https://wiki.nixos.org/w/index.php?search={searchTerms}";}];
-            iconMapObj."16" = "https://wiki.nixos.org/favicon.ico";
-            definedAliases = ["@nw"];
+            "Nix Options" = {
+              definedAliases = ["@no"];
+              icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+              urls = [
+                {
+                  template = "https://search.nixos.org/options";
+                  params = [
+                    {
+                      name = "query";
+                      value = "{searchTerms}";
+                    }
+                  ];
+                }
+              ];
+            };
+
+            nixos-wiki = {
+              name = "NixOS Wiki";
+              urls = [{template = "https://wiki.nixos.org/w/index.php?search={searchTerms}";}];
+              icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+              definedAliases = ["@nw"];
+            };
           };
         };
       };

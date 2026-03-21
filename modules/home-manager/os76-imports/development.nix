@@ -39,6 +39,8 @@
     ansible
     # ansible-lint  # https://github.com/nixos/nixpkgs/issues/460422
 
+    # Python: check Nix Python env definition in shell-generic.nix
+
     #terraform
     opentofu
   ];

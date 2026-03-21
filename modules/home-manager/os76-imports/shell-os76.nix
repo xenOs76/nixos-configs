@@ -69,36 +69,40 @@ in {
       };
 
       initExtra = ''
-        ### Exports ###
+          ### Exports ###
 
-        export EDITOR="vi"
-        export ANSIBLE_NOCOWS="1"
-        export NIXPKGS_ALLOW_UNFREE="1"
+          export EDITOR="vi"
+          export ANSIBLE_NOCOWS="1"
+          export NIXPKGS_ALLOW_UNFREE="1"
 
-        # disable ssh agent
-        SSH_AUTH_SOCK=""
+          # disable ssh agent
+          SSH_AUTH_SOCK=""
 
-        export GEMINI_API_KEY_FILE="/home/xeno/.config/gemini_api_key_cli_testing"
-        test -f $GEMINI_API_KEY_FILE && export GEMINI_API_KEY=$(cat $GEMINI_API_KEY_FILE)
-        export AVANTE_GEMINI_API_KEY=$GEMINI_API_KEY
+          export GEMINI_API_KEY_FILE="/home/xeno/.config/gemini_api_key_cli_testing"
+          test -f $GEMINI_API_KEY_FILE && export GEMINI_API_KEY=$(cat $GEMINI_API_KEY_FILE)
+          export AVANTE_GEMINI_API_KEY=$GEMINI_API_KEY
 
-        # https://www.reddit.com/r/pop_os/comments/1pmpqga/firefox_freezing_in_pop_os_2404/
-        export MOZ_ENABLE_WAYLAND="1"
-        ###############
+          # https://www.reddit.com/r/pop_os/comments/1pmpqga/firefox_freezing_in_pop_os_2404/
+          export MOZ_ENABLE_WAYLAND="1"
+          ###############
 
-        ### Completions ###
-        command -v glow &>/dev/null && eval "$(glow completion bash)"
-        command -v helm &>/dev/null && eval "$(helm completion bash)"
-        command -v velero &>/dev/null && eval "$(velero completion bash)"
-        command -v aws_completer &>/dev/null && complete -C 'aws_completer' aws
-        # which https-wrench &>/dev/null && eval "$(https-wrench completion bash)"
-        ##################
+          ### Completions ###
+          command -v glow &>/dev/null && eval "$(glow completion bash)"
+          command -v helm &>/dev/null && eval "$(helm completion bash)"
+          command -v velero &>/dev/null && eval "$(velero completion bash)"
+          command -v aws_completer &>/dev/null && complete -C 'aws_completer' aws
+          # which https-wrench &>/dev/null && eval "$(https-wrench completion bash)"
+          ##################
 
-        test -d ~/bin || mkdir ~/bin
-        test -d ~/.krew/bin || mkdir -p ~/.krew/bin
-        #test -f ~/.krew/bin/kubectl-netshoot && eval "$(kubectl netshoot completion bash)"
+          test -d ~/bin || mkdir ~/bin
+          test -d ~/.krew/bin || mkdir -p ~/.krew/bin
+          #test -f ~/.krew/bin/kubectl-netshoot && eval "$(kubectl netshoot completion bash)"
 
-        test -f ~/.kubectl_aliases && source ~/.kubectl_aliases
+          test -f ~/.kubectl_aliases && source ~/.kubectl_aliases
+
+        # HTTPS-Wrench test variables
+         test -f ~/.config/https-wrench/jwtinfo_test_auth0_req_values.json && export JWTINFO_TEST_AUTH0=$(cat ~/.config/https-wrench/jwtinfo_test_auth0_req_values.json)
+         test -f ~/.config/https-wrench/jwtinfo_test_keycloak_req_values.json && export JWTINFO_TEST_KEYCLOAK=$(cat ~/.config/https-wrench/jwtinfo_test_keycloak_req_values.json)
       '';
 
       shellAliases = {

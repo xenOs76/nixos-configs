@@ -2,6 +2,7 @@
   pkgs,
   config,
   os76Cfg,
+  antigravity,
   ...
 }: {
   home = {
@@ -50,5 +51,6 @@
     alejandra
     nurl
     nixfmt-rfc-style
+    antigravity.packages.${pkgs.system}.default
   ];
 }

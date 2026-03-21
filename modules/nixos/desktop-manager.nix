@@ -37,21 +37,21 @@
       cosmic.enable = true;
     };
     displayManager = {
-      cosmic-greeter.enable = true;
+      cosmic-greeter.enable = false;
       autoLogin = {
-        enable = true;
+        enable = false;
         user = "xeno";
       };
     };
 
     # KDE6
     desktopManager = {
-      plasma6.enable = false;
+      plasma6.enable = true;
     };
     displayManager = {
       defaultSession = "plasma";
       sddm = {
-        enable = false;
+        enable = true;
         wayland.enable = true;
         settings = {
           Autologin = {
