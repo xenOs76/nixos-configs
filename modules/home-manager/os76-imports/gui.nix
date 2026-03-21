@@ -11,7 +11,7 @@
     yubioath-flutter
 
     # kde6
-    kdePackages.ark
+    # kdePackages.ark
     # kdePackages.kcalc
     # kdePackages.kgamma
     # kdePackages.kate
@@ -21,12 +21,12 @@
     kdePackages.skanlite
     kdePackages.spectacle
     kdePackages.okular
-    # kdePackages.neochat
+    # kdePackages.neochat # insecure dep
     # kdePackages.tokodon
     # kdePackages.ktouch
     kdePackages.gwenview
     kdePackages.filelight
-    kdePackages.plasma-browser-integration
+    # kdePackages.plasma-browser-integration
     kdePackages.kasts
     kdePackages.plasmatube
   ];

@@ -4,10 +4,10 @@
   ...
 }: {
   #
-  # TODO install netshoot
-  # https://github.com/nilic/kubectl-netshoot
-  #
+  # TODO:
+  # * install netshoot - https://github.com/nilic/kubectl-netshoot
   home.packages = with pkgs; [
+    argocd
     docker-credential-helpers
     helm-ls
     istioctl
@@ -24,6 +24,7 @@
     kubectl-node-shell
     kubectl-view-secret
     kubectx
+    kyverno
     velero
 
     (wrapHelm kubernetes-helm {
@@ -52,11 +53,24 @@
         ktemp-shell = "kubectl netshoot run temp-shell";
         kubectl = "kubecolor";
         nokube = "kubectx -u";
+        openapi2jsonschema = "python ~/.openapi2jsonschema.py";
       };
     };
   };
 
   home.file = {
+    # https://github.com/yannh/kubeconform?tab=readme-ov-file#a-small-overview-of-kubernetes-manifest-validation
+    # https://github.com/yannh/kubeconform/tree/master/scripts
+    ".openapi2jsonschema.py" = {
+      enable = true;
+      text = builtins.readFile (
+        builtins.fetchurl {
+          url = "https://raw.githubusercontent.com/yannh/kubeconform/refs/heads/master/scripts/openapi2jsonschema.py";
+          sha256 = "sha256:1ww132w86yd5iyh925higyys9dxz33jv9qb40w1h8l3npfzvlifi";
+        }
+      );
+    };
+
     # https://kubecolor.github.io/reference/config/
     # https://github.com/vkhitrin/kubecolor-catppuccin
     # https://github.com/vkhitrin/kubecolor-catppuccin/blob/main/catppuccin-frappe.yaml
