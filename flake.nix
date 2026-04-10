@@ -17,7 +17,7 @@
     };
 
     nvfOs76 = {
-      url = "git+https://git.priv.os76.xyz/xeno/os76-nvf?ref=refs/tags/0.0.19";
+      url = "git+https://git.priv.os76.xyz/xeno/os76-nvf?ref=refs/tags/0.0.20";
       # inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -42,12 +42,13 @@
     };
 
     nurOs76Priv = {
-      url = "git+https://git.priv.os76.xyz/xeno/nur.git";
+      url = "git+https://git.priv.os76.xyz/xeno/nur";
     };
 
     nurOs76 = {
       url = "github:xenos76/nur-packages";
     };
+
     nixpkgs-terraform.url = "github:stackbuilders/nixpkgs-terraform";
     antigravity.url = "github:jacopone/antigravity-nix";
   };
@@ -72,7 +73,7 @@
     nixpkgs,
     nixpkgsUnstable,
     nur,
-    # nurOs76Priv,
+    nurOs76Priv,
     nurOs76,
     nvf,
     nvfOs76,
@@ -87,7 +88,7 @@
     pkgs = nixpkgs.legacyPackages.${system};
     pkgsUnstable = import nixpkgsUnstable {inherit system;};
     nurpkgs = nur.legacyPackages.${system};
-    # os76PrivPkgs = import nurOs76Priv {pkgs = pkgs;};
+    os76PrivPkgs = import nurOs76Priv {pkgs = pkgs;};
     os76Pkgs = import nurOs76 {inherit pkgs;};
 
     gitlineage-repo = inputs.gitlineage-nvim;
@@ -129,6 +130,8 @@
           {
             environment.systemPackages = [
               os76Pkgs.https-wrench
+              os76Pkgs.kubectl-netshoot
+              os76PrivPkgs.kubectl-netdrill
             ];
           }
           ./hosts/zero/configuration.nix
@@ -138,9 +141,6 @@
           (
             {pkgs, ...}: {
               environment.systemPackages = with pkgs.nur.repos.charmbracelet; [
-                gum
-                vhs
-                freeze
                 crush
               ];
             }
@@ -212,6 +212,7 @@
                 inherit pkgsUnstable;
                 inherit nurpkgs;
                 inherit os76Cfg;
+                inherit antigravity;
               };
             };
             home-manager.sharedModules = [

@@ -122,6 +122,9 @@
         doggo-doh-dnssec-git-priv-os76-xyz = "doggo --do git.priv.os76.xyz @https://cloudflare-dns.com/dns-query";
 
         get-direnv-config-template = "cat ~/.config/os76/direnv-template.txt";
+
+        goreleaser-test-release = "goreleaser release --snapshot --clean";
+        goreleaser-release = "goreleaser release --clean";
       };
     };
 

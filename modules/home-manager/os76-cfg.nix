@@ -17,7 +17,7 @@
 
       bashPath = lib.mkOption {
         type = lib.types.str;
-        default = "$HOME/bin:$HOME/.krew/bin:$HOME/go/bin:$HOME/bin/go/bin:$PATH";
+        default = "$HOME/bin:$HOME/go/bin:$PATH";
         description = "Value of $PATH for the bash shell";
         example = "~/bin:$PATH";
       };

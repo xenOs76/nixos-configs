@@ -3,9 +3,6 @@
   config,
   ...
 }: {
-  #
-  # TODO:
-  # * install netshoot - https://github.com/nilic/kubectl-netshoot
   home.packages = with pkgs; [
     argocd
     docker-credential-helpers
@@ -18,7 +15,6 @@
     kubectl-doctor
     kubectl-example
     kubectl-explore
-    kubectl-images
     kubectl-images
     kubectl-ktop
     kubectl-node-shell
@@ -36,7 +32,6 @@
   ];
 
   programs = {
-    k9s.enable = true;
     bash = {
       initExtra = ''
         source ~/.kubectl_aliases
@@ -46,16 +41,21 @@
       '';
       shellAliases = {
         k = "kubectl";
+        k9s = "k9s --splashless --logoless";
+        k9s-ctx = "k9s --context $(kubectl config get-contexts -o name | fzf )";
         kaf = "kubectl apply -f ";
         kapply-f = "kubectl apply -f";
+        kcrdlist = "kubectl-crdlist";
         kdelete-f = "kubectl delete -f";
         kdf = "kubectl delete -f ";
         ktemp-shell = "kubectl netshoot run temp-shell";
         kubectl = "kubecolor";
+        netdrill-shell = "kubectl netdrill run netdrill";
         nokube = "kubectx -u";
         openapi2jsonschema = "python ~/.openapi2jsonschema.py";
       };
     };
+    k9s.enable = true;
   };
 
   home.file = {
