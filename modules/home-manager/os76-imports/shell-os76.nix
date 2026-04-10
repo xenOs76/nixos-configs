@@ -74,6 +74,7 @@ in {
           export EDITOR="vi"
           export ANSIBLE_NOCOWS="1"
           export NIXPKGS_ALLOW_UNFREE="1"
+          export PATH="${config.os76Cfg.bashPath}"
 
           # disable ssh agent
           SSH_AUTH_SOCK=""
