@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-{
-
+{pkgs, ...}: {
   #
   # Docker
   #
@@ -23,18 +21,18 @@
   #
   systemd.services.docker.after = [
     "br0-netdev.service"
-    "apache-kafka.service"
+    # "apache-kafka.service"
   ];
   virtualisation.oci-containers = {
     backend = "docker";
     containers = {
-      kafka-exporter = {
-        autoStart = false;
-        image = "danielqsj/kafka-exporter:latest";
-        ports = [ "9308:9308" ];
-        cmd = [ "--kafka.server=192.168.1.49:9092" ];
-        #extraOptions = [ "--network=host" ];
-      };
+      # kafka-exporter = {
+      #   autoStart = false;
+      #   image = "danielqsj/kafka-exporter:latest";
+      #   ports = [ "9308:9308" ];
+      #   cmd = [ "--kafka.server=192.168.1.49:9092" ];
+      #   #extraOptions = [ "--network=host" ];
+      # };
       # sflow-prometheus = {
       #   autoStart = false;
       #   image = "sflow/prometheus";
@@ -55,5 +53,4 @@
     garbageCollectDates = "daily";
     enableDelete = true;
   };
-
 }

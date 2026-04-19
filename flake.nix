@@ -131,7 +131,9 @@
             environment.systemPackages = [
               os76Pkgs.https-wrench
               os76Pkgs.kubectl-netshoot
-              os76PrivPkgs.kubectl-netdrill
+              os76Pkgs.kubectl-netdrill
+              os76Pkgs.kubectl-crdlist
+              #os76Pkgs.aws-probe
             ];
           }
           ./hosts/zero/configuration.nix
@@ -142,6 +144,7 @@
             {pkgs, ...}: {
               environment.systemPackages = with pkgs.nur.repos.charmbracelet; [
                 crush
+                vhs
               ];
             }
           )

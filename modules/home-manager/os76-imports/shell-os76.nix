@@ -27,6 +27,7 @@ in {
     aria2
     socat
     nmap
+    kcat
 
     # misc
     gawk
@@ -48,6 +49,9 @@ in {
     ethtool
     pciutils
     usbutils
+
+    # temp - fails on mac
+    jetbrains-mono
   ];
 
   home.file = {
@@ -107,20 +111,17 @@ in {
       '';
 
       shellAliases = {
+        https-wrench-docker = "docker run --rm registry.0.os76.xyz/xeno/https-wrench:latest";
+        kcat-zero = "kcat -b k.0.os76.xyz:9094 -X security.protocol=SSL";
         kntime = "curl -s http://time.kn.os76.xyz | glow";
-
+        mqtt-home-sub-all = "mosquitto_sub -h mqtt.home.arpa -t '#'";
+        requests-os76 = "https-wrench requests --config ${https-wrench-os76-file-path}";
+        tfswitch = "tfswitch -b ~/bin/terraform";
         urldecode = "python3 -c 'import sys, urllib.parse as ul; print(ul.unquote_plus(sys.stdin.read()))'";
         urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";
 
-        mqtt-home-sub-all = "mosquitto_sub -h mqtt.home.arpa -t '#'";
-
-        tfswitch = "tfswitch -b ~/bin/terraform";
-
         # https://github.com/caddy-dns/powerdns/issues/4
         xcaddy-build-with-pdns = "xcaddy build v2.9.1 --with github.com/caddy-dns/powerdns@v1.0.1";
-
-        https-wrench-docker = "docker run --rm registry.0.os76.xyz/xeno/https-wrench:latest";
-        requests-os76 = "https-wrench requests --config ${https-wrench-os76-file-path}";
       };
     };
   };
