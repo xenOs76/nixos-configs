@@ -2,16 +2,19 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   minio_root_credentials_file = "/etc/minio-root-credentials";
-in {
+in
+{
   networking.firewall.allowedTCPPorts = [
     9100 # node-exporter
     3200 # Grafana Tempo
     4317 # Grafana Tempo
     4318 # Grafana Tempo
     2181 # kafka zookeeper
-    9092 # kafka listener
+    9092 # kafka plaintext
+    9094 # kafka ssl
     9308 # kafka exporter
   ];
 
@@ -32,16 +35,16 @@ in {
       owner = "minio";
       path = minio_root_credentials_file;
     };
-    "tempo_minio_bucket_name" = {};
-    "tempo_minio_access_key" = {};
-    "tempo_minio_secret_key" = {};
+    "tempo_minio_bucket_name" = { };
+    "tempo_minio_access_key" = { };
+    "tempo_minio_secret_key" = { };
   };
 
   #
   # Grafana
   #
-  systemd.services.grafana.wants = ["network-online.target"];
-  systemd.services.grafana.after = ["network-online.target"];
+  systemd.services.grafana.wants = [ "network-online.target" ];
+  systemd.services.grafana.after = [ "network-online.target" ];
 
   # Grafana file provider:
   # https://grafana.com/docs/grafana/latest/setup-grafana/configure-grafana/#file-provider
@@ -122,7 +125,7 @@ in {
   services.prometheus.exporters = {
     node = {
       enable = true;
-      enabledCollectors = ["systemd"];
+      enabledCollectors = [ "systemd" ];
     };
   };
 
@@ -133,7 +136,7 @@ in {
     enable = true;
     region = "zero";
     rootCredentialsFile = minio_root_credentials_file;
-    dataDir = ["/data/store-btrfs/minio/data"];
+    dataDir = [ "/data/store-btrfs/minio/data" ];
     listenAddress = "127.0.0.1:9000";
     consoleAddress = "127.0.0.1:9001";
   };
@@ -141,30 +144,56 @@ in {
   #
   # Kakfa / Zookeeper
   #
-  # services.zookeeper = {
-  #   enable = false;
-  #   id = 0;
-  #   port = 2181;
-  #   dataDir = "/data/zookeeper/data";
-  #   servers = ''
-  #     server.0=192.168.1.49:2888:3888
-  #   '';
-  # };
-  #
-  # services.apache-kafka.enable = false;
-  # systemd.services.apache-kafka.after = [ "zookeeper.service" ];
-  # services.apache-kafka.settings.listeners =
-  #   [ "PLAINTEXT://192.168.1.49:9092" ];
-  # services.apache-kafka.settings = {
-  #   "broker.id" = 0;
-  #   "zookeeper.connect" = [ "192.168.1.49:2181" ];
-  #   "auto.create.topics.enable" = true;
-  #   "log.dirs" = [ "/data/kakfa/logs" ];
-  #   "default.replication.factor" = 1;
-  #   "offsets.topic.replication.factor" = 1;
-  #   "min.insync.replicas" = 1;
-  # };
-  #
+  # systemd.services.apache-kafka.after = ["zookeeper.service"];
+
+  services = {
+    zookeeper = {
+      enable = false;
+      id = 0;
+      port = 2181;
+      dataDir = "/data/zookeeper/data";
+      servers = ''
+        server.0=192.168.1.49:2888:3888
+      '';
+    };
+
+    # https://github.com/apache/kafka/blob/trunk/config/server.properties
+    # https://kafka.apache.org/42/configuration/broker-configs/
+    # https://hub.docker.com/r/apache/kafka/
+    # https://www.jemdavies.co.uk/posts/002_kafka-docker-tls/
+    #
+    # keystore update script: /data/store-btrfs/certs/create-kafka-keystore.sh
+    #
+    apache-kafka = {
+      enable = true;
+      clusterId = "zero";
+      formatLogDirs = true;
+      settings = {
+        "auto.create.topics.enable" = true;
+        "node.id" = 0;
+        "process.roles" = "broker,controller";
+        "controller.listener.names" = "CONTROLLER";
+        "controller.quorum.voters" = "0@127.0.0.1:9093";
+        "inter.broker.listener.name" = "PLAINTEXT";
+        "default.replication.factor" = 1;
+        "listeners" = [
+          "CONTROLLER://127.0.0.1:9093"
+          "PLAINTEXT://127.0.0.1:9092"
+          "SSL://k.0.os76.xyz:9094"
+        ];
+        "listener.security.protocol.map" = "PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,SSL:SSL";
+        "log.dirs" = [ "/data/kafka/logs" ];
+        "min.insync.replicas" = 1;
+        "offsets.topic.replication.factor" = 1;
+        "ssl.keystore.type" = "JKS";
+        "ssl.keystore.location" = "/data/store-btrfs/certs/star_0_os76_kafka_keystore.jks";
+        "ssl.keystore.password" = "CHANGE_ME";
+        "ssl.truststore.type" = "JKS";
+        "ssl.truststore.location" = "/data/store-btrfs/certs/star_0_os76_kafka_trustore.jks";
+        "ssl.truststore.password" = "CHANGE_ME";
+      };
+    };
+  };
 
   #
   # Loki
@@ -244,7 +273,7 @@ in {
       positions = {
         filename = "/tmp/positions.yaml";
       };
-      clients = [{url = "http://127.0.0.1:3100/loki/api/v1/push";}];
+      clients = [ { url = "http://127.0.0.1:3100/loki/api/v1/push"; } ];
       scrape_configs = [
         {
           job_name = "journal";
@@ -257,7 +286,7 @@ in {
           };
           relabel_configs = [
             {
-              source_labels = ["__journal__systemd_unit"];
+              source_labels = [ "__journal__systemd_unit" ];
               target_label = "unit";
             }
           ];
@@ -354,5 +383,5 @@ in {
 
   services.tempo.enable = false;
   services.tempo.configFile = "${config.sops.templates."tempo-config.yml".path}";
-  systemd.services.tempo.after = ["nginx.service"];
+  systemd.services.tempo.after = [ "nginx.service" ];
 }

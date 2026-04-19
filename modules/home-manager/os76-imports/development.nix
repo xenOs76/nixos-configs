@@ -1,6 +1,10 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  pkgsUnstable,
+  ...
+}: {
   home.packages = with pkgs; [
-    devenv
+    pkgsUnstable.devenv
     statix
     commitizen
 
@@ -31,6 +35,7 @@
     goreleaser
     gotest
     gotools
+    govulncheck
     # delve
     # gci
     # golines
@@ -45,6 +50,11 @@
 
     #terraform
     opentofu
+
+    nodejs_24
+
+    # SBOM creation
+    syft
   ];
 
   programs = {
@@ -54,6 +64,7 @@
         go-test-coverage-html = "go tool cover -html=cover.out";
         go-test-coverage-text = "go tool cover -func=cover.out";
         go-test-verbose = "gotest -v ./... -cover -coverprofile=cover.out";
+        go-test-vulnerabilities = "govulncheck ./...";
         golangci-lint-run = "golangci-lint run";
         golangci-lint-run-fix = "golangci-lint run --fix";
         golangci-lint-run-verbose = "golangci-lint -v run";

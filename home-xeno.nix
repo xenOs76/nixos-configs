@@ -52,5 +52,6 @@
     nurl
     nixfmt-rfc-style
     antigravity.packages.${pkgs.system}.default
+    trivy
   ];
 }
