@@ -13,6 +13,17 @@
     echo "firefoxAdditionalCertificates = ${lib.strings.concatStringsSep " " config.os76Cfg.firefoxAdditionalCertificates}"
   '';
 
+  systemd-unit-browser = pkgs.writeShellScriptBin "systemd-unit-browser" (
+    builtins.readFile (pkgs.replaceVars ./files/systemd-unit-browser.sh {
+      gum = lib.getExe pkgs.gum;
+      fzf = lib.getExe pkgs.fzf;
+      systemctl = "${pkgs.systemd}/bin/systemctl";
+      journalctl = "${pkgs.systemd}/bin/journalctl";
+      sudo = "/run/wrappers/bin/sudo";
+      awk = "${pkgs.gawk}/bin/awk";
+    })
+  );
+
   k3s_config_ro_path = "/home/xeno/.kube/config-ro";
 
   k3s-sync-config-from-secret = pkgs.writeShellScriptBin "k3s-sync-config-from-secret" ''
@@ -44,6 +55,7 @@ in {
 
   home.packages = [
     shell-os76-os76cfg-values
+    systemd-unit-browser
     k3s-sync-config-from-secret
     plasmashell-replace
     docker-login-xeno-registry-0-os76-priv

@@ -41,6 +41,20 @@
       #     "6343:6343/udp"
       #   ];
       # };
+
+      # https://docs.gomods.io/index.html
+      athens-goproxy = {
+        autoStart = true;
+        image = "gomods/athens";
+        ports = [
+          "3003:3000"
+        ];
+        volumes = ["/data/goproxy:/storage"];
+        environment = {
+          ATHENS_STORAGE_TYPE = "disk";
+          ATHENS_DISK_STORAGE_ROOT = "/storage";
+        };
+      };
     };
   };
 

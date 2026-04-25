@@ -163,6 +163,19 @@ in {
       '';
     };
 
+    "goproxy.0.os76.xyz" = {
+      forceSSL = true;
+      sslCertificate = ssl_certificate_bundle_path;
+      sslCertificateKey = ssl_certificate_key_path;
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:3003";
+      };
+
+      extraConfig = ''
+        client_max_body_size 2048M;
+      '';
+    };
+
     "apt.0.os76.xyz" = {
       forceSSL = true;
       sslCertificate = ssl_certificate_bundle_path;

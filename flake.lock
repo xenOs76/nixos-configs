@@ -617,11 +617,11 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1775949529,
-        "narHash": "sha256-9OHhrZADOJthVVSHm44TX2mQKXIwehbBX/vkIPfliUc=",
+        "lastModified": 1777018949,
+        "narHash": "sha256-8g6M949zkQOE447wVoOnKu7cTSSW0B+HvaVmMtxZMRc=",
         "ref": "refs/heads/master",
-        "rev": "f0ca57a8323ba57450370e2129c0c8f6f788ef28",
-        "revCount": 57,
+        "rev": "e7b023c9bc0d13b6be09454adaa4699e3a19d106",
+        "revCount": 62,
         "type": "git",
         "url": "https://git.priv.os76.xyz/xeno/nur"
       },
