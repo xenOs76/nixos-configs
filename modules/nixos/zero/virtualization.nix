@@ -41,8 +41,27 @@
       #     "6343:6343/udp"
       #   ];
       # };
+
+      # https://docs.gomods.io/index.html
+      # https://docs.gomods.io/configuration/storage/index.html#disk
+      athens-goproxy = {
+        autoStart = true;
+        image = "gomods/athens";
+        ports = [
+          "3003:3000"
+        ];
+        volumes = ["/data/goproxy:/storage"];
+        environment = {
+          ATHENS_STORAGE_TYPE = "disk";
+          ATHENS_DISK_STORAGE_ROOT = "/storage";
+        };
+      };
     };
   };
+
+  systemd.tmpfiles.rules = [
+    "d /data/goproxy 0755 1000 1000 - -"
+  ];
 
   #
   # Docker Registry

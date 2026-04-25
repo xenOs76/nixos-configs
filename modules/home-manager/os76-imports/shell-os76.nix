@@ -79,6 +79,7 @@ in {
           export ANSIBLE_NOCOWS="1"
           export NIXPKGS_ALLOW_UNFREE="1"
           export PATH="${config.os76Cfg.bashPath}"
+          export GOPROXY='https://goproxy.0.os76.xyz,direct'
 
           # disable ssh agent
           SSH_AUTH_SOCK=""
@@ -115,7 +116,7 @@ in {
         kcat-zero = "kcat -b k.0.os76.xyz:9094 -X security.protocol=SSL";
         kntime = "curl -s http://time.kn.os76.xyz | glow";
         mqtt-home-sub-all = "mosquitto_sub -h mqtt.home.arpa -t '#'";
-        requests-os76 = "https-wrench requests --config ${https-wrench-os76-file-path}";
+        requests-os76 = "https-wrench requests --config ~/${https-wrench-os76-file-path}";
         tfswitch = "tfswitch -b ~/bin/terraform";
         urldecode = "python3 -c 'import sys, urllib.parse as ul; print(ul.unquote_plus(sys.stdin.read()))'";
         urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";

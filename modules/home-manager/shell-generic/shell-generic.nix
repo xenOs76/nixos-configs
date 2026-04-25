@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  pkgsUnstable,
+  ...
+}: {
   home.packages = with pkgs; [
     # Nix essentials
     alejandra
@@ -83,7 +87,7 @@
     noto-fonts
 
     # AI
-    gemini-cli
+    pkgsUnstable.gemini-cli
     opencode
   ];
 
@@ -131,6 +135,8 @@
         goreleaser-release = "goreleaser release --clean";
 
         zellij-list-and-attach = "zellij a $(zellij ls --no-formatting | awk '{ print $1 }'| fzf)";
+
+        nix-flake-update-input = "nix flake update $(nix flake metadata --json | jq -r '.locks.nodes | keys[] | select(. != \"root\")'| fzf)";
       };
     };
 

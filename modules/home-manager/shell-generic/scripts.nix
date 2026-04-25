@@ -45,10 +45,21 @@
       echo
     done
   '';
+  helm-repo-browser = pkgs.writeShellScriptBin "helm-repo-browser" (
+    builtins.readFile (pkgs.replaceVars ./files/helm-repo-browser.sh {
+      gum = lib.getExe pkgs.gum;
+      fzf = lib.getExe pkgs.fzf;
+      helm = lib.getExe pkgs.kubernetes-helm;
+      bat = lib.getExe pkgs.bat;
+      awk = "${pkgs.gawk}/bin/awk";
+      tail = "${pkgs.coreutils}/bin/tail";
+    })
+  );
 in {
   home.packages = [
     shell-generic-os76cfg-values
     get-istio-resources
     get-prometheus-kube-resources
+    helm-repo-browser
   ];
 }
