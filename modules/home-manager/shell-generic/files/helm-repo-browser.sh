@@ -5,8 +5,6 @@
 
 set -euo pipefail
 
-# Colors and styling
-GUM_CONFIRM_STYLE="--selected.background 2 --unselected.background 0"
 
 function show_help() {
     echo "Usage: $(basename "$0")"
@@ -47,7 +45,7 @@ function main_loop() {
 
                 case "$ACTION" in
                     "View Default Values")
-                        @gum@ spin --spinner dot --title "Fetching values for $CHART..." -- @helm@ show values "$CHART" | @bat@ -l yaml --color=always
+                        @gum@ spin --show-output --spinner dot --title "Fetching values for $CHART..." -- @helm@ show values "$CHART" | @bat@ -l yaml --color=always
                         ;;
                     "Save Default Values")
                         SAFE_CHART_NAME="${CHART/\//_}"

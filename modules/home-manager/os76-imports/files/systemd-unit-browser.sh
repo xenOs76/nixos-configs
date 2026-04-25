@@ -11,7 +11,7 @@ AWK="@awk@"
 
 # Function to list units and select one via fzf
 select_unit() {
-  "$SYSTEMCTL" list-units --all --no-legend | "$FZF" --height 40% --layout=reverse --border --header="Select a Systemd Unit" | "$AWK" '{print $1}'
+  "$SYSTEMCTL" list-units --all --plain --no-legend | "$FZF" --height 40% --layout=reverse --border --header="Select a Systemd Unit" | "$AWK" '{print $1}'
 }
 
 # Function to handle the selected action

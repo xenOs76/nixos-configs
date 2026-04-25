@@ -43,6 +43,7 @@
       # };
 
       # https://docs.gomods.io/index.html
+      # https://docs.gomods.io/configuration/storage/index.html#disk
       athens-goproxy = {
         autoStart = true;
         image = "gomods/athens";
@@ -57,6 +58,10 @@
       };
     };
   };
+
+  systemd.tmpfiles.rules = [
+    "d /data/goproxy 0755 1000 1000 - -"
+  ];
 
   #
   # Docker Registry
