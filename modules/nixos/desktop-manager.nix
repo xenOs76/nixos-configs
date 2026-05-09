@@ -1,28 +1,32 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  pkgsUnstable,
+  ...
+}: {
   environment.systemPackages = with pkgs; [
-    catppuccin-sddm
-    kdePackages.sddm-kcm
+    # catppuccin-sddm
+    # kdePackages.sddm-kcm
     # kdePackages.kcalc
-    kdePackages.kcharselect
-    kdePackages.kcolorchooser
-    kdePackages.kolourpaint
+    # kdePackages.kcharselect
+    # kdePackages.kcolorchooser
+    # kdePackages.kolourpaint
     kdiff3
-    kdePackages.partitionmanager
-    haruna
+    # kdePackages.partitionmanager
+    # haruna
     wayland-utils
     wl-clipboard
 
     xdg-desktop-portal
-    kdePackages.xdg-desktop-portal-kde
+    # kdePackages.xdg-desktop-portal-kde
 
-    cosmic-reader
-    cosmic-ext-applet-minimon
-    cosmic-ext-calculator
-    cosmic-ext-applet-privacy-indicator
-    cosmic-ext-tweaks
+    pkgsUnstable.cosmic-reader
+    pkgsUnstable.cosmic-ext-applet-minimon
+    pkgsUnstable.cosmic-ext-calculator
+    pkgsUnstable.cosmic-ext-applet-privacy-indicator
+    pkgsUnstable.cosmic-ext-tweaks
   ];
 
-  environment.cosmic.excludePackages = with pkgs; [
+  environment.cosmic.excludePackages = with pkgsUnstable; [
     cosmic-store
     cosmic-term
     cosmic-wallpapers
@@ -37,21 +41,21 @@
       cosmic.enable = true;
     };
     displayManager = {
-      cosmic-greeter.enable = false;
+      cosmic-greeter.enable = true;
       autoLogin = {
-        enable = false;
+        enable = true;
         user = "xeno";
       };
     };
 
     # KDE6
     desktopManager = {
-      plasma6.enable = true;
+      plasma6.enable = false;
     };
     displayManager = {
       defaultSession = "plasma";
       sddm = {
-        enable = true;
+        enable = false;
         wayland.enable = true;
         settings = {
           Autologin = {

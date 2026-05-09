@@ -13,6 +13,7 @@
     pre-commit
     pre-commit-hook-ensure-sops
     prek
+    tea
   ];
 
   programs = {

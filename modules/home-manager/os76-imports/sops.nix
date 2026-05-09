@@ -47,5 +47,21 @@
     jwtinfo_test_keycloak_req_values = {
       path = "/home/xeno/.config/https-wrench/jwtinfo_test_keycloak_req_values.json";
     };
+
+    sonar_token_https-wrench = {
+      path = "/home/xeno/.config/https-wrench/sonar_token_https-wrench";
+    };
+
+    sonar_token_aws-probe = {
+      path = "/home/xeno/.config/aws-probe/sonar_token_aws-probe";
+    };
+
+    sonar_token_kubectl-netdrill = {
+      path = "/home/xeno/.config/kubectl-netdrill/sonar_token_kubectl-netdrill";
+    };
+
+    sonar_token_kubectl-crdlist = {
+      path = "/home/xeno/.config/kubectl-crdlist/sonar_token_kubectl-crdlist";
+    };
   };
 }

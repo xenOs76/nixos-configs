@@ -1,5 +1,6 @@
 {
   imports = [
+    ./ai.nix
     ./browser.nix
     ./development.nix
     ./ghostty.nix

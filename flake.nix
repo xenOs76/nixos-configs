@@ -85,8 +85,8 @@
     ...
   } @ inputs: let
     system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
-    pkgsUnstable = import nixpkgsUnstable {inherit system;};
+    pkgs = (import nixpkgs {localSystem = system; config.allowUnfree = true;}) // { system = system; };
+    pkgsUnstable = (import nixpkgsUnstable {localSystem = system; config.allowUnfree = true;}) // { system = system; };
     nurpkgs = nur.legacyPackages.${system};
     os76PrivPkgs = import nurOs76Priv {pkgs = pkgs;};
     os76Pkgs = import nurOs76 {inherit pkgs;};
@@ -122,7 +122,7 @@
     exportedInputs = inputs;
     nixosConfigurations = {
       zero = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+        inherit pkgs;
         specialArgs = {
           inherit inputs pkgsUnstable;
         };
@@ -185,7 +185,7 @@
       };
 
       slim = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+        inherit pkgs;
         specialArgs = {
           inherit inputs pkgsUnstable;
         };

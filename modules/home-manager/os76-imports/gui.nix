@@ -2,7 +2,7 @@
   home.packages = with pkgs; [
     # Messaging
     slack
-    element-desktop
+    #element-desktop
     thunderbird-bin
 
     # QT
@@ -15,7 +15,7 @@
     # kdePackages.kcalc
     # kdePackages.kgamma
     # kdePackages.kate
-    kdePackages.kcharselect
+    #kdePackages.kcharselect
     kdePackages.kgpg
     # kdePackages.kdeconnect-kde
     kdePackages.skanlite
@@ -25,10 +25,10 @@
     # kdePackages.tokodon
     # kdePackages.ktouch
     kdePackages.gwenview
-    kdePackages.filelight
+    #kdePackages.filelight
     # kdePackages.plasma-browser-integration
-    kdePackages.kasts
-    kdePackages.plasmatube
+    #kdePackages.kasts
+    #kdePackages.plasmatube
   ];
 
   services.gpg-agent = {

@@ -21,6 +21,8 @@
     kubectl-view-secret
     kubectx
     kyverno
+    kyverno-chainsaw
+    lazydocker
     velero
 
     (wrapHelm kubernetes-helm {
@@ -48,9 +50,11 @@
         kcrdlist = "kubectl-crdlist";
         kdelete-f = "kubectl delete -f";
         kdf = "kubectl delete -f ";
+        knetdrill = "kubectl netdrill run";
+        knetdrill-deploy = "kubectl netdrill deployment";
+        knetdrill-pod = "kubectl netdrill pod";
         ktemp-shell = "kubectl netshoot run temp-shell";
         kubectl = "kubecolor";
-        netdrill-shell = "kubectl netdrill run netdrill";
         nokube = "kubectx -u";
         openapi2jsonschema = "python ~/.openapi2jsonschema.py";
       };
