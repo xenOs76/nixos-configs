@@ -85,11 +85,6 @@
     ...
   } @ inputs: let
     system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
-    pkgsUnstable = import nixpkgsUnstable {inherit system;};
-    nurpkgs = nur.legacyPackages.${system};
-    os76PrivPkgs = import nurOs76Priv {pkgs = pkgs;};
-    os76Pkgs = import nurOs76 {inherit pkgs;};
 
     gitlineage-repo = inputs.gitlineage-nvim;
 
@@ -106,7 +101,7 @@
     };
 
     nvfOs76Ide = nvf.lib.neovimConfiguration {
-      inherit pkgs;
+      pkgs = import nixpkgs {inherit system; config.allowUnfree = true;};
       modules = [
         "${nvfOs76}/modules/nvim/default.nix"
         {inherit os76NvfCfg;}
@@ -122,12 +117,27 @@
     exportedInputs = inputs;
     nixosConfigurations = {
       zero = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
         specialArgs = {
-          inherit inputs pkgsUnstable;
+          inherit inputs;
         };
         modules = [
           {
+            nixpkgs.pkgs = import nixpkgs {
+              localSystem = system;
+              config.allowUnfree = true;
+            };
+          }
+          ({inputs, pkgs, ...}: {
+            _module.args = {
+              pkgsUnstable = import nixpkgsUnstable {
+                inherit (pkgs) system;
+                config.allowUnfree = true;
+              };
+              nurpkgs = nur.legacyPackages.${pkgs.system};
+              os76Pkgs = import nurOs76 {inherit pkgs;};
+            };
+          })
+          ({os76Pkgs, ...}: {
             environment.systemPackages = [
               os76Pkgs.https-wrench
               os76Pkgs.kubectl-netshoot
@@ -135,7 +145,7 @@
               os76Pkgs.kubectl-crdlist
               #os76Pkgs.aws-probe
             ];
-          }
+          })
           ./hosts/zero/configuration.nix
           ./modules/nixos
           ./modules/nixos/zero
@@ -161,16 +171,17 @@
           }
           catppuccin.nixosModules.catppuccin
           home-manager.nixosModules.home-manager
-          {
+          ({
+            pkgsUnstable,
+            nurpkgs,
+            ...
+          }: {
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
               backupFileExtension = "backup";
               extraSpecialArgs = {
-                inherit pkgsUnstable;
-                inherit nurpkgs;
-                inherit os76Cfg;
-                inherit antigravity;
+                inherit pkgsUnstable nurpkgs os76Cfg antigravity;
               };
             };
             home-manager.sharedModules = [
@@ -180,16 +191,31 @@
             ];
             home-manager.users.xeno = import ./home-xeno.nix;
             home-manager.users.root = import ./home-root.nix;
-          }
+          })
         ];
       };
 
       slim = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
         specialArgs = {
-          inherit inputs pkgsUnstable;
+          inherit inputs;
         };
         modules = [
+          {
+            nixpkgs.pkgs = import nixpkgs {
+              localSystem = system;
+              config.allowUnfree = true;
+            };
+          }
+          ({inputs, pkgs, ...}: {
+            _module.args = {
+              pkgsUnstable = import nixpkgsUnstable {
+                inherit (pkgs) system;
+                config.allowUnfree = true;
+              };
+              nurpkgs = nur.legacyPackages.${pkgs.system};
+              os76Pkgs = import nurOs76 {inherit pkgs;};
+            };
+          })
           ./hosts/slim/configuration.nix
           ./modules/nixos
           ./modules/nixos/slim
@@ -206,16 +232,17 @@
           }
           catppuccin.nixosModules.catppuccin
           home-manager.nixosModules.home-manager
-          {
+          ({
+            pkgsUnstable,
+            nurpkgs,
+            ...
+          }: {
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
               backupFileExtension = "backup";
               extraSpecialArgs = {
-                inherit pkgsUnstable;
-                inherit nurpkgs;
-                inherit os76Cfg;
-                inherit antigravity;
+                inherit pkgsUnstable nurpkgs os76Cfg antigravity;
               };
             };
             home-manager.sharedModules = [
@@ -225,12 +252,13 @@
             ];
             home-manager.users.xeno = import ./home-xeno.nix;
             home-manager.users.root = import ./home-root.nix;
-          }
+          })
         ];
       };
 
       xor = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
+        specialArgs = {inherit inputs;};
         modules = [./hosts/xor/configuration.nix];
       };
     };

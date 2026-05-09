@@ -81,6 +81,11 @@ in {
           export PATH="${config.os76Cfg.bashPath}"
           export GOPROXY='https://goproxy.0.os76.xyz,direct'
 
+          ### Terraform cache ###
+          export TF_PLUGIN_CACHE_DIR="$HOME/.cache/terraform.d/plugin-cache"
+          mkdir -p $TF_PLUGIN_CACHE_DIR
+          #######################
+
           # disable ssh agent
           SSH_AUTH_SOCK=""
 

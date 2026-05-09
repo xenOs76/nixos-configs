@@ -63,7 +63,6 @@
     tflint-plugins.tflint-ruleset-aws
 
     go
-    golangci-lint
 
     uv
     (python313.withPackages (ps: [
@@ -85,10 +84,6 @@
     nerd-fonts.jetbrains-mono
     nerd-fonts.terminess-ttf
     noto-fonts
-
-    # AI
-    pkgsUnstable.gemini-cli
-    opencode
   ];
 
   programs = {
@@ -99,44 +94,45 @@
       };
       shellAliases = {
         ".." = "cd ..";
-        cd = "z";
-
         cat = "bat -pp";
-        man = "batman";
-
+        cd = "z";
         config = "git --git-dir=\"$HOME/.dotfiles/\" --work-tree=\"$HOME\"";
-        vi = "nvim";
-        iv = "vi";
-
-        now = "date";
-        utcnow = "date -u";
         date-utc = "date -u";
 
-        whatismyip = "curl -4 ipinfo.io/ip";
-        whatismyipv6 = "curl -6 https://ipv6.icanhazip.com";
-        whatismyip-on-aws = "curl -4 https://checkip.amazonaws.com/";
-
-        docker-compose-up = "docker-compose up";
         docker-compose-down = "docker-compose down";
+        docker-compose-up = "docker-compose up";
         docker-compose-up-build = "docker-compose up --build";
 
-        tailscale-up = "sudo tailscale up --accept-routes";
-        tailscale-down = "sudo tailscale down";
-        tailscale-status = "tailscale status";
-
         doggo-doh = "doggo @https://cloudflare-dns.com/dns-query";
-        doggo-doh-repo-os76-xyz = "doggo repo.os76.xyz @https://cloudflare-dns.com/dns-query";
-        doggo-doh-git-priv-os76-xyz = "doggo git.priv.os76.xyz @https://cloudflare-dns.com/dns-query";
         doggo-doh-dnssec-git-priv-os76-xyz = "doggo --do git.priv.os76.xyz @https://cloudflare-dns.com/dns-query";
+        doggo-doh-git-priv-os76-xyz = "doggo git.priv.os76.xyz @https://cloudflare-dns.com/dns-query";
+        doggo-doh-repo-os76-xyz = "doggo repo.os76.xyz @https://cloudflare-dns.com/dns-query";
 
         get-direnv-config-template = "cat ~/.config/os76/direnv-template.txt";
 
-        goreleaser-test-release = "goreleaser release --snapshot --clean";
+        glow-pager = "glow -w 0 -p";
+
         goreleaser-release = "goreleaser release --clean";
+        goreleaser-test-release = "goreleaser release --snapshot --clean";
+
+        vi = "nvim";
+        iv = "vi";
+
+        man = "batman";
+        nix-flake-update-input = "nix flake update $(nix flake metadata --json | jq -r '.locks.nodes | keys[] | select(. != \"root\")'| fzf)";
+
+        now = "date";
+        utcnow = "date -u";
+
+        tailscale-down = "sudo tailscale down";
+        tailscale-status = "tailscale status";
+        tailscale-up = "sudo tailscale up --accept-routes";
+
+        whatismyip = "curl -4 ipinfo.io/ip";
+        whatismyip-on-aws = "curl -4 https://checkip.amazonaws.com/";
+        whatismyipv6 = "curl -6 https://ipv6.icanhazip.com";
 
         zellij-list-and-attach = "zellij a $(zellij ls --no-formatting | awk '{ print $1 }'| fzf)";
-
-        nix-flake-update-input = "nix flake update $(nix flake metadata --json | jq -r '.locks.nodes | keys[] | select(. != \"root\")'| fzf)";
       };
     };
 

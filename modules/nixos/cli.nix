@@ -3,6 +3,15 @@
     "root"
     "xeno"
   ];
+
+  programs = {
+    appimage = {
+      enable = true;
+      binfmt = true;
+    };
+    nix-ld.enable = true;
+  };
+
   environment.systemPackages = with pkgs; [
     vim
     git
