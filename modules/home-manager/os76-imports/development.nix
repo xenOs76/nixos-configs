@@ -11,10 +11,8 @@
     ### Editors
     #zed-editor # hm managed
     # jetbrains.idea-oss
-    # thonny
 
     # Make / Iot
-    circup
     esphome
     screen
     arduino
@@ -47,28 +45,30 @@
     # ansible-lint  # https://github.com/nixos/nixpkgs/issues/460422
 
     # Python: check Nix Python env definition in shell-generic.nix
+    ruff
+    uv
+    # CirtuitPython
+    thonny
+    circup
 
     #terraform
     opentofu
-
     nodejs_24
-
-    # SBOM creation
-    syft
-
-    # Gihub actions pinning
-    pinact
-
-    # Sonarqube scanner
-    sonar-scanner-cli-minimal
 
     # shell linter
     shellcheck
-
-    go-task
-
     yamllint
     markdownlint-cli2
+
+    ## Utils
+    # SBOM creation
+    syft
+    # Gihub actions pinning
+    pinact
+    # Sonarqube scanner
+    sonar-scanner-cli-minimal
+    # Taskfile.yml processin
+    go-task
   ];
 
   programs = {
