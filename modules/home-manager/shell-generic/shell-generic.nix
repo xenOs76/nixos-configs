@@ -8,6 +8,7 @@
     alejandra
     cachix
     nix-prefetch-git
+    nixd
     nixfmt-rfc-style
     nurl
     statix
@@ -64,6 +65,7 @@
 
     go
 
+    ruff
     uv
     (python313.withPackages (ps: [
       ps.boto3
@@ -218,14 +220,67 @@
       #  https://direnv.net/
       #  https://github.com/direnv/direnv/wiki
       #  https://github.com/nix-community/nix-direnv
+      #  https://github.com/direnv/direnv/wiki/Python#uv
       #
 
       #use nix
       #use flake
 
+      # --- Traditional Python Virtual Environment ---
       #export VIRTUAL_ENV=".venv"
       #test -d $VIRTUAL_ENV || (echo 'Creating Python venv' && python -m venv $VIRTUAL_ENV && source $VIRTUAL_ENV/bin/activate && pip install -r requirements.txt && pip install -r requirements-dev.txt)
+
       #layout python
+
+      # --- UV (Fast Python Package Manager Layout) ---
+      layout_uv() {
+
+        # If no uv command is found, exit
+        if ! command -v uv >/dev/null 2>&1; then
+          echo "ERROR: uv not found. Install uv first." >&2
+          return 1
+        fi
+
+        # Create the virtual environment
+        if [[ ! -d .venv ]]; then
+          echo "Creating virtual environment with uv..."
+          uv venv
+        fi
+
+        # At this point the virtual environment must exist, so we activate it
+        source .venv/bin/activate
+
+        # if there is a project file, we just watch and sync
+        if [[ -f pyproject.toml ]]; then
+          watch_file pyproject.toml
+          echo "Syncing dependencies with uv sync..."
+          uv sync
+        fi
+
+        # if there is no project file, we create a new one, whatch and sync
+        if [[ ! -f pyproject.toml ]]; then
+          echo "No pyproject.toml, initializing bare project..."
+          uv init --bare
+          watch_file pyproject.toml
+          uv sync
+
+          # if there is a requirements file, we load the dependencies into the project.
+          # They will be synced soon after
+          if [[ -f requirements.txt ]]; then
+            echo "Installing dependencies from requirements.txt..."
+            uv add -r requirements.txt
+          fi
+
+          # if there is a requirements file for local development only,
+          # load the dependencies into a specific section of the project.
+          if [[ -f requirements-dev.txt ]]; then
+            echo "Installing dependencies from requirements-dev.txt..."
+            uv add --dev -r requirements-dev.txt
+          fi
+        fi
+      }
+
+      #layout uv
     '';
 
     # https://github.com/cufarvid/lazy-idea/tree/main

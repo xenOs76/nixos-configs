@@ -10,5 +10,6 @@
     ./sops.nix
     ./starship.nix
     ./wezterm.nix
+    ./theme.nix
   ];
 }

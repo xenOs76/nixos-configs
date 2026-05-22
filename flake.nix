@@ -50,7 +50,9 @@
     };
 
     nixpkgs-terraform.url = "github:stackbuilders/nixpkgs-terraform";
-    antigravity.url = "github:jacopone/antigravity-nix";
+
+    # antigravity.url = "github:jacopone/antigravity-nix";
+    antigravity.url = "github:srghma/antigravity-nix?ref=v2";
   };
 
   nixConfig = {
@@ -101,7 +103,10 @@
     };
 
     nvfOs76Ide = nvf.lib.neovimConfiguration {
-      pkgs = import nixpkgs {inherit system; config.allowUnfree = true;};
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
       modules = [
         "${nvfOs76}/modules/nvim/default.nix"
         {inherit os76NvfCfg;}
@@ -127,7 +132,11 @@
               config.allowUnfree = true;
             };
           }
-          ({inputs, pkgs, ...}: {
+          ({
+            inputs,
+            pkgs,
+            ...
+          }: {
             _module.args = {
               pkgsUnstable = import nixpkgsUnstable {
                 inherit (pkgs) system;
@@ -206,7 +215,11 @@
               config.allowUnfree = true;
             };
           }
-          ({inputs, pkgs, ...}: {
+          ({
+            inputs,
+            pkgs,
+            ...
+          }: {
             _module.args = {
               pkgsUnstable = import nixpkgsUnstable {
                 inherit (pkgs) system;
