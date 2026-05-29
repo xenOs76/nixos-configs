@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{config, ...}: {
   #
   # Docker
   #
@@ -15,6 +15,20 @@
     };
   };
   #virtualisation.docker.extraOptions = "--iptables=false --ip-masq=false --bridge=none";
+
+  sops.secrets = {
+    goproxy_github_token = { };
+    goproxy_gitea_token = { };
+  };
+
+  sops.templates."goproxy-gitconfig".content = ''
+    [url "https://${config.sops.placeholder.goproxy_github_token}@github.com/"]
+        insteadOf = https://github.com/
+    [url "https://xeno:${config.sops.placeholder.goproxy_gitea_token}@git.priv.os76.xyz/"]
+        insteadOf = https://git.priv.os76.xyz/
+  '';
+  sops.templates."goproxy-gitconfig".owner = "root";
+  sops.templates."goproxy-gitconfig".mode = "0400";
 
   #
   # OCI-containers
@@ -42,25 +56,29 @@
       #   ];
       # };
 
-      # https://docs.gomods.io/index.html
-      # https://docs.gomods.io/configuration/storage/index.html#disk
-      athens-goproxy = {
+      # https://git.priv.os76.xyz/xeno/docker-images (goproxy/)
+      goproxy = {
         autoStart = true;
-        image = "gomods/athens";
+        image = "registry.0.os76.xyz/xeno/goproxy:latest";
         ports = [
-          "3003:3000"
+          "3003:8081"
         ];
-        volumes = ["/data/goproxy:/storage"];
-        environment = {
-          ATHENS_STORAGE_TYPE = "disk";
-          ATHENS_DISK_STORAGE_ROOT = "/storage";
-        };
+        volumes = [
+          "/data/goproxy:/cache"
+          "${config.sops.templates.goproxy-gitconfig.path}:/root/.gitconfig:ro"
+        ];
+        cmd = [
+          "-listen=0.0.0.0:8081"
+          "-cacheDir=/cache"
+          "-exclude=github.com/xenos76/*,git.priv.os76.xyz/*"
+          "-cacheExpire=720h"
+        ];
       };
     };
   };
 
   systemd.tmpfiles.rules = [
-    "d /data/goproxy 0755 1000 1000 - -"
+    "d /data/goproxy 0755 root root - -"
   ];
 
   #

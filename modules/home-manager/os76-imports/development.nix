@@ -74,11 +74,19 @@
   programs = {
     bash = {
       shellAliases = {
-        go-test = "gotest ./... -cover -coverprofile=cover.out";
+        # golang-validation step 1: quick unit tests
+        go-test = "gotest ./...";
+        # CI-matching coverage (https-wrench codeChecks.yml)
+        go-test-ci = "gotest ./... -coverprofile=./cover.out -covermode=atomic -coverpkg=./...";
+        go-test-verbose = "gotest -v ./... -coverprofile=./cover.out -covermode=atomic -coverpkg=./...";
+        # golang-validation step 3: parallel stress validation
+        go-test-stress = "gotest ./... -coverprofile=./cover.out -covermode=atomic -coverpkg=./... -count=20";
+        go-test-stress-race = "gotest ./... -coverprofile=./cover.out -covermode=atomic -coverpkg=./... -count=20 -race";
         go-test-coverage-html = "go tool cover -html=cover.out";
         go-test-coverage-text = "go tool cover -func=cover.out";
-        go-test-verbose = "gotest -v ./... -cover -coverprofile=cover.out";
         go-test-vulnerabilities = "govulncheck ./...";
+        # golang-validation mandatory execution: tests, lint, parallel stress
+        go-validate = "go-test && golangci-lint-run && go-test-stress";
         go-update-deps = "go get -u && go mod tidy";
         golangci-lint-run = "golangci-lint run";
         golangci-lint-run-fix = "golangci-lint run --fix";

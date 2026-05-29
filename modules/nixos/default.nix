@@ -1,5 +1,6 @@
 {
   imports = [
+    ./nix-github-token.nix
     ./cli.nix
     ./fonts.nix
     ./print-scan.nix

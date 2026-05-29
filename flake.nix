@@ -50,9 +50,6 @@
     };
 
     nixpkgs-terraform.url = "github:stackbuilders/nixpkgs-terraform";
-
-    # antigravity.url = "github:jacopone/antigravity-nix";
-    antigravity.url = "github:srghma/antigravity-nix?ref=v2";
   };
 
   nixConfig = {
@@ -83,7 +80,6 @@
     home-manager,
     nixpkgs-terraform,
     sops-nix,
-    antigravity,
     ...
   } @ inputs: let
     system = "x86_64-linux";
@@ -190,7 +186,7 @@
               useUserPackages = true;
               backupFileExtension = "backup";
               extraSpecialArgs = {
-                inherit pkgsUnstable nurpkgs os76Cfg antigravity;
+                inherit pkgsUnstable nurpkgs os76Cfg;
               };
             };
             home-manager.sharedModules = [
@@ -255,7 +251,7 @@
               useUserPackages = true;
               backupFileExtension = "backup";
               extraSpecialArgs = {
-                inherit pkgsUnstable nurpkgs os76Cfg antigravity;
+                inherit pkgsUnstable nurpkgs os76Cfg;
               };
             };
             home-manager.sharedModules = [

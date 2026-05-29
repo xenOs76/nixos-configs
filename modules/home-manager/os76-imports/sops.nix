@@ -24,6 +24,10 @@
       path = "/home/xeno/.config/gemini_api_key_cli_testing";
     };
 
+    cursor_cli_api_key = {
+      path = "/home/xeno/.config/cursor_cli_api_key";
+    };
+
     mkcert_default_root_ca_cert = {
       path = "/home/xeno/.config/mkcert/star.home.arpa-RootCA-cert.pem";
     };

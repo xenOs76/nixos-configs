@@ -1,5 +1,6 @@
 {pkgs, ...}: {
   imports = [
+    ./nix.nix
     ./network.nix
     ./btrfs.nix
     ./btrbk.nix

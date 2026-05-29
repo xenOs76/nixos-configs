@@ -1,16 +1,17 @@
 {
   pkgs,
   pkgsUnstable,
-  antigravity,
   ...
 }: {
   home.packages = with pkgs; [
-    # IDE
-    antigravity.packages.${pkgs.stdenv.hostPlatform.system}.default
-
     # CLIs
     opencode
-    pkgsUnstable.gemini-cli
+    pkgsUnstable.cursor-cli
+    pkgsUnstable.cursor-clip
+
+    # IDE
+    # pkgsUnstable.antigravity-fhs
+    pkgsUnstable.code-cursor-fhs
 
     # MCP servers
     gitea-mcp-server
