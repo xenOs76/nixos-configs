@@ -80,6 +80,9 @@ in {
           export NIXPKGS_ALLOW_UNFREE="1"
           export PATH="${config.os76Cfg.bashPath}"
           export GOPROXY='https://goproxy.0.os76.xyz,direct'
+          export GOPRIVATE='github.com/xenos76,git.priv.os76.xyz'
+          export GONOSUMDB='github.com/xenos76,git.priv.os76.xyz'
+          export GONOPROXY='none'
 
           ### Terraform cache ###
           export TF_PLUGIN_CACHE_DIR="$HOME/.cache/terraform.d/plugin-cache"
@@ -92,6 +95,9 @@ in {
           export GEMINI_API_KEY_FILE="/home/xeno/.config/gemini_api_key_cli_testing"
           test -f $GEMINI_API_KEY_FILE && export GEMINI_API_KEY=$(cat $GEMINI_API_KEY_FILE)
           export AVANTE_GEMINI_API_KEY=$GEMINI_API_KEY
+
+          export CURSOR_API_KEY_FILE="/home/xeno/.config/cursor_cli_api_key"
+          test -f $CURSOR_API_KEY_FILE && export CURSOR_API_KEY=$(cat $CURSOR_API_KEY_FILE)
 
           # https://www.reddit.com/r/pop_os/comments/1pmpqga/firefox_freezing_in_pop_os_2404/
           export MOZ_ENABLE_WAYLAND="1"

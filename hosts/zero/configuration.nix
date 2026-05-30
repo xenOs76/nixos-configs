@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  stdenv,
   ...
 }: {
   imports = [
@@ -15,6 +16,11 @@
     "nix-command"
     "flakes"
   ];
+
+  system = {
+    stateVersion = "25.11";
+    copySystemConfiguration = false;
+  };
 
   sops.secrets.description = {};
 
@@ -32,7 +38,7 @@
     wireless.enable = false;
     networkmanager.enable = true;
     dhcpcd.enable = false;
-    interfaces.enp2s0f0.ipv4.addresses = [
+    interfaces.enp1s0.ipv4.addresses = [
       {
         address = "192.168.1.49";
         prefixLength = 24;
@@ -118,7 +124,4 @@
   services.openssh.enable = true;
   services.fwupd.enable = true;
   services.pcscd.enable = true;
-
-  system.copySystemConfiguration = false;
-  system.stateVersion = "25.11";
 }
