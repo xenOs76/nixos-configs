@@ -1,6 +1,7 @@
 {
   imports = [
     ./nix-github-token.nix
+    ./nix-binary-cache.nix
     ./cli.nix
     ./fonts.nix
     ./print-scan.nix
@@ -10,10 +11,6 @@
     # ./nixvim
     ./desktop-manager.nix
   ];
-
-  # nixpkgs.config.permittedInsecurePackages = [
-  #   "python3.12-ecdsa-0.19.1"
-  # ];
 
   nix = {
     settings = {

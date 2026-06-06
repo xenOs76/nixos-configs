@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   imports = [
     ./nix.nix
+    ./nix-binary-cache.nix
     ./network.nix
     ./btrfs.nix
     ./btrbk.nix

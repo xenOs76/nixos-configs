@@ -53,17 +53,18 @@
       plasma6.enable = false;
     };
     displayManager = {
-      defaultSession = "plasma";
-      sddm = {
-        enable = false;
-        wayland.enable = true;
-        settings = {
-          Autologin = {
-            Session = "plasma.desktop";
-            User = "xeno";
-          };
-        };
-      };
+      defaultSession = "cosmic";
+      # defaultSession = "plasma";
+      # sddm = {
+      #   enable = false;
+      #   wayland.enable = true;
+      #   settings = {
+      #     Autologin = {
+      #       Session = "plasma.desktop";
+      #       User = "xeno";
+      #     };
+      #   };
+      # };
     };
   };
 

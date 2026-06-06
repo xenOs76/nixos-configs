@@ -18,7 +18,7 @@
   ];
 
   system = {
-    stateVersion = "25.11";
+    stateVersion = "26.05";
     copySystemConfiguration = false;
   };
 
@@ -35,8 +35,8 @@
   networking = {
     hostName = "zero";
     domain = "home.arpa";
-    wireless.enable = false;
-    networkmanager.enable = true;
+    networkmanager.enable = false;
+    wireless.enable = lib.mkForce false;
     dhcpcd.enable = false;
     interfaces.enp1s0.ipv4.addresses = [
       {

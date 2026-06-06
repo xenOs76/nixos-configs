@@ -283,5 +283,5 @@
   # evaluating and copying closures from zero to xor
   # signature check need to be disabled for nix
   nix.settings.require-sigs = false;
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
 }

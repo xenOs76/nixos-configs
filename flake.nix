@@ -2,23 +2,23 @@
   description = "Homelab NixOS flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nvf = {
-      url = "github:notashelf/nvf/v0.8";
+      url = "github:notashelf/nvf/0b92b1783de48499303fc6e61478da34ee124482";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nvfOs76 = {
-      url = "git+https://git.priv.os76.xyz/xeno/os76-nvf?ref=refs/tags/0.0.20";
-      # inputs.nixpkgs.follows = "nixpkgs";
+      url = "git+https://git.priv.os76.xyz/xeno/os76-nvf?ref=refs/tags/0.0.22";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     gitlineage-nvim = {
@@ -33,7 +33,7 @@
     };
 
     catppuccin = {
-      url = "github:catppuccin/nix/release-25.11";
+      url = "github:catppuccin/nix/release-26.05";
     };
 
     nur = {
@@ -98,10 +98,15 @@
       yamlAutoformat = true;
     };
 
+    nixpkgsConfig = {
+      allowUnfree = true;
+      permittedInsecurePackages = ["minio-2025-10-15T17-29-55Z"];
+    };
+
     nvfOs76Ide = nvf.lib.neovimConfiguration {
       pkgs = import nixpkgs {
         inherit system;
-        config.allowUnfree = true;
+        config = nixpkgsConfig;
       };
       modules = [
         "${nvfOs76}/modules/nvim/default.nix"
@@ -125,7 +130,7 @@
           {
             nixpkgs.pkgs = import nixpkgs {
               localSystem = system;
-              config.allowUnfree = true;
+              config = nixpkgsConfig;
             };
           }
           ({
@@ -208,7 +213,7 @@
           {
             nixpkgs.pkgs = import nixpkgs {
               localSystem = system;
-              config.allowUnfree = true;
+              config = nixpkgsConfig;
             };
           }
           ({

@@ -63,8 +63,6 @@
     tflint
     tflint-plugins.tflint-ruleset-aws
 
-    go
-
     ruff
     uv
     (python313.withPackages (ps: [
