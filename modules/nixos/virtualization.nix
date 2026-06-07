@@ -8,7 +8,7 @@
   environment.systemPackages = with pkgs; [
     qemu_full
 
-    docker
+    docker_29
     docker-ls
     docker-buildx
     docker-compose
@@ -17,6 +17,9 @@
     reg
   ];
 
-  virtualisation.docker.enable = true;
+  virtualisation.docker = {
+    enable = true;
+    package = pkgs.docker_29;
+  };
   users.users.xeno.extraGroups = ["docker"];
 }

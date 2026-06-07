@@ -52,7 +52,7 @@ in {
   };
 
   networking.hostName = "slim";
-  networking.wireless.enable = false;
+  networking.wireless.enable = true;
   networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Berlin";
@@ -110,5 +110,5 @@ in {
   networking.firewall.allowedTCPPorts = [22];
   # networking.firewall.allowedUDPPorts = [ ... ];
 
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
 }

@@ -31,6 +31,9 @@ in
     "grafana_auth_client_secret" = {
       owner = "grafana";
     };
+    "grafana_secret_key" = {
+      owner = "grafana";
+    };
     "minio_root_credentials" = {
       owner = "minio";
       path = minio_root_credentials_file;
@@ -60,6 +63,7 @@ in
         serve_from_sub_path = false;
       };
       security = {
+        secret_key = "$__file{${config.sops.secrets."grafana_secret_key".path}}";
         admin_user = "admin";
         admin_password = "admin";
         admin_email = "xeno@os76.xyz";
@@ -257,43 +261,6 @@ in
     enable = true;
     dataDir = "/data/loki/data";
     configFile = "/etc/loki-local-config.yaml";
-  };
-
-  #
-  # Promtail
-  #
-
-  services.promtail = {
-    enable = false;
-    configuration = {
-      server = {
-        http_listen_port = 3031;
-        grpc_listen_port = 0;
-      };
-      positions = {
-        filename = "/tmp/positions.yaml";
-      };
-      clients = [ { url = "http://127.0.0.1:3100/loki/api/v1/push"; } ];
-      scrape_configs = [
-        {
-          job_name = "journal";
-          journal = {
-            max_age = "12h";
-            labels = {
-              job = "systemd-journal";
-              host = "zero";
-            };
-          };
-          relabel_configs = [
-            {
-              source_labels = [ "__journal__systemd_unit" ];
-              target_label = "unit";
-            }
-          ];
-        }
-      ];
-    };
-    # extraFlags
   };
 
   #

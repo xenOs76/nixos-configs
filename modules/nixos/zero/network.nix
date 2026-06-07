@@ -22,14 +22,10 @@ in {
   };
 
   #
-  # AP settings
+  # AP settings — hostapd owns wlp3s0; NetworkManager is disabled on zero
+  # so wpa_supplicant does not grab the wireless interface.
   #
   networking.interfaces.enp1s0.useDHCP = false;
-  networking.networkmanager.unmanaged = [
-    "interface-name:wlp3s0"
-    "interface-name:enp1s0"
-    "interface-name:enp5s0f3u4u3u4"
-  ];
 
   networking.interfaces.wlp3s0 = {
     useDHCP = false;

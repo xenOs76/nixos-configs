@@ -26,14 +26,14 @@
     gnumake42
 
     gci
-    go
+    pkgsUnstable.go
     gofumpt
     gomodifytags
     gore
     goreleaser
     gotest
     gotools
-    govulncheck
+    pkgsUnstable.govulncheck
     pkgsUnstable.golangci-lint
     # delve
     # golines
