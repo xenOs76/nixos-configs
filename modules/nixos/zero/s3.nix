@@ -71,6 +71,7 @@ in {
   };
 
   systemd.tmpfiles.rules = lib.mkIf garage_enable [
+    "d ${garage_data_basedir} 0750 garage garage -"
     "Z ${garage_data_basedir} - garage garage -"
   ];
 
@@ -107,12 +108,12 @@ in {
         s3_api = {
           s3_region = "garage";
           api_bind_addr = "[::]:3900";
-          root_domain = ".s3-garage.${garage_root_domain}";
+          root_domain = ".garage-s3.${garage_root_domain}";
         };
 
         s3_web = {
           bind_addr = "[::]:3902";
-          root_domain = ".web-garage.${garage_root_domain}";
+          root_domain = ".garage-web.${garage_root_domain}";
           index = "index.html";
         };
 

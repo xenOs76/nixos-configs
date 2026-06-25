@@ -204,6 +204,9 @@ in {
       };
 
       extraConfig = ''
+        # Allow any size object upload (nginx default is 1m).
+        client_max_body_size 0;
+
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $host;
         # Disable buffering to a temporary file.

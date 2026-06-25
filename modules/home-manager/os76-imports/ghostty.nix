@@ -50,7 +50,7 @@
         "ctrl+t=new_tab"
 
         # Find / Search
-        "alt+f=start_search"
+        "ctrl+shift+f=start_search"
 
         # Pane creation
         "super+l=new_split:right"
