@@ -38,6 +38,7 @@ in {
           nginx = snapshot_settings;
           aptly = snapshot_settings;
           minio = snapshot_settings;
+          garage = snapshot_settings;
         };
       };
     };
@@ -74,6 +75,7 @@ in {
           aptly = send_to_argo_target;
           nginx = send_to_argo_target;
           minio = send_to_argo_target;
+          garage = send_to_argo_target;
         };
       };
     };

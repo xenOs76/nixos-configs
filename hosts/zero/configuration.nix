@@ -78,7 +78,6 @@
   };
 
   environment.systemPackages = with pkgs; [
-    nixfmt-classic
     nixpkgs-fmt
     alejandra
     git

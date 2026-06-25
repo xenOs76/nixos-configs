@@ -1,4 +1,4 @@
-{pkgsUnstable, ...}: {
+{pkgs, ...}: {
   home.file = {
     # https://github.com/sahaj-b/ghostty-cursor-shaders
     ".config/ghostty/ripple_cursor.glsl".text = builtins.readFile (
@@ -11,21 +11,26 @@
 
   programs.ghostty = {
     enable = true;
-    package = pkgsUnstable.ghostty;
+    package = pkgs.ghostty;
     enableBashIntegration = true;
     installVimSyntax = true;
     settings = {
-      font-size = 15;
+      font-size = 13;
 
       # shell-integration-features = "ssh-terminfo";  # WARN: breaks Ncurses on Ubuntu old LTS
       shell-integration-features = "ssh-env,no-cursor,sudo";
       maximize = "true";
 
+      copy-on-select = "clipboard";
+      #right-click-action = "paste";
+
       # theme = "TokyoNight Storm";
       theme = "Catppuccin Frappe";
 
       # https://ghostty.org/docs/config/reference#split-divider-color
-      split-divider-color = "#a6d189";
+      # https://catppuccin.com/palette/
+      # split-divider-color = "#a6d189"; # Green
+      split-divider-color = "#8caaee"; # Blue
 
       # custom-shader = ["ripple_cursor.glsl"]; # WARN: cpu intensive
       cursor-style = "block";
@@ -44,17 +49,20 @@
         # Tabs
         "ctrl+t=new_tab"
 
-        # pane creation
+        # Find / Search
+        "ctrl+shift+f=start_search"
+
+        # Pane creation
         "super+l=new_split:right"
         "super+h=new_split:left"
         "super+j=new_split:down"
         "super+k=new_split:up"
 
-        ## pane creation: wezterm compat
+        ## Pane creation: wezterm compat
         "shift+alt+ctrl+5=new_split:right"
         "ctrl+alt+shift+\"=new_split:down"
 
-        # pane navigation
+        # Pane navigation
         "alt+l=goto_split:right"
         "alt+h=goto_split:left"
         "alt+j=goto_split:down"

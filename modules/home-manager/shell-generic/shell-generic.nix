@@ -9,7 +9,7 @@
     cachix
     nix-prefetch-git
     nixd
-    nixfmt-rfc-style
+    nixfmt
     nurl
     statix
 

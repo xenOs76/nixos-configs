@@ -17,6 +17,8 @@
   #
   programs.firefox = {
     enable = config.os76Cfg.enableFirefox;
+    # configPath = ".mozilla/firefox";
+    # configPath = "${config.xdg.configHome}/mozilla/firefox"; # new default since 26.05
     languagePacks = [
       "en-US"
     ];
@@ -83,7 +85,7 @@
 
     profiles = {
       "hm-user" = {
-        id = 0;
+        id = 1;
         isDefault = true;
         name = "home-manager managed";
         path = "nix-hm-firefox";

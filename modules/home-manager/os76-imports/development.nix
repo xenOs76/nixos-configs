@@ -33,12 +33,12 @@
     goreleaser
     gotest
     gotools
-    pkgsUnstable.govulncheck
-    pkgsUnstable.golangci-lint
-    # delve
-    # golines
-    # gopls
-    # impl
+    govulncheck
+    golangci-lint
+    delve
+    golines
+    gopls
+    impl
     # tinygo
 
     ansible

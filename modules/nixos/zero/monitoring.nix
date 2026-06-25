@@ -2,11 +2,7 @@
   pkgs,
   config,
   ...
-}:
-let
-  minio_root_credentials_file = "/etc/minio-root-credentials";
-in
-{
+}: {
   networking.firewall.allowedTCPPorts = [
     9100 # node-exporter
     3200 # Grafana Tempo
@@ -34,20 +30,16 @@ in
     "grafana_secret_key" = {
       owner = "grafana";
     };
-    "minio_root_credentials" = {
-      owner = "minio";
-      path = minio_root_credentials_file;
-    };
-    "tempo_minio_bucket_name" = { };
-    "tempo_minio_access_key" = { };
-    "tempo_minio_secret_key" = { };
+    "tempo_minio_bucket_name" = {};
+    "tempo_minio_access_key" = {};
+    "tempo_minio_secret_key" = {};
   };
 
   #
   # Grafana
   #
-  systemd.services.grafana.wants = [ "network-online.target" ];
-  systemd.services.grafana.after = [ "network-online.target" ];
+  systemd.services.grafana.wants = ["network-online.target"];
+  systemd.services.grafana.after = ["network-online.target"];
 
   # Grafana file provider:
   # https://grafana.com/docs/grafana/latest/setup-grafana/configure-grafana/#file-provider
@@ -129,20 +121,8 @@ in
   services.prometheus.exporters = {
     node = {
       enable = true;
-      enabledCollectors = [ "systemd" ];
+      enabledCollectors = ["systemd"];
     };
-  };
-
-  #
-  # Minio
-  #
-  services.minio = {
-    enable = true;
-    region = "zero";
-    rootCredentialsFile = minio_root_credentials_file;
-    dataDir = [ "/data/store-btrfs/minio/data" ];
-    listenAddress = "127.0.0.1:9000";
-    consoleAddress = "127.0.0.1:9001";
   };
 
   #
@@ -169,7 +149,7 @@ in
     # keystore update script: /data/store-btrfs/certs/create-kafka-keystore.sh
     #
     apache-kafka = {
-      enable = true;
+      enable = false;
       clusterId = "zero";
       formatLogDirs = true;
       settings = {
@@ -186,7 +166,7 @@ in
           "SSL://k.0.os76.xyz:9094"
         ];
         "listener.security.protocol.map" = "PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,SSL:SSL";
-        "log.dirs" = [ "/data/kafka/logs" ];
+        "log.dirs" = ["/data/kafka/logs"];
         "min.insync.replicas" = 1;
         "offsets.topic.replication.factor" = 1;
         "ssl.keystore.type" = "JKS";
@@ -350,5 +330,5 @@ in
 
   services.tempo.enable = false;
   services.tempo.configFile = "${config.sops.templates."tempo-config.yml".path}";
-  systemd.services.tempo.after = [ "nginx.service" ];
+  systemd.services.tempo.after = ["nginx.service"];
 }

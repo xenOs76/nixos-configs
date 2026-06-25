@@ -9,6 +9,7 @@
     ./monitoring.nix
     ./nginx.nix
     ./databases.nix
+    ./s3.nix
   ];
 
   services.journald.extraConfig = "SystemMaxUse=500m";

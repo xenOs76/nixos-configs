@@ -19,14 +19,14 @@
     xdg-desktop-portal
     # kdePackages.xdg-desktop-portal-kde
 
-    pkgsUnstable.cosmic-reader
-    pkgsUnstable.cosmic-ext-applet-minimon
-    pkgsUnstable.cosmic-ext-calculator
-    pkgsUnstable.cosmic-ext-applet-privacy-indicator
-    pkgsUnstable.cosmic-ext-tweaks
+    cosmic-reader
+    cosmic-ext-applet-minimon
+    cosmic-ext-calculator
+    cosmic-ext-applet-privacy-indicator
+    cosmic-ext-tweaks
   ];
 
-  environment.cosmic.excludePackages = with pkgsUnstable; [
+  environment.cosmic.excludePackages = with pkgs; [
     cosmic-store
     cosmic-term
     cosmic-wallpapers

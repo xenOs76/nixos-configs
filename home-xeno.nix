@@ -49,7 +49,7 @@
   home.packages = with pkgs; [
     alejandra
     nurl
-    nixfmt-rfc-style
+    nixfmt
     trivy
   ];
 }

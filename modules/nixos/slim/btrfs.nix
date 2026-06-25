@@ -4,7 +4,7 @@
     interval = "weekly";
     fileSystems = [
       "/home"
-      "/data"
+      "/data/backup"
     ];
   };
 }
