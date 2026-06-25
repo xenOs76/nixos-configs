@@ -169,6 +169,7 @@ in {
       sslCertificateKey = ssl_certificate_key_path;
       locations."/" = {
         proxyPass = "http://127.0.0.1:3003";
+        recommendedProxySettings = true;
       };
 
       extraConfig = ''
@@ -176,17 +177,68 @@ in {
       '';
     };
 
-    "apt.0.os76.xyz" = {
+    "garage-admin.0.os76.xyz" = {
       forceSSL = true;
       sslCertificate = ssl_certificate_bundle_path;
       sslCertificateKey = ssl_certificate_key_path;
-      root = "/data/store-btrfs/aptly/apt-repo/root/public";
       locations."/" = {
-        extraConfig = ''
-          autoindex on;
-        '';
+        proxyPass = "http://127.0.0.1:3903";
         recommendedProxySettings = true;
       };
+
+      extraConfig = ''
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        # Disable buffering to a temporary file.
+        proxy_max_temp_file_size 0;
+      '';
     };
+
+    "garage-s3.0.os76.xyz" = {
+      forceSSL = true;
+      sslCertificate = ssl_certificate_bundle_path;
+      sslCertificateKey = ssl_certificate_key_path;
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:3900";
+        recommendedProxySettings = true;
+      };
+
+      extraConfig = ''
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        # Disable buffering to a temporary file.
+        proxy_max_temp_file_size 0;
+      '';
+    };
+
+    "garage-web.0.os76.xyz" = {
+      forceSSL = true;
+      sslCertificate = ssl_certificate_bundle_path;
+      sslCertificateKey = ssl_certificate_key_path;
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:3902";
+        recommendedProxySettings = true;
+      };
+
+      extraConfig = ''
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        # Disable buffering to a temporary file.
+        proxy_max_temp_file_size 0;
+      '';
+    };
+
+    # "apt.0.os76.xyz" = {
+    #   forceSSL = true;
+    #   sslCertificate = ssl_certificate_bundle_path;
+    #   sslCertificateKey = ssl_certificate_key_path;
+    #   root = "/data/store-btrfs/aptly/apt-repo/root/public";
+    #   locations."/" = {
+    #     extraConfig = ''
+    #       autoindex on;
+    #     '';
+    #     recommendedProxySettings = true;
+    #   };
+    # };
   };
 }

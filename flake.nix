@@ -17,7 +17,7 @@
     };
 
     nvfOs76 = {
-      url = "git+https://git.priv.os76.xyz/xeno/os76-nvf?ref=refs/tags/0.0.22";
+      url = "git+https://git.priv.os76.xyz/xeno/os76-nvf?ref=refs/tags/0.0.24";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -153,7 +153,7 @@
               os76Pkgs.kubectl-netshoot
               os76Pkgs.kubectl-netdrill
               os76Pkgs.kubectl-crdlist
-              #os76Pkgs.aws-probe
+              os76Pkgs.aws-probe
             ];
           })
           ./hosts/zero/configuration.nix

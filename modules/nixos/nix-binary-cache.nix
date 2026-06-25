@@ -43,7 +43,7 @@ in {
         owner = "root";
       };
 
-      services.harmonia = {
+      services.harmonia.cache = {
         enable = true;
         signKeyPaths = [config.sops.secrets.harmonia_sign_key.path];
         settings = {

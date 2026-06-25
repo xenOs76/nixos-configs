@@ -23,5 +23,7 @@
     ssh-to-age
     inotify-tools
     dig
+    pcsclite
+    ausweisapp
   ];
 }
