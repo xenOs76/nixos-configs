@@ -12,12 +12,12 @@
     };
 
     nvf = {
-      url = "github:notashelf/nvf/0b92b1783de48499303fc6e61478da34ee124482";
+      url = "github:NotAShelf/nvf/07d5eb208b8f16306b10342b634da7e07e926fa5"; # 2026-07-24
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nvfOs76 = {
-      url = "git+https://git.priv.os76.xyz/xeno/os76-nvf?ref=refs/tags/0.0.24";
+      url = "git+https://git.priv.os76.xyz/xeno/os76-nvf?ref=refs/tags/0.0.32";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -34,6 +34,7 @@
 
     catppuccin = {
       url = "github:catppuccin/nix/release-26.05";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nur = {
@@ -58,223 +59,274 @@
       "https://nix-community.cachix.org"
       "https://nixpkgs-terraform.cachix.org"
       "https://nvf.cachix.org"
+      "https://catppuccin.cachix.org"
     ];
     extra-trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "nixpkgs-terraform.cachix.org-1:8Sit092rIdAVENA3ZVeH9hzSiqI/jng6JiCrQ1Dmusw="
       "nvf.cachix.org-1:GMQWiUhZ6ux9D5CvFFMwnc2nFrUHTeGaXRlVBXo+naI="
+      "catppuccin.cachix.org-1:noG/4HkbhJb+lUAdKrph6LaozJvAeEEZj4N732IysmU="
     ];
   };
 
-  outputs = {
-    # self,
-    nixpkgs,
-    nixpkgsUnstable,
-    nur,
-    nurOs76Priv,
-    nurOs76,
-    nvf,
-    nvfOs76,
-    catppuccin,
-    home-manager,
-    nixpkgs-terraform,
-    sops-nix,
-    ...
-  } @ inputs: let
-    system = "x86_64-linux";
+  outputs =
+    {
+      # self,
+      nixpkgs,
+      nixpkgsUnstable,
+      nur,
+      nurOs76Priv,
+      nurOs76,
+      nvf,
+      nvfOs76,
+      catppuccin,
+      home-manager,
+      nixpkgs-terraform,
+      sops-nix,
+      ...
+    }@inputs:
+    let
+      system = "x86_64-linux";
 
-    gitlineage-repo = inputs.gitlineage-nvim;
+      gitlineage-repo = inputs.gitlineage-nvim;
 
-    os76Cfg = {
-      checkValue = "from flake";
-      firefoxAdditionalCertificates = ["/home/xeno/.config/mkcert/star.home.arpa-RootCA-cert.pem"];
-    };
-
-    ### NVF/Neovim config ###
-    os76NvfCfg = {
-      terraformVersion = "1.14";
-      terraformAutoformat = true;
-      yamlAutoformat = true;
-    };
-
-    nixpkgsConfig = {
-      allowUnfree = true;
-      permittedInsecurePackages = ["minio-2025-10-15T17-29-55Z"];
-    };
-
-    nvfOs76Ide = nvf.lib.neovimConfiguration {
-      pkgs = import nixpkgs {
-        inherit system;
-        config = nixpkgsConfig;
+      os76CfgDefaults = {
+        checkValue = "from flake";
       };
-      modules = [
-        "${nvfOs76}/modules/nvim/default.nix"
-        {inherit os76NvfCfg;}
 
-        "${nvfOs76}/modules/nvim/ide/default.nix"
-      ];
-      extraSpecialArgs = {
-        inherit nixpkgs-terraform;
-        inherit gitlineage-repo;
+      os76CfgFor = hostCfg: nixpkgs.lib.recursiveUpdate os76CfgDefaults hostCfg;
+
+      os76CfgZero = os76CfgFor { };
+      os76CfgNemo = os76CfgFor {
+        desktopFonts = {
+          ui = {
+            size = 11;
+          };
+          mono = {
+            size = 11;
+          };
+          dpi = 96;
+          cursorSize = 24;
+        };
+        firefoxFonts = {
+          ui = {
+            size = 15;
+          };
+          mono = {
+            size = 15;
+          };
+        };
       };
-    };
-  in {
-    exportedInputs = inputs;
-    nixosConfigurations = {
-      zero = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit inputs;
+
+      ### NVF/Neovim config ###
+      os76NvfCfg = {
+        # terraformVersion = "1.14";
+        terraformAutoformat = true;
+        yamlAutoformat = true;
+      };
+
+      nixpkgsConfig = {
+        allowUnfree = true;
+        permittedInsecurePackages = [
+          "pnpm-9.15.9"
+        ];
+      };
+
+      nvfOs76Ide = nvf.lib.neovimConfiguration {
+        pkgs = import nixpkgs {
+          inherit system;
+          config = nixpkgsConfig;
         };
         modules = [
-          {
-            nixpkgs.pkgs = import nixpkgs {
-              localSystem = system;
-              config = nixpkgsConfig;
-            };
-          }
-          ({
-            inputs,
-            pkgs,
-            ...
-          }: {
-            _module.args = {
-              pkgsUnstable = import nixpkgsUnstable {
-                inherit (pkgs) system;
-                config.allowUnfree = true;
+          "${nvfOs76}/modules/nvim/default.nix"
+          { inherit os76NvfCfg; }
+
+          "${nvfOs76}/modules/nvim/ide/default.nix"
+        ];
+        extraSpecialArgs = {
+          inherit nixpkgs-terraform;
+          pkgsUnstable = import nixpkgsUnstable {
+            inherit system;
+            config.allowUnfree = true;
+          };
+          inherit gitlineage-repo;
+        };
+      };
+    in
+    {
+      exportedInputs = inputs;
+      nixosConfigurations = {
+        zero = nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit inputs;
+          };
+          modules = [
+            {
+              nixpkgs.pkgs = import nixpkgs {
+                localSystem = system;
+                config = nixpkgsConfig;
               };
-              nurpkgs = nur.legacyPackages.${pkgs.system};
-              os76Pkgs = import nurOs76 {inherit pkgs;};
-            };
-          })
-          ({os76Pkgs, ...}: {
-            environment.systemPackages = [
-              os76Pkgs.https-wrench
-              os76Pkgs.kubectl-netshoot
-              os76Pkgs.kubectl-netdrill
-              os76Pkgs.kubectl-crdlist
-              os76Pkgs.aws-probe
-            ];
-          })
-          ./hosts/zero/configuration.nix
-          ./modules/nixos
-          ./modules/nixos/zero
-          nur.modules.nixos.default
-          (
-            {pkgs, ...}: {
+            }
+            (
+              {
+                inputs,
+                pkgs,
+                ...
+              }:
+              {
+                _module.args = {
+                  pkgsUnstable = import nixpkgsUnstable {
+                    inherit (pkgs) system;
+                    config.allowUnfree = true;
+                  };
+                  nurpkgs = nur.legacyPackages.${pkgs.system};
+                  os76Pkgs = import nurOs76 { inherit pkgs; };
+                  os76PrivPkgs = import nurOs76Priv { inherit pkgs; };
+                };
+              }
+            )
+            ({ os76Pkgs, os76PrivPkgs, ... }: {
+              environment.systemPackages = [
+                os76PrivPkgs.https-wrench
+                os76Pkgs.kubectl-netshoot
+                os76Pkgs.kubectl-netdrill
+                os76Pkgs.kubectl-crdlist
+                os76Pkgs.aws-probe
+              ];
+            })
+            ./hosts/zero/configuration.nix
+            ./modules/nixos
+            ./modules/nixos/zero
+            nur.modules.nixos.default
+            ({ pkgs, ... }: {
               environment.systemPackages = with pkgs.nur.repos.charmbracelet; [
                 crush
                 vhs
               ];
+            })
+            sops-nix.nixosModules.sops
+            {
+              sops = {
+                age = {
+                  sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+                  keyFile = "/var/lib/sops-nix/key.txt";
+                  generateKey = true;
+                };
+                defaultSopsFile = ./secrets/hosts/zero/secrets.yaml;
+              };
             }
-          )
-          sops-nix.nixosModules.sops
-          {
-            sops = {
-              age = {
-                sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
-                keyFile = "/var/lib/sops-nix/key.txt";
-                generateKey = true;
-              };
-              defaultSopsFile = ./secrets/hosts/zero/secrets.yaml;
-            };
-          }
-          catppuccin.nixosModules.catppuccin
-          home-manager.nixosModules.home-manager
-          ({
-            pkgsUnstable,
-            nurpkgs,
-            ...
-          }: {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              backupFileExtension = "backup";
-              extraSpecialArgs = {
-                inherit pkgsUnstable nurpkgs os76Cfg;
-              };
-            };
-            home-manager.sharedModules = [
-              inputs.sops-nix.homeManagerModules.sops
-              inputs.catppuccin.homeModules.catppuccin
-              {home.packages = [nvfOs76Ide.neovim];}
-            ];
-            home-manager.users.xeno = import ./home-xeno.nix;
-            home-manager.users.root = import ./home-root.nix;
-          })
-        ];
-      };
-
-      slim = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit inputs;
+            catppuccin.nixosModules.catppuccin
+            home-manager.nixosModules.home-manager
+            (
+              {
+                pkgsUnstable,
+                nurpkgs,
+                ...
+              }:
+              {
+                home-manager = {
+                  useGlobalPkgs = true;
+                  useUserPackages = true;
+                  backupFileExtension = "backup";
+                  overwriteBackup = true;
+                  extraSpecialArgs = {
+                    inherit inputs pkgsUnstable nurpkgs;
+                    os76Cfg = os76CfgZero;
+                  };
+                };
+                home-manager.sharedModules = [
+                  inputs.sops-nix.homeManagerModules.sops
+                  inputs.catppuccin.homeModules.catppuccin
+                  ./modules/common/catppuccin-whiskers.nix
+                  { home.packages = [ nvfOs76Ide.neovim ]; }
+                ];
+                home-manager.users.xeno = import ./home-xeno.nix;
+                home-manager.users.root = import ./home-root.nix;
+              }
+            )
+          ];
         };
-        modules = [
-          {
-            nixpkgs.pkgs = import nixpkgs {
-              localSystem = system;
-              config = nixpkgsConfig;
-            };
-          }
-          ({
-            inputs,
-            pkgs,
-            ...
-          }: {
-            _module.args = {
-              pkgsUnstable = import nixpkgsUnstable {
-                inherit (pkgs) system;
-                config.allowUnfree = true;
-              };
-              nurpkgs = nur.legacyPackages.${pkgs.system};
-              os76Pkgs = import nurOs76 {inherit pkgs;};
-            };
-          })
-          ./hosts/slim/configuration.nix
-          ./modules/nixos
-          ./modules/nixos/slim
-          sops-nix.nixosModules.sops
-          {
-            sops = {
-              age = {
-                sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
-                keyFile = "/var/lib/sops-nix/key.txt";
-                generateKey = true;
-              };
-              defaultSopsFile = ./secrets/hosts/slim/secrets.yaml;
-            };
-          }
-          catppuccin.nixosModules.catppuccin
-          home-manager.nixosModules.home-manager
-          ({
-            pkgsUnstable,
-            nurpkgs,
-            ...
-          }: {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              backupFileExtension = "backup";
-              extraSpecialArgs = {
-                inherit pkgsUnstable nurpkgs os76Cfg;
-              };
-            };
-            home-manager.sharedModules = [
-              inputs.sops-nix.homeManagerModules.sops
-              inputs.catppuccin.homeModules.catppuccin
-              {home.packages = [nvfOs76Ide.neovim];}
-            ];
-            home-manager.users.xeno = import ./home-xeno.nix;
-            home-manager.users.root = import ./home-root.nix;
-          })
-        ];
-      };
 
-      xor = nixpkgs.lib.nixosSystem {
-        system = "aarch64-linux";
-        specialArgs = {inherit inputs;};
-        modules = [./hosts/xor/configuration.nix];
+        nemo = nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit inputs;
+          };
+          modules = [
+            {
+              nixpkgs.pkgs = import nixpkgs {
+                localSystem = system;
+                config = nixpkgsConfig;
+              };
+            }
+            (
+              {
+                inputs,
+                pkgs,
+                ...
+              }:
+              {
+                _module.args = {
+                  pkgsUnstable = import nixpkgsUnstable {
+                    inherit (pkgs) system;
+                    config.allowUnfree = true;
+                  };
+                  nurpkgs = nur.legacyPackages.${pkgs.system};
+                  os76Pkgs = import nurOs76 { inherit pkgs; };
+                };
+              }
+            )
+            ./hosts/nemo/configuration.nix
+            ./modules/nixos
+            ./modules/nixos/nemo
+            sops-nix.nixosModules.sops
+            {
+              sops = {
+                age = {
+                  sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+                  keyFile = "/var/lib/sops-nix/key.txt";
+                  generateKey = true;
+                };
+                defaultSopsFile = ./secrets/hosts/nemo/secrets.yaml;
+              };
+            }
+            catppuccin.nixosModules.catppuccin
+            home-manager.nixosModules.home-manager
+            (
+              {
+                pkgsUnstable,
+                nurpkgs,
+                ...
+              }:
+              {
+                home-manager = {
+                  useGlobalPkgs = true;
+                  useUserPackages = true;
+                  backupFileExtension = "backup";
+                  overwriteBackup = true;
+                  extraSpecialArgs = {
+                    inherit inputs pkgsUnstable nurpkgs;
+                    os76Cfg = os76CfgNemo;
+                  };
+                };
+                home-manager.sharedModules = [
+                  inputs.sops-nix.homeManagerModules.sops
+                  inputs.catppuccin.homeModules.catppuccin
+                  ./modules/common/catppuccin-whiskers.nix
+                  { home.packages = [ nvfOs76Ide.neovim ]; }
+                ];
+                home-manager.users.xeno = import ./home-xeno.nix;
+                home-manager.users.root = import ./home-root.nix;
+              }
+            )
+          ];
+        };
+
+        xor = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          specialArgs = { inherit inputs; };
+          modules = [ ./hosts/xor/configuration.nix ];
+        };
       };
     };
-  };
 }

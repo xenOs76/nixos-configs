@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  slim_sda1_luks_key_path = "/etc/slim_sda1_luks.key";
+  nemo_sda1_luks_key_path = "/etc/nemo_sda1_luks.key";
 in {
   imports = [
     ./hardware-configuration.nix
@@ -18,9 +18,10 @@ in {
 
   sops.secrets.description = {};
   sops.secrets.xeno_pw_hash.neededForUsers = true;
-  sops.secrets.slim_sda1_luks_key = {
+  sops.secrets.nemo_sda1_luks_key = {
+    key = "slim_sda1_luks_key";
     owner = "root";
-    path = slim_sda1_luks_key_path;
+    path = nemo_sda1_luks_key_path;
   };
 
   security.sudo.wheelNeedsPassword = false;
@@ -47,11 +48,11 @@ in {
     mode = "0600";
     text = ''
       # <volume-name> <encrypted-device> [key-file] [options]
-      cryptDataPv UUID=bfadeb78-06fa-4ee3-9243-1abcb6f3ca84 ${slim_sda1_luks_key_path}
+      cryptDataPv UUID=bfadeb78-06fa-4ee3-9243-1abcb6f3ca84 ${nemo_sda1_luks_key_path}
     '';
   };
 
-  networking.hostName = "slim";
+  networking.hostName = "nemo";
   networking.wireless.enable = true;
   networking.networkmanager.enable = true;
 
@@ -104,11 +105,20 @@ in {
   # };
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    settings = {
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+      PermitRootLogin = "no";
+      AllowUsers = ["xeno"];
+    };
+  };
 
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [22];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedUDPPorts = [];
+  services.avahi.openFirewall = lib.mkForce false;
 
   system.stateVersion = "26.05";
 }

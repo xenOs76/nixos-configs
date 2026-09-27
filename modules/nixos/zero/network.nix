@@ -59,8 +59,12 @@ in {
     bogus-priv
     no-resolv
 
+    # Bind only listed ifaces — without this, DHCP still takes *:67 and
+    # blocks libvirt's virbr0 dnsmasq ("Address already in use").
+    bind-interfaces
     interface=lo
     interface=wlp3s0
+    except-interface=virbr0
     listen-address=${ap_gw_ip}
 
     # IPV4
@@ -74,7 +78,7 @@ in {
 
   # requires NAT
   services.dnsmasq = {
-    enable = true;
+    enable = false;
     settings = {
       server = [
         ## Internal GW/DNS

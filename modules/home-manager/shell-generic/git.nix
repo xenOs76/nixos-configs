@@ -2,7 +2,8 @@
   pkgs,
   config,
   ...
-}: {
+}:
+{
   home.packages = with pkgs; [
     commitizen
     gh
@@ -23,10 +24,12 @@
         user = {
           name = config.os76Cfg.gitUserName;
           email = config.os76Cfg.gitUserEmail;
+          signingkey = config.os76Cfg.gitGpgKeyId;
         };
         init.defaultBranch = "main";
         alias = {
           ci = "commit";
+          cs = "commit -S";
           co = "checkout";
           s = "status";
           st = "status";

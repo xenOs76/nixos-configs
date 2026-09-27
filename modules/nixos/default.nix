@@ -1,5 +1,6 @@
 {
   imports = [
+    ./nix-gc.nix
     ./nix-github-token.nix
     ./nix-binary-cache.nix
     ./cli.nix
@@ -10,20 +11,8 @@
     ./virtualization.nix
     # ./nixvim
     ./desktop-manager.nix
+    ../common/catppuccin-whiskers.nix
   ];
-
-  nix = {
-    settings = {
-      auto-optimise-store = true;
-      keep-outputs = false;
-      keep-derivations = false;
-    };
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d";
-    };
-  };
 
   catppuccin = {
     enable = true;

@@ -21,7 +21,11 @@
       shell-integration-features = "ssh-env,no-cursor,sudo";
       maximize = "true";
 
+      # Default 10MB, now 30 MB
+      scrollback-limit = "31457280";
+
       copy-on-select = "clipboard";
+      app-notifications = "no-clipboard-copy";
       #right-click-action = "paste";
 
       # theme = "TokyoNight Storm";
@@ -30,7 +34,9 @@
       # https://ghostty.org/docs/config/reference#split-divider-color
       # https://catppuccin.com/palette/
       # split-divider-color = "#a6d189"; # Green
-      split-divider-color = "#8caaee"; # Blue
+      # split-divider-color = "#8caaee"; # Blue
+      # split-divider-color = "#99d1db"; # Sapphire
+      split-divider-color = "#737994"; # Overlay 0
 
       # custom-shader = ["ripple_cursor.glsl"]; # WARN: cpu intensive
       cursor-style = "block";

@@ -7,6 +7,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ../../modules/nixos/nix-gc.nix
   ];
 
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
@@ -55,221 +56,200 @@
 
   users.users.xeno.openssh.authorizedKeys.keys = [
     "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDLzu2nNp/Ff/4UMHp5bdSlGhEsb21H24i4JmkNCPhd7PqgRQy+tdSIl5nMTVn1DylWdw8IbYyyeCu1nk8pWtEv8xsAEE0qhwsCrjT1wFHuZppfiw2YAescWESbmyKM/Z3/Zvz1glrC2DJqxI/1Xn+sujYYkIlpUaY9xvQauZB4BHufPTgguS6Wn3vja1IRg0WKZubutdrwhHh8iwSlDQWYsLqTPPkiUejmayQGcTSSQ6tLoXNpyJjKwk7ol8NmAccFCx8tJ/hE5Xlyfuko6FvZSLTPmO5+Ppg4Jo2p1jsj4d2IBBxfAGedZZxb2Fjakf/Mkv6AsR+Laqg0yd6k8RI3lZq+KaQPd57SZaV4uRUlB9bRw1E/x3DwilZ0/360qDrYxH+gS20rC7VaazEFdJWL2YviqFuyJw86TUijfmGM4h5kvmNJMcB/3AtDZJHiWbyWVX+1t7V9yigfnXBYJa+sk6tWGkbUPTxo/Dcrx0fRKNXZ4bIYid3nWZ7Hj2NKATk= xeno@zero"
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIGAuzFXAPyOFrAhj4eUGk5CYrULjwD7I/CQvVQ1J65v xeno@slim"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIGAuzFXAPyOFrAhj4eUGk5CYrULjwD7I/CQvVQ1J65v xeno@nemo"
   ];
 
   environment.systemPackages = with pkgs; [
+    home-assistant-custom-components.ha_mcp_tools
+    home-assistant-custom-components.prometheus_sensor
+    htop
+    lsof
+    sqlite
+    tcpdump
     vim
     wget
-    htop
     zellij
-    lsof
-    tcpdump
-    sqlite
-    minio-client
-    home-assistant-custom-components.dwd
-    home-assistant-custom-lovelace-modules.weather-card
   ];
-
-  services.openssh.enable = true;
 
   systemd.tmpfiles.rules = [
     "f ${config.services.home-assistant.configDir}/automations.yaml 0755 hass hass"
     "f ${config.services.home-assistant.configDir}/scenes.yaml 0755 hass hass"
     "f ${config.services.home-assistant.configDir}/scripts.yaml 0755 hass hass"
+    "L+ ${config.services.home-assistant.configDir}/control-panel.yaml - - - - ${./lovelace/control-panel.yaml}"
     "d ${config.services.home-assistant.configDir}/backups 770 hass hass 14d"
     "Z ${config.services.home-assistant.configDir}/custom_components 770 hass hass - -"
     "C ${config.services.home-assistant.configDir}/custom_components/dwd - - - - ${pkgs.home-assistant-custom-components.dwd}/custom_components/dwd"
   ];
 
-  services.home-assistant = {
-    enable = true;
-    extraComponents = [
-      # Components required to complete the onboarding
-      "application_credentials"
-      "frontend"
-      "hardware"
-      "logger"
-      "network"
-      "system_health"
-      "automation"
-      "person"
-      "scene"
-      "script"
-      "tag"
-      "zone"
-      "counter"
-      "input_boolean"
-      "input_button"
-      "input_datetime"
-      "input_number"
-      "input_select"
-      "input_text"
-      "schedule"
-      "timer"
-      "backup"
-      "google_translate"
-      "bthome"
-      "shelly"
-      "esphome"
-      "openweathermap"
-      "wled"
-      "wiz"
-      "mqtt"
-      "tasmota"
-      "prometheus"
-      "ping"
-      "slack"
-      "tplink"
-    ];
-    config = {
-      #
-      # Includes dependencies for a basic setup
-      # https://www.home-assistant.io/integrations/default_config/
-      #
-      # NixOS specific examples:
-      # https://github.com/Mic92/dotfiles/blob/main/machines/eve/modules/home-assistant/default.nix
-      #
-      default_config = {};
-      http = {
-        use_x_forwarded_for = true;
-        trusted_proxies = [
-          "127.0.0.1"
-          "::1"
-          "192.168.1.0/24"
-        ];
-      };
+  services = {
+    openssh.enable = true;
 
-      mqtt = {
-        sensor = [
-          {
-            name = "RoomTemp";
-            object_id = "mkr1010_scd41_temp";
-            device_class = "temperature";
-            state_topic = "mkr1010/env";
-            # suggested_display_precision = 2;
-            unit_of_measurement = "°C";
-            value_template = "{{ value_json.scd41_temp| round(2) }}";
-          }
-          {
-            name = "RoomHum";
-            object_id = "mkr1010_scd41_hum";
-            device_class = "humidity";
-            state_topic = "mkr1010/env";
-            # suggested_display_precision = 2;
-            unit_of_measurement = "%";
-            value_template = "{{ value_json.scd41_hum| round(2) }}";
-          }
-          {
-            name = "RoomCO2";
-            object_id = "mkr1010_scd41_co2";
-            device_class = "carbon_dioxide";
-            state_topic = "mkr1010/env";
-            unit_of_measurement = "ppm";
-            value_template = "{{ value_json.scd41_co2 }}";
-          }
-        ];
-      };
-      automation = [
-        {
-          id = "1731791496";
-          alias = "DailyBackupNix";
-          description = "";
-          trigger = [
-            {
-              platform = "time";
-              at = "06:00:00";
-            }
-          ];
-          condition = [];
-          action = [
-            {
-              service = "backup.create";
-              metadata = {};
-              data = {};
-            }
-          ];
-          mode = "single";
-        }
+    prometheus.exporters.node = {
+      enable = true;
+      port = 9100;
+      enabledCollectors = [
+        "logind"
+        "systemd"
       ];
-      "automation ui" = "!include automations.yaml";
-      "scene manual" = [];
-      "scene ui" = "!include scenes.yaml";
-      script = [
-        {
-          testnotification = {
-            alias = "TestNotificationFromNixConf";
-            sequence = [
+      disabledCollectors = ["textfile"];
+    };
+
+    home-assistant = {
+      enable = true;
+      extraComponents = [
+        # Components required to complete the onboarding
+        "application_credentials"
+        "automation"
+        "backup"
+        "bthome"
+        "counter"
+        "esphome"
+        "frontend"
+        "hardware"
+        "input_boolean"
+        "input_button"
+        "input_datetime"
+        "input_number"
+        "input_select"
+        "input_text"
+        "logger"
+        "mcp"
+        "mcp_server"
+        "mqtt"
+        "network"
+        "openweathermap"
+        "person"
+        "ping"
+        "prometheus"
+        "scene"
+        "schedule"
+        "script"
+        "shelly"
+        "slack"
+        "system_health"
+        "tag"
+        "tasmota"
+        "timer"
+        "tplink"
+        "wiz"
+        "wled"
+        "zone"
+      ];
+      config = {
+        #
+        # Includes dependencies for a basic setup
+        # https://www.home-assistant.io/integrations/default_config/
+        #
+        # NixOS specific examples:
+        # https://github.com/Mic92/dotfiles/blob/main/machines/eve/modules/home-assistant/default.nix
+        #
+        default_config = {};
+        http = {
+          use_x_forwarded_for = true;
+          trusted_proxies = [
+            "127.0.0.1"
+            "::1"
+            "192.168.1.0/24"
+          ];
+        };
+        lovelace = {
+          dashboards = {
+            "control-panel" = {
+              mode = "yaml";
+              title = "Control Panel";
+              icon = "mdi:alarm-panel-outline";
+              show_in_sidebar = true;
+              require_admin = false;
+              filename = "control-panel.yaml";
+            };
+          };
+        };
+
+        mqtt = {
+          sensor = [
+            {
+              name = "RoomTemp";
+              default_entity_id = "sensor.mkr1010_scd41_temp";
+              device_class = "temperature";
+              state_topic = "mkr1010/env";
+              # suggested_display_precision = 2;
+              unit_of_measurement = "°C";
+              value_template = "{{ value_json.scd41_temp| round(2) }}";
+            }
+            {
+              name = "RoomHum";
+              default_entity_id = "sensor.mkr1010_scd41_hum";
+              device_class = "humidity";
+              state_topic = "mkr1010/env";
+              # suggested_display_precision = 2;
+              unit_of_measurement = "%";
+              value_template = "{{ value_json.scd41_hum| round(2) }}";
+            }
+            {
+              name = "RoomCO2";
+              default_entity_id = "sensor.mkr1010_scd41_co2";
+              device_class = "carbon_dioxide";
+              state_topic = "mkr1010/env";
+              unit_of_measurement = "ppm";
+              value_template = "{{ value_json.scd41_co2 }}";
+            }
+          ];
+        };
+        automation = [
+          {
+            id = "1731791496";
+            alias = "DailyBackupNix";
+            description = "";
+            trigger = [
               {
-                service = "notify.mobile_app_xiaomipoco";
-                metadata = {};
-                data = {
-                  message = "Test notification script";
-                  title = "Test notification";
-                };
+                platform = "time";
+                at = "06:00:00";
               }
+            ];
+            condition = [];
+            action = [
               {
-                service = "notify.os76";
+                service = "backup.create";
                 metadata = {};
-                data = {
-                  message = "Test notification script";
-                };
+                data = {};
               }
             ];
             mode = "single";
-            icon = "mdi:slack";
-          };
-        }
-      ];
-      # FIXME: not included correctly
-      "scripts ui" = "!include scripts.yaml";
+          }
+        ];
+        "automation ui" = "!include automations.yaml";
+        "scene manual" = [];
+        "scene ui" = "!include scenes.yaml";
+        script = [
+          {
+            testnotification = {
+              alias = "TestNotificationFromNixConf";
+              sequence = [
+                {
+                  service = "notify.mobile_app_xiaomipoco";
+                  metadata = {};
+                  data = {
+                    message = "Test notification script";
+                    title = "Test notification";
+                  };
+                }
+                {
+                  service = "notify.os76";
+                  metadata = {};
+                  data = {
+                    message = "Test notification script";
+                  };
+                }
+              ];
+              mode = "single";
+              icon = "mdi:slack";
+            };
+          }
+        ];
+        # FIXME: not included correctly
+        "scripts ui" = "!include scripts.yaml";
+      };
     };
-  };
-
-  systemd.timers."minio-backup" = {
-    wantedBy = ["timers.target"];
-    timerConfig = {
-      # OnBootSec = "30m";
-      # OnUnitActiveSec = "5m";
-      OnCalendar = "*-*-* 7:00:00";
-      Unit = "minio-backup.service";
-    };
-  };
-
-  systemd.services."minio-backup" = {
-    enable = false;
-    script = ''
-      #!/usr/bin/env bash
-      #
-      # example:
-      #  mc cp -r /root/ os76-tf-backups-user/os76-tf-backups/root-00-00-01
-      #
-      USER=os76-tf-backups-user
-      BUCKET=os76-tf-backups
-      HOST=${config.networking.hostName}
-      FOLDER=$(date +%Y/%m/%d/%H)
-
-      # use absolute paths and add trailing slash
-      DIRS="/root/ /var/lib/hass/ /home/xeno/ /etc/"
-
-      for DIR in $DIRS; do
-        ${pkgs.minio-client}/bin/mc cp -r $DIR $USER/$BUCKET/$HOST/$FOLDER$DIR
-      done
-    '';
-    serviceConfig = {
-      Type = "oneshot";
-      User = "root";
-    };
-  };
-
-  services.prometheus.exporters.node = {
-    enable = true;
-    port = 9100;
-    enabledCollectors = [
-      "logind"
-      "systemd"
-    ];
-    disabledCollectors = ["textfile"];
   };
 
   # Open ports in the firewall.

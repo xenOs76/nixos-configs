@@ -2,11 +2,11 @@
   pkgs,
   pkgsUnstable,
   ...
-}: {
+}:
+{
   home.packages = with pkgs; [
     pkgsUnstable.devenv
     statix
-    commitizen
 
     ### Editors
     #zed-editor # hm managed
@@ -33,8 +33,8 @@
     goreleaser
     gotest
     gotools
-    govulncheck
-    golangci-lint
+    pkgsUnstable.govulncheck
+    pkgsUnstable.golangci-lint
     delve
     golines
     gopls
@@ -47,6 +47,7 @@
     # Python: check Nix Python env definition in shell-generic.nix
     ruff
     uv
+
     # CirtuitPython
     thonny
     circup
@@ -63,10 +64,16 @@
     ## Utils
     # SBOM creation
     syft
+
     # Gihub actions pinning
     pinact
+
+    # Gihub actions linting
+    actionlint
+
     # Sonarqube scanner
     sonar-scanner-cli-minimal
+
     # Taskfile.yml processin
     go-task
   ];
@@ -86,7 +93,7 @@
         go-test-coverage-text = "go tool cover -func=cover.out";
         go-test-vulnerabilities = "govulncheck ./...";
         # golang-validation mandatory execution: tests, lint, parallel stress
-        go-validate = "go-test && golangci-lint-run && go-test-stress";
+        go-validate = "golangci-lint-run-fix && go-test-vulnerabilities && go-test-stress-race";
         go-update-deps = "go get -u && go mod tidy";
         golangci-lint-run = "golangci-lint run";
         golangci-lint-run-fix = "golangci-lint run --fix";
@@ -274,14 +281,16 @@
                 keyOrdering = false;
                 schemas = {
                   # Ansible
-                  "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/inventory.json" = [
-                    "./inventory/*.yaml"
-                    "hosts.yml"
-                  ];
+                  "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/inventory.json" =
+                    [
+                      "./inventory/*.yaml"
+                      "hosts.yml"
+                    ];
                   # https-wrench
-                  "https://raw.githubusercontent.com/xenOs76/https-wrench/refs/heads/main/https-wrench.schema.json" = [
-                    "https-wrench*.yaml"
-                  ];
+                  "https://raw.githubusercontent.com/xenOs76/https-wrench/refs/heads/main/https-wrench.schema.json" =
+                    [
+                      "https-wrench*.yaml"
+                    ];
                 };
               };
             };
