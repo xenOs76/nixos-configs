@@ -52,7 +52,7 @@ in {
       snapshot_create = "no";
       snapshot_dir = "snaps";
       target = {
-        "ssh://argo.priv.os76.xyz/memento/back/slim-nix_snaps/" = {
+        "ssh://argo.priv.os76.xyz/memento/back/nemo-nix_snaps/" = {
           ssh_identity = local_to_argo_ssh_key_path;
           ssh_user = "root";
         };

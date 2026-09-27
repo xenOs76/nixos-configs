@@ -2,7 +2,8 @@
   pkgs,
   config,
   ...
-}: {
+}:
+{
   home.packages = with pkgs; [
     argocd
     docker-credential-helpers
@@ -50,9 +51,10 @@
         kcrdlist = "kubectl-crdlist";
         kdelete-f = "kubectl delete -f";
         kdf = "kubectl delete -f ";
-        knetdrill = "kubectl netdrill run";
+        knetdrill = "kubectl netdrill";
         knetdrill-deploy = "kubectl netdrill deployment";
         knetdrill-pod = "kubectl netdrill pod";
+        kcrdls = "kubectl-crdlist";
         ktemp-shell = "kubectl netshoot run temp-shell";
         kubectl = "kubecolor";
         nokube = "kubectx -u";

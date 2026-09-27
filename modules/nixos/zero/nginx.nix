@@ -1,6 +1,20 @@
-{config, ...}: let
-  ssl_certificate_bundle_path = "/data/store-btrfs/certs/star_0_os76_xyz_full.pem";
-  ssl_certificate_key_path = "/data/store-btrfs/certs/star_0_os76_xyz_priv_key.pem";
+{
+  config,
+  pkgs,
+  ...
+}: let
+  certs_base_dir = "/data/store-btrfs/certs";
+  ssl_certificate_bundle_path = "${certs_base_dir}/star_0_os76_xyz_full.pem";
+  ssl_certificate_key_path = "${certs_base_dir}/star_0_os76_xyz_priv_key.pem";
+  garage_web_ssl_cert = "${certs_base_dir}/star_garage_web_0_os76_xyz_full.pem";
+  garage_web_ssl_key = "${certs_base_dir}/star_garage_web_0_os76_xyz_priv_key.pem";
+  garage_s3_ssl_cert = "${certs_base_dir}/star_garage_s3_0_os76_xyz_full.pem";
+  garage_s3_ssl_key = "${certs_base_dir}/star_garage_s3_0_os76_xyz_priv_key.pem";
+  # Static art for Grafana Canvas Homelab Map (os76-tf dashboard).
+  os76MapAssets = pkgs.runCommand "os76-map-assets" {} ''
+    mkdir -p $out
+    cp ${./assets/os76-homelab-map-bg.png} $out/os76-homelab-map-bg.png
+  '';
 in {
   networking.firewall.allowedTCPPorts = [
     80
@@ -50,86 +64,6 @@ in {
       };
     };
 
-    "minio-console.0.os76.xyz" = {
-      forceSSL = true;
-      sslCertificate = ssl_certificate_bundle_path;
-      sslCertificateKey = ssl_certificate_key_path;
-      extraConfig = ''
-        # HSTS (ngx_http_headers_module is required) (63072000 seconds)
-        add_header Strict-Transport-Security "max-age=63072000" always;
-      '';
-      locations."/" = {
-        proxyPass = "http://localhost:9001";
-        extraConfig = ''
-
-          #
-          # https://min.io/docs/minio/linux/integrations/setup-nginx-proxy-with-minio.html
-          #
-
-          #proxy_set_header Host $http_host;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_set_header X-Forwarded-Proto $scheme;
-          proxy_set_header X-NginX-Proxy true;
-
-          # This is necessary to pass the correct IP to be hashed
-          real_ip_header X-Real-IP;
-
-          # To support websockets in MinIO versions released after January 2023
-          proxy_http_version 1.1;
-          proxy_set_header Upgrade $http_upgrade;
-          proxy_set_header Connection "upgrade";
-
-          # Some environments may encounter CORS errors (Kubernetes + Nginx Ingress)
-          # Uncomment the following line to set the Origin request to an empty string
-          # proxy_set_header Origin \'\';
-
-          chunked_transfer_encoding off;
-
-        '';
-      };
-    };
-
-    "minio.0.os76.xyz" = {
-      forceSSL = true;
-      sslCertificate = ssl_certificate_bundle_path;
-      sslCertificateKey = ssl_certificate_key_path;
-      extraConfig = ''
-
-        # HSTS (ngx_http_headers_module is required) (63072000 seconds)
-        add_header Strict-Transport-Security "max-age=63072000" always;
-
-        # Allow special characters in headers
-        ignore_invalid_headers off;
-
-        # Allow any size file to be uploaded.
-        # Set to a value such as 1000m; to restrict file size to a specific value
-        client_max_body_size 0;
-
-        # Disable buffering
-        proxy_buffering off;
-        proxy_request_buffering off;
-
-      '';
-
-      locations."/" = {
-        proxyPass = "http://127.0.0.1:9000";
-        extraConfig = ''
-
-          #
-          # https://min.io/docs/minio/linux/integrations/setup-nginx-proxy-with-minio.html
-          #
-          proxy_connect_timeout 300;
-
-          # Default is HTTP/1, keepalive is only enabled in HTTP/1.1
-          proxy_http_version 1.1;
-          proxy_set_header Connection "";
-          chunked_transfer_encoding off;
-
-        '';
-      };
-    };
-
     "loki.0.os76.xyz" = {
       forceSSL = true;
       sslCertificate = ssl_certificate_bundle_path;
@@ -143,6 +77,13 @@ in {
       forceSSL = true;
       sslCertificate = ssl_certificate_bundle_path;
       sslCertificateKey = ssl_certificate_key_path;
+      # Served before the Grafana proxy so Canvas can load a durable HTTPS backdrop.
+      locations."/os76-map-assets/" = {
+        alias = "${os76MapAssets}/";
+        extraConfig = ''
+          add_header Cache-Control "public, max-age=86400";
+        '';
+      };
       locations."/" = {
         proxyPass = "http://${toString config.services.grafana.settings.server.http_addr}:${toString config.services.grafana.settings.server.http_port}";
         proxyWebsockets = true;
@@ -205,6 +146,7 @@ in {
 
       extraConfig = ''
         # Allow any size object upload (nginx default is 1m).
+        # Required for restic/autorestic path-style S3 to this host.
         client_max_body_size 0;
 
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -214,10 +156,30 @@ in {
       '';
     };
 
-    "garage-web.0.os76.xyz" = {
+    "*.garage-s3.0.os76.xyz" = {
       forceSSL = true;
-      sslCertificate = ssl_certificate_bundle_path;
-      sslCertificateKey = ssl_certificate_key_path;
+      sslCertificate = garage_s3_ssl_cert;
+      sslCertificateKey = garage_s3_ssl_key;
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:3900";
+        recommendedProxySettings = true;
+      };
+
+      extraConfig = ''
+        # Allow any size object upload (nginx default is 1m).
+        client_max_body_size 0;
+
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        # Disable buffering to a temporary file.
+        proxy_max_temp_file_size 0;
+      '';
+    };
+
+    "*.garage-web.0.os76.xyz" = {
+      forceSSL = true;
+      sslCertificate = garage_web_ssl_cert;
+      sslCertificateKey = garage_web_ssl_key;
       locations."/" = {
         proxyPass = "http://127.0.0.1:3902";
         recommendedProxySettings = true;

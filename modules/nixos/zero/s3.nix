@@ -4,9 +4,6 @@
   lib,
   ...
 }: let
-  minio_enable = true;
-  minio_root_credentials_file = "/etc/minio-root-credentials";
-
   garage_enable = true;
   garage_data_basedir = "/data/store-btrfs/garage";
   garage_root_domain = "0.os76.xyz";
@@ -15,11 +12,6 @@
     #!${pkgs.bash}/bin/bash
     set -euo pipefail
 
-    if [[ "$(id -u)" -ne 0 ]]; then
-      echo "garage-webui-admin: must be run as root (e.g. sudo garage-webui-admin)" >&2
-      exit 1
-    fi
-
     set -a
     # shellcheck source=/dev/null
     source ${config.sops.templates."garage-env".path}
@@ -27,15 +19,12 @@
 
     export API_ADMIN_KEY="''${GARAGE_ADMIN_TOKEN}"
     export API_BASE_URL="''${API_BASE_URL:-http://127.0.0.1:3903}"
+    export THEME="Dimm"
 
     exec ${lib.getExe pkgs.garage-webui}
   '';
 in {
   sops.secrets = {
-    "minio_root_credentials" = {
-      owner = "minio";
-      path = minio_root_credentials_file;
-    };
     "garage_rpc_secret" = {};
     "garage_admin_token" = {};
     "garage_metrics_token" = {};
@@ -43,7 +32,8 @@ in {
 
   sops.templates."garage-env" = {
     owner = "root";
-    mode = "0400";
+    group = "wheel";
+    mode = "0440";
     content = ''
       GARAGE_RPC_SECRET="${config.sops.placeholder.garage_rpc_secret}"
       GARAGE_ADMIN_TOKEN="${config.sops.placeholder.garage_admin_token}"
@@ -62,7 +52,32 @@ in {
     home = "/var/empty";
   };
 
+  systemd.services.garage-dirs = lib.mkIf garage_enable {
+    description = "Ensure Garage data directories exist";
+    before = ["garage.service"];
+    requiredBy = ["garage.service"];
+    after = ["data-store-btrfs.mount"];
+    unitConfig.RequiresMountsFor = [garage_data_basedir];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${pkgs.writeShellScript "garage-dirs" ''
+        set -euo pipefail
+        ${lib.getExe' pkgs.coreutils "mkdir"} -p \
+          ${garage_data_basedir}/data \
+          ${garage_data_basedir}/meta
+        ${lib.getExe' pkgs.coreutils "chown"} -R garage:garage ${garage_data_basedir}
+        ${lib.getExe' pkgs.coreutils "chmod"} 0750 \
+          ${garage_data_basedir} \
+          ${garage_data_basedir}/data \
+          ${garage_data_basedir}/meta
+      ''}";
+    };
+  };
+
   systemd.services.garage = lib.mkIf garage_enable {
+    requires = ["garage-dirs.service"];
+    after = ["garage-dirs.service"];
     serviceConfig = {
       DynamicUser = lib.mkForce false;
       User = "garage";
@@ -70,27 +85,7 @@ in {
     };
   };
 
-  systemd.tmpfiles.rules = lib.mkIf garage_enable [
-    "d ${garage_data_basedir} 0750 garage garage -"
-    "Z ${garage_data_basedir} - garage garage -"
-  ];
-
   services = {
-    #
-    # Minio
-    #
-    minio = {
-      enable = minio_enable;
-      region = "zero";
-      rootCredentialsFile = minio_root_credentials_file;
-      dataDir = ["/data/store-btrfs/minio/data"];
-      listenAddress = "127.0.0.1:9000";
-      consoleAddress = "127.0.0.1:9001";
-    };
-
-    #
-    # Garage
-    #
     garage = {
       enable = garage_enable;
       package = pkgs.garage_2;

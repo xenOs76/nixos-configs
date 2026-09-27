@@ -1,0 +1,137 @@
+views:
+- title: Scenes
+  path: scenes
+  icon: mdi:home-lightbulb-outline
+  type: sections
+  max_columns: 4
+  sections:
+  - type: grid
+    cards:
+    - show_name: true
+      show_icon: true
+      type: button
+      entity: scene.nightlights
+      tap_action:
+        action: toggle
+    - show_name: true
+      show_icon: true
+      type: button
+      entity: scene.atdeskworking
+      tap_action:
+        action: toggle
+    - show_name: true
+      show_icon: true
+      type: button
+      entity: scene.lightsoff
+      tap_action:
+        action: toggle
+    - show_name: true
+      show_icon: true
+      type: button
+      entity: scene.lightson_2
+      tap_action:
+        action: toggle
+    - show_name: true
+      show_icon: true
+      type: button
+      entity: scene.atdesk_soft_lights
+      tap_action:
+        action: toggle
+- title: Lights
+  path: lights
+  icon: mdi:ceiling-light-multiple-outline
+  type: sections
+  max_columns: 4
+  badges: []
+  cards: []
+  header:
+    card:
+      type: markdown
+      text_only: true
+      content: Lights Panel
+    layout: start
+    badges_position: bottom
+    badges_wrap: wrap
+  sections:
+  - type: grid
+    cards:
+    - type: heading
+      heading: Desk
+      heading_style: title
+      icon: mdi:desk
+    - type: light
+      entity: light.wled_23_fairy_strip
+      grid_options:
+        columns: 6
+        rows: auto
+      icon: mdi:bottle-tonic-skull-outline
+    - type: light
+      entity: light.wled
+      grid_options:
+        columns: 6
+        rows: auto
+    - show_name: true
+      show_icon: true
+      type: button
+      entity: switch.delock
+      grid_options:
+        columns: 6
+        rows: 3
+    - type: light
+      entity: light.shellycolorbulb_98cdac1eb503
+      grid_options:
+        columns: 6
+        rows: auto
+  - type: grid
+    cards:
+    - type: heading
+      heading: Armchair
+      heading_style: title
+      icon: mdi:seat
+      grid_options:
+        columns: 12
+        rows: 1
+    - show_name: false
+      show_icon: true
+      type: button
+      tap_action:
+        action: toggle
+      entity: light.wiz_01
+      show_state: true
+  - type: grid
+    cards:
+    - type: heading
+      heading_style: title
+      heading: Cabinet
+      icon: mdi:file-cabinet
+    - show_name: true
+      show_icon: true
+      type: button
+      entity: light.wled_neon_signs_main
+      icon: mdi:drama-masks
+  - type: grid
+    cards:
+    - type: heading
+      heading_style: title
+      heading: Kitchen Top
+      icon: mdi:stove
+    - type: light
+      entity: light.shelly_duo_04
+      grid_options:
+        columns: 6
+        rows: auto
+    - type: light
+      entity: light.tasmota_novostella1
+      grid_options:
+        columns: 6
+        rows: auto
+  - type: grid
+    cards:
+    - type: heading
+      heading_style: title
+      heading: Balcony
+      icon: mdi:balcony
+    - show_name: true
+      show_icon: true
+      type: button
+      entity: light.wled_balcony_2

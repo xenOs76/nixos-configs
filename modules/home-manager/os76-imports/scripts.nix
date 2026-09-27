@@ -11,6 +11,10 @@
     echo "defKubeNamespace = ${config.os76Cfg.defKubeNamespace}"
     echo "defAwsRegionList = ${lib.strings.concatStringsSep " " config.os76Cfg.defAwsRegionList}"
     echo "firefoxAdditionalCertificates = ${lib.strings.concatStringsSep " " config.os76Cfg.firefoxAdditionalCertificates}"
+    echo "desktopFonts.ui = ${config.os76Cfg.desktopFonts.ui.name} ${toString config.os76Cfg.desktopFonts.ui.size}pt dpi=${toString config.os76Cfg.desktopFonts.dpi}"
+    echo "desktopFonts.mono = ${config.os76Cfg.desktopFonts.mono.name} ${toString config.os76Cfg.desktopFonts.mono.size}pt"
+    echo "firefoxFonts.ui = ${config.os76Cfg.firefoxFonts.ui.name} ${toString config.os76Cfg.firefoxFonts.ui.size}px"
+    echo "firefoxFonts.mono = ${config.os76Cfg.firefoxFonts.mono.name} ${toString config.os76Cfg.firefoxFonts.mono.size}px"
   '';
 
   systemd-unit-browser = pkgs.writeShellScriptBin "systemd-unit-browser" (

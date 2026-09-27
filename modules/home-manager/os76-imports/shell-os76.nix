@@ -2,9 +2,11 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   https-wrench-os76-file-path = ".config/https-wrench/https-wrench-os76.yaml";
-in {
+in
+{
   home.packages = with pkgs; [
     ansible
     delta
@@ -52,6 +54,8 @@ in {
 
     # temp - fails on mac
     jetbrains-mono
+
+    graphviz
   ];
 
   home.file = {

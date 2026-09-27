@@ -4,7 +4,11 @@
   pkgs,
   stdenv,
   ...
-}: {
+}: let
+  gw_home_arpa = "192.168.1.103";
+  ns_home_arpa = "192.168.1.103";
+  zero_home_arpa = "192.168.1.49";
+in {
   imports = [
     ./hardware-configuration.nix
     # https://nixos.wiki/wiki/Scanners#Network_scanning
@@ -32,20 +36,29 @@
     plymouth.enable = true;
   };
 
+  services = {
+    openssh.enable = true;
+    fwupd.enable = true;
+    pcscd.enable = true;
+    resolved.enable = false;
+  };
+
   networking = {
     hostName = "zero";
     domain = "home.arpa";
     networkmanager.enable = false;
+    firewall.enable = true;
     wireless.enable = lib.mkForce false;
     dhcpcd.enable = false;
     interfaces.enp1s0.ipv4.addresses = [
       {
-        address = "192.168.1.49";
+        address = zero_home_arpa;
         prefixLength = 24;
       }
     ];
-    defaultGateway = "192.168.1.103";
-    nameservers = ["192.168.1.103"];
+    defaultGateway = gw_home_arpa;
+    nameservers = [ns_home_arpa];
+    useHostResolvConf = true;
   };
 
   time.timeZone = "Europe/Berlin";
@@ -78,35 +91,35 @@
   };
 
   environment.systemPackages = with pkgs; [
-    nixpkgs-fmt
-    alejandra
-    git
-    vim
-    sops
-    lazygit
-    lf
-    zoxide
-    fzf
+    bat
     bat
     bat-extras.batman
-    glow
+    curl
+    dig
+    dust
     eza
-    jq
-    unzip
-    tree
+    fd
     file
+    fzf
+    git
+    glow
+    htop
+    jq
+    lazygit
+    lf
     lsof
     netcat
-    dust
-    dig
-    wget
-    ripgrep
-    fd
-    curl
-    htop
-    bat
-    screen
+    nixfmt
+    nixpkgs-fmt
     openssl_3
+    ripgrep
+    screen
+    sops
+    tree
+    unzip
+    vim
+    wget
+    zoxide
   ];
 
   systemd.packages = with pkgs; [lact];
@@ -116,11 +129,4 @@
     enable = true;
     enableSSHSupport = true;
   };
-
-  #  programs.bash.blesh.enable = true;
-
-  networking.firewall.enable = true;
-  services.openssh.enable = true;
-  services.fwupd.enable = true;
-  services.pcscd.enable = true;
 }

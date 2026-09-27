@@ -2,7 +2,8 @@
   pkgs,
   pkgsUnstable,
   ...
-}: {
+}:
+{
   environment.systemPackages = with pkgs; [
     # catppuccin-sddm
     # kdePackages.sddm-kcm
@@ -19,11 +20,16 @@
     xdg-desktop-portal
     # kdePackages.xdg-desktop-portal-kde
 
-    cosmic-reader
+    cosmic-ext-applet-external-monitor-brightness
     cosmic-ext-applet-minimon
-    cosmic-ext-calculator
     cosmic-ext-applet-privacy-indicator
+    cosmic-ext-applet-weather
+    cosmic-ext-calculator
     cosmic-ext-tweaks
+    cosmic-osd
+    cosmic-player
+    vlc # cosmic-player does not start
+    cosmic-reader
   ];
 
   environment.cosmic.excludePackages = with pkgs; [

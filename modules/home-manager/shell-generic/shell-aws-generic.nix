@@ -75,6 +75,18 @@
     if [ -z "$REGION" ]; then echo "No region selected" && exit 0; fi
     echo "export AWS_REGION=$REGION" > ~/.aws_selected_region
   '';
+
+  select-current-aws-sso-profile = pkgs.writeShellScriptBin "select-current-aws-sso-profile" ''
+    FZF="${lib.getExe pkgs.fzf}";
+    FZF_OPTIONS="--preview-window=hidden --height=80%";
+    RG="${lib.getExe pkgs.ripgrep}";
+    SED="${pkgs.gnused}/bin/sed";
+
+    FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --preview '$RG {} ~/.aws/config -A 5 -B 0 --color=always -N ' --border-label='AWS Profile picker' --height 20% $FZF_CATPPUCCIN_OPTS"
+    SSO_PROFILE=$($RG sso_session -B 1 ~/.aws/config | $RG profile | $SED 's/\[profile //g' | $SED -E 's/]$//' | $FZF)
+
+    echo "export AWS_PROFILE=$SSO_PROFILE" >~/.aws_sso_curr_profile
+  '';
 in {
   home.packages = [
     shell-aws-generic-ckecks
@@ -82,6 +94,7 @@ in {
     select-aws-region
     aws-ec2-list-instances
     aws-eks-switch-cluster
+    select-current-aws-sso-profile
   ];
 
   programs.bash = {
@@ -93,6 +106,10 @@ in {
       noaws = "aws sso logout && unset AWS_PROFILE";
       aws-unset-profile = "unset AWS_PROFILE";
       aws-switch-region = "aws-select-region";
+      aws-switch-profile = "aws-select-profile";
+      aws-sso-login-os76 = "aws sso login --sso-session os76-aws-sso";
+      aws-sso-logout = "aws sso logout && aws-unset-profile";
+      aws-sso-switch-profile = "select-current-aws-sso-profile && source ~/.aws_sso_curr_profile";
     };
   };
 }

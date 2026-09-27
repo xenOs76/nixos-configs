@@ -30,9 +30,6 @@
     "grafana_secret_key" = {
       owner = "grafana";
     };
-    "tempo_minio_bucket_name" = {};
-    "tempo_minio_access_key" = {};
-    "tempo_minio_secret_key" = {};
   };
 
   #
@@ -238,10 +235,58 @@
   '';
 
   services.loki = {
-    enable = true;
+    enable = false;
     dataDir = "/data/loki/data";
     configFile = "/etc/loki-local-config.yaml";
   };
+
+  #
+  # Alloy — journal → local Loki (replaces removed services.promtail)
+  # Cloud dual-write: uncomment loki.write "cloud" and wire sops environmentFile
+  # (same pattern as garage-env in s3.nix) when Grafana Cloud credentials exist.
+  #
+  services.alloy = {
+    enable = false;
+    extraFlags = ["--disable-reporting"];
+  };
+
+  environment.etc."alloy/config.alloy".text = ''
+    loki.write "local" {
+      endpoint {
+        url = "http://127.0.0.1:3100/loki/api/v1/push"
+      }
+    }
+
+    // Dual-write to Grafana Cloud later:
+    // loki.write "cloud" {
+    //   endpoint {
+    //     url = env("GRAFANA_CLOUD_LOKI_URL")
+    //     basic_auth {
+    //       username = env("GRAFANA_CLOUD_LOKI_USER")
+    //       password = env("GRAFANA_CLOUD_LOKI_TOKEN")
+    //     }
+    //   }
+    // }
+
+    loki.relabel "journal" {
+      rule {
+        source_labels = ["__journal__systemd_unit"]
+        target_label  = "unit"
+      }
+      forward_to = []
+    }
+
+    loki.source.journal "zero" {
+      max_age       = "12h"
+      relabel_rules = loki.relabel.journal.rules
+      forward_to    = [loki.write.local.receiver]
+      // forward_to = [loki.write.local.receiver, loki.write.cloud.receiver]
+      labels        = {
+        job  = "systemd-journal",
+        host = "zero",
+      }
+    }
+  '';
 
   #
   # Tempo
@@ -305,14 +350,7 @@
 
     storage:
       trace:
-        backend: s3
-        s3:
-          endpoint: minio.0.os76.xyz
-          bucket: ${config.sops.placeholder.tempo_minio_bucket_name}
-          forcepathstyle: true
-          insecure: false
-          access_key: ${config.sops.placeholder.tempo_minio_access_key}
-          secret_key: ${config.sops.placeholder.tempo_minio_secret_key}
+        backend: local
         wal:
           path: /var/lib/tempo/wal
         local:

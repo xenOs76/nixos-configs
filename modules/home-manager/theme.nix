@@ -20,5 +20,7 @@
     yazi.enable = true;
     zed.enable = true;
     zellij.enable = true;
+
+    kvantum.enable = false;
   };
 }

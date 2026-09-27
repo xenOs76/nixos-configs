@@ -2,10 +2,11 @@
   pkgs,
   pkgsUnstable,
   ...
-}: {
+}:
+{
   home.packages = with pkgs; [
     # Nix essentials
-    alejandra
+    #alejandra
     cachix
     nix-prefetch-git
     nixd
@@ -108,12 +109,19 @@
         doggo-doh-git-priv-os76-xyz = "doggo git.priv.os76.xyz @https://cloudflare-dns.com/dns-query";
         doggo-doh-repo-os76-xyz = "doggo repo.os76.xyz @https://cloudflare-dns.com/dns-query";
 
+        gpg-list-secret-keys = "gpg --list-secret-keys --keyid-format LONG";
+
+        git-config-repo-sign-always = "git config --local commit.gpgsign true";
+        git-tag-signed = "git tag -s";
+        git-commit-signed = "git commit -S";
+
         get-direnv-config-template = "cat ~/.config/os76/direnv-template.txt";
 
         glow-pager = "glow -w 0 -p";
 
         goreleaser-release = "goreleaser release --clean";
         goreleaser-test-release = "goreleaser release --snapshot --clean";
+        goreleaser-test-release-no-sign = "goreleaser release --snapshot --clean --skip sign";
 
         vi = "nvim";
         iv = "vi";
@@ -178,7 +186,7 @@
       # ];
       #
       # Command line options for the CTRL-R keybinding.
-      historyWidgetOptions = ["--height 20%"];
+      historyWidgetOptions = [ "--height 20%" ];
     };
 
     bat = {

@@ -13,6 +13,7 @@
     extensions = [
       "cjpalhdlnbpafiamejdnhcphjbkeiagm" # ublock origin
       "olhelnoplefjdmncknfphenjclimckaf" # catppuccin-frappe theme
+      "nngceckbapebfimnlniiiahkandclblb" # Bitwarden Password Manager
     ];
   };
 }
