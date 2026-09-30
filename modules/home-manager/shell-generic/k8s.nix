@@ -36,7 +36,12 @@
 
   programs = {
     bash = {
+      sessionVariables = {
+        koyaml = "--dry-run=client -o yaml";
+      };
       initExtra = ''
+        export koyaml="--dry-run=client -o yaml"
+
         source ~/.kubectl_aliases
         test -d ~/.krew/bin || mkdir -p ~/.krew/bin
         eval "$(helm completion bash)"
