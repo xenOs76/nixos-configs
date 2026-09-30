@@ -41,6 +41,23 @@
         test -d ~/.krew/bin || mkdir -p ~/.krew/bin
         eval "$(helm completion bash)"
         eval "$(velero completion bash)"
+
+        # Kubernetes completion for alias 'k'
+        # Lazily loads completion on first <TAB> to avoid shell startup delay
+        _complete_k() {
+          if ! declare -F __start_kubectl >/dev/null 2>&1; then
+            if [ -f /etc/profiles/per-user/xeno/share/bash-completion/completions/kubectl.bash ]; then
+              source /etc/profiles/per-user/xeno/share/bash-completion/completions/kubectl.bash
+            elif command -v kubectl >/dev/null 2>&1; then
+              source <(kubectl completion bash)
+            fi
+          fi
+          if declare -F __start_kubectl >/dev/null 2>&1; then
+            complete -o default -o nospace -F __start_kubectl k
+            __start_kubectl "$@"
+          fi
+        }
+        complete -o default -o nospace -F _complete_k k
       '';
       shellAliases = {
         k = "kubectl";
