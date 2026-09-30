@@ -97,6 +97,21 @@
     # https://kubecolor.github.io/reference/config/
     # https://github.com/vkhitrin/kubecolor-catppuccin
     # https://github.com/vkhitrin/kubecolor-catppuccin/blob/main/catppuccin-frappe.yaml
+    # Kubectl user preferences file (kuberc)
+    # Ref: https://kubernetes.io/docs/reference/kubectl/kuberc/
+    ".kube/kuberc" = {
+      enable = true;
+      text = ''
+        apiVersion: kubectl.config.k8s.io/v1beta1
+        kind: Preference
+        defaults:
+          - command: delete
+            options:
+              - name: interactive
+                default: "true"
+      '';
+    };
+
     ".kube/color.yaml" = {
       enable = true;
       text = ''
